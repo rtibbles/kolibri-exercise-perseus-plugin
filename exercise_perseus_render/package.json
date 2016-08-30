@@ -1,0 +1,6 @@
+{
+  "name": "kolibri-exercise-perseus-render-plugin",
+  "description": "Exercise/Perseus Render Plugin for Kolibri",
+  "private": true,
+  "dependencies": {}
+}
