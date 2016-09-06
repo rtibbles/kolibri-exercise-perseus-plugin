@@ -109,6 +109,28 @@
       },
       item: {
         type: Object,
+        validator: (obj) => [
+          // A somewhat protracted validator to ensure that our item data conforms
+          // to that expected by the Perseus ItemRenderer,
+          // c.f. https://github.com/Khan/perseus/blob/master/src/item-renderer.jsx#L35
+          'calculator',
+          'chi2Table',
+          'periodicTable',
+          'tTable',
+          'zTable',
+        ].reduce(
+            // Loop through all of the above properties and ensure that if the 'answerArea'
+            // property of the item has them, then their values are set to Booleans.
+            (prev, key) => !(!prev ||
+              obj.answerArea.hasOwnProperty(key) &&
+              typeof obj.answerArea[key] !== 'boolean'), true) &&
+            // Check that the 'hints' property is an Array.
+          Array.isArray(obj.hints) &&
+          obj.hints.reduce(
+            // Check that each hint in the hints array is an object (and not null)
+            (prev, item) => item && typeof item === 'object', true) &&
+          // Check that the question property is an object (and not null)
+          obj.question && typeof obj.question === 'object',
         required: true,
       },
       problemNumber: {
