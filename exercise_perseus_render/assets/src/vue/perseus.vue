@@ -189,5 +189,25 @@
 
   @require '~core-theme.styl'
 
+  #perseus
+    @import '../../../node_modules/perseus/stylesheets/local-only/khan-exercise.css'
+    @import '../../../node_modules/perseus/lib/katex/katex.css'
+    @import '../../../node_modules/perseus/build/perseus.css'
+    @import '../../../node_modules/perseus/lib/mathquill/mathquill.css'
+
+  #workarea
+    box-sizing: initial
+
+  .info-box
+    background: #eee
+    border: 1px solid #aaa
+    color: #333
+    margin-bottom: 10
+    padding: 10
+    position: relative
+    z-index: 10
+    box-shadow: 0 1px 2px #ccc
+    overflow: visible
+
 </style>
 
