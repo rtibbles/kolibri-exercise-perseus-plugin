@@ -2,5 +2,10 @@
   "name": "kolibri-exercise-perseus-render-plugin",
   "description": "Exercise/Perseus Render Plugin for Kolibri",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "react-addons-css-transition-group": "0.14.7",
+    "react-addons-pure-render-mixin": "0.14.7",
+    "react-dom": "0.14.7",
+    "react": "0.14.7"
+  }
 }
