@@ -11,7 +11,7 @@
               <div class="info-box">
                   <div id="solutionarea"></div>
                   <button @click="checkAnswer" v-if="!correct" id="check-answer-button">{{ checkText }}</button>
-                  <button v-else id="next-question-button">{{ $tr('correct') }}</button>
+                  <button v-else id="next-question-button">{{ $tr("correct") }}</button>
               </div>
               <div class="info-box">
                   <button @click="takeHint">
@@ -158,8 +158,9 @@
         // Create a new one with current item data.
         this.itemRenderer =
         this.reactDOM.render(this.itemRendererFactory( // eslint-disable-line new-cap
-          this.itemRenderData, null), this.$els.perseusContainer);
-        this.loading = false;
+          this.itemRenderData, null), this.$els.perseusContainer, () => {
+          this.loading = false;
+        });
       },
       checkAnswer() {
         if (this.itemRenderer) {
