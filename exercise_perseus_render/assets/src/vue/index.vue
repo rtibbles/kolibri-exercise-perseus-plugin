@@ -44,7 +44,7 @@
     },
     components: {
       perseus: require('./perseus'),
-      assessmentWrapper: require('kolibri/core/vue/components/assessmentWrapper'),
+      assessmentWrapper: require('kolibri/core/assets/src/vue/assessment-wrapper'),
     },
     created() {
       this.Kolibri.client(`${this.defaultFile.storage_url}exercise.json`).then(
@@ -67,7 +67,7 @@
 
 <style lang="stylus" scoped>
 
-  @require '~core-theme.styl'
+  @require '~kolibri/styles/coreTheme'
 
   #exercise-container
     border: double 3px grey
