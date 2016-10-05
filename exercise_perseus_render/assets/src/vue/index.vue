@@ -25,7 +25,7 @@
     methods: {
       setItemId() {
         const items = this.exercise.all_assessment_items;
-        const attempts = this.$refs.totalattempts;
+        const attempts = this.$refs.totalattempts || 0;
         this.itemId = items[attempts % items.length];
         this.$emit('itemIdSet');
       },
