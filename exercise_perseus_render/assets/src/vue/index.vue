@@ -4,9 +4,9 @@
     <assessment-wrapper
       v-ref:wrapper
       v-if="exercise"
-      :itemId="itemId"
-      :masteryModel="exercise.mastery_model"
-      :masterySpacingTime="exercise.masterySpacingTime">
+      :item-id="itemId"
+      :mastery-model="exercise.mastery_model"
+      :mastery-spacing-time="exercise.masterySpacingTime">
       <perseus v-if="item" :item="item"></perseus>
     </assessment-wrapper>
   </div>
