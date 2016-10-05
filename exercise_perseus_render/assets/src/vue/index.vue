@@ -31,7 +31,7 @@
       },
       setItemData() {
         this.Kolibri.client(
-          `${this.defaultFile.storage_url}/${this.itemId}.json`
+          `${this.defaultFile.storage_url}${this.itemId}.json`
           ).then((itemResponse) => {
             const itemData = itemResponse.entity.itemData.replace(
               '${aronsfacehere}',
@@ -45,7 +45,7 @@
       assessmentWrapper: require('kolibri/core/vue/components/assessmentWrapper'),
     },
     created() {
-      this.Kolibri.client(`${this.defaultFile.storage_url}/exercise.json`).then(
+      this.Kolibri.client(`${this.defaultFile.storage_url}exercise.json`).then(
         (exerciseResponse) => {
           this.exercise = exerciseResponse.entity;
           this.$emit('assessmentDataLoaded');
