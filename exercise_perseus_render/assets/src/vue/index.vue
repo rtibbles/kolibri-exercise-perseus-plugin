@@ -37,6 +37,8 @@
               '${aronsfacehere}',
               this.defaultFile.storage_url);
             this.item = JSON.parse(itemData);
+          }).catch(function(reason) {
+            console.log('Oops, you got rejected: ', reason);
           });
       }
     },
@@ -49,7 +51,9 @@
         (exerciseResponse) => {
           this.exercise = exerciseResponse.entity;
           this.$emit('assessmentDataLoaded');
-        });
+        }).catch(function(reason) {
+          console.log('Oops, requesting exercise.json got rejected: ', reason);
+        });;
     },
     props: [
       'defaultFile',
