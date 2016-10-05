@@ -50,6 +50,8 @@
       this.Kolibri.client(`${this.defaultFile.storage_url}exercise.json`).then(
         (exerciseResponse) => {
           this.exercise = exerciseResponse.entity;
+          this.setItemId();
+          this.setItemData();
           this.$emit('assessmentDataLoaded');
         }).catch(function(reason) {
           console.log('Oops, requesting exercise.json got rejected: ', reason);
