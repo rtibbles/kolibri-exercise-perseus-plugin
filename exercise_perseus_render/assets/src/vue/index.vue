@@ -33,10 +33,7 @@
         this.Kolibri.client(
           `${this.defaultFile.storage_url}${this.itemId}.json`
           ).then((itemResponse) => {
-            const itemData = itemResponse.entity.itemData.replace(
-              '${aronsfacehere}',
-              this.defaultFile.storage_url);
-            this.item = JSON.parse(itemData);
+            this.item = itemResponse.entity;
           }).catch(function(reason) {
             console.log('Oops, you got rejected: ', reason);
           });
