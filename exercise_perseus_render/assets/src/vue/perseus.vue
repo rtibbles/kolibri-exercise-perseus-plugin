@@ -1,7 +1,6 @@
 <template>
 
   <div id="perseus">
-    <div>
       <div id="problem-area">
         <div id="workarea"></div>
         <div id="hintsarea"></div>
@@ -11,9 +10,7 @@
               <div class="info-box">
                   <div id="solutionarea"></div>
                   <button @click="checkAnswer" v-if="!correct" id="check-answer-button">{{ checkText }}</button>
-                  <button v-else id="next-question-button">{{ $tr("correct") }}</button>
-              </div>
-              <div class="info-box">
+                  <button @click="nextQuestion" v-else id="next-question-button">{{ $tr("correct") }}</button>
                   <button @click="takeHint">
                     {{ $tr("hint") }}
                   </button>
@@ -27,7 +24,6 @@
         <button v-else disabled id="scratchpad-not-available">{{ $tr("notAvailable") }}</button>
     </div>
     <div v-el:perseus-container id="perseus-container">
-    </div>
   </div>
 
 </template>
@@ -169,6 +165,9 @@
           this.empty = check.empty;
         }
       },
+      nextQuestion() {
+        this.$emit('nextquestion');
+      },
       takeHint() {
         if (this.itemRenderer) {
           this.itemRenderer.showHint();
@@ -218,19 +217,48 @@
     @import '../../../node_modules/perseus/build/perseus.css'
     @import '../../../node_modules/perseus/lib/mathquill/mathquill.css'
 
+  #perseus
+    height: 100%
+
+  #problem-area
+    height: 70%
+    width: 100%
+    border: solid 3px #d5d5d5
+    border-radius: 4px
+    overflow-x: hidden
+    position: absolute;
+
+  #answer-area-wrap
+    position: relative
+    top: 70%
+
   #workarea
-    box-sizing: initial
+    margin-left: 0;
 
   .info-box
-    background: #eee
-    border: 1px solid #aaa
-    color: #333
+    // background: #eee
+    // border: 1px solid #aaa
+    // color: #333
     margin-bottom: 10
     padding: 10
     position: relative
     z-index: 10
-    box-shadow: 0 1px 2px #ccc
+    // box-shadow: 0 1px 2px #ccc
+    overflow: visible
+
+  #solutionarea
+    min-height: 35px
+    padding: 10px
+    margin: 0 -10px
+    border-bottom: 0
     overflow: visible
 
 </style>
 
+<style lang="stylus">
+
+  img
+    max-width:100%;
+    max-height:100%;
+
+</style>
