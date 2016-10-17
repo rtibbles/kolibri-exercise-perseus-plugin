@@ -6,10 +6,9 @@
       v-ref:wrapper
       v-if="exercise"
       :item-id="itemId"
-      :assessment-data-loaded="assessmentDataLoaded"
       :mastery-model="exercise.mastery_model"
       :mastery-spacing-time="exercise.masterySpacingTime">
-      <perseus v-if="item" :item="item" v-on:nextquestion="nextQuestion"></perseus>
+      <perseus v-if="item" :item="item" :pass-ratio-m="passRatioM" :pass-ratio-n="passRatioN" v-on:nextquestion="nextQuestion" v-on:nextcontent="nextContent"></perseus>
     </assessment-wrapper>
   </div>
 
@@ -24,31 +23,46 @@
 
     data: () => ({
       item: undefined,
+      items: undefined,
       exercise: undefined,
       itemId: undefined,
-      assessmentDataLoaded: false,
+      // how many most recent questions taken into account?
+      passRatioM: 5,
+      // how many questions need to get right?
+      passRatioN: 4,
     }),
     methods: {
       nextQuestion() {
-        const items = this.exercise.all_assessment_items;
-        // still need to decide how we want to cycle through the questions
         this.setItemData();
       },
       nextContent() {
         console.log('*** nextContent ***');
       },
-      setItemData() {
-        const items = this.exercise.all_assessment_items;
-        const attempts = this.$refs.totalattempts || 0;
-        this.itemId = items[attempts % items.length];
+      loadItemData() {
+        const attempts = this.pastattempts.length;
+        // const itemIndex = attempts % this.items.length;
+        const itemIndex = 1;
+        this.itemId = this.items[itemIndex];
         this.Kolibri.client(
           `${this.defaultFile.storage_url}${this.itemId}.json`
           ).then((itemResponse) => {
             this.item = itemResponse.entity;
-            this.assessmentDataLoaded = true;
           }).catch(function(reason) {
             console.log('Oops, you got rejected: ', reason);
           });
+      },
+      setItemData() {
+        // this.passRatioM = this.exercise.passRatioM;
+        // this.passRatioN = this.exercise.passRatioN;
+        if(!this.pastattempts) {
+          let watchRevoke;
+          watchRevoke = this.$watch('pastattempts', () => {
+            this.loadItemData();
+            watchRevoke();
+          }, {deep:true});
+        } else {
+          this.loadItemData();
+        }
       }
     },
     components: {
@@ -63,11 +77,17 @@
           this.setItemData();
         }).catch(function(reason) {
           console.log('Oops, requesting exercise.json got rejected: ', reason);
-        });;
+        });
     },
     props: [
       'defaultFile',
     ],
+    vuex: {
+      getters: {
+        pastattempts: (state) => state.core.logging.mastery.pastattempts,
+        userid: (state) => state.core.session.user_id,
+      },
+    },
   };
 
 </script>
@@ -76,14 +96,14 @@
 
   @require '~kolibri/styles/coreTheme'
 
-  #exercise-container
-    height: 120%
-    position: relative
-    padding-top: 8px
+  // #exercise-container
+  //   height: 120%
+  //   position: relative
+  //   padding-top: 8px
 
-  #assessment-container
-    position: relative
-    height: 100%
+  // #assessment-container
+  //   position: relative
+  //   height: 100%
 
 </style>
 
