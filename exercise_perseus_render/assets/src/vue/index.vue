@@ -18,6 +18,8 @@
 
 <script>
 
+  const ss = require('seededshuffle');
+
   module.exports = {
 
     data: () => ({
@@ -54,6 +56,7 @@
       this.Kolibri.client(`${this.defaultFile.storage_url}exercise.json`).then(
         (exerciseResponse) => {
           this.exercise = exerciseResponse.entity;
+          this.items = ss.shuffle(exerciseResponse.entity.all_assessment_items, this.userid, true);
           this.setItemData();
         }).catch(function(reason) {
           console.log('Oops, requesting exercise.json got rejected: ', reason);
