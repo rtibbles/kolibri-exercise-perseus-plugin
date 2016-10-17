@@ -12,6 +12,7 @@
                   <p> {{attemptProgress}} </p>
                   <button @click="checkAnswer" v-if="!correct" id="check-answer-button">{{ checkText }}</button>
                   <button @click="nextQuestion" v-else id="next-question-button">{{ $tr("correct") }}</button>
+                  <button @click="nextContent" v-if="complete && passNum < 1" id="next-content-button">{{ $tr("nextContent") }}</button>
                   <button @click="takeHint">
                     {{ $tr("hint") }}
                   </button>
@@ -94,6 +95,7 @@
       correct: 'Correct! Next Question.',
       incorrect: 'Incorrect, try again.',
       hint: 'Hint',
+      nextContent: 'Congrats! Move forward.'
     },
     props: {
       scratchpad: {
@@ -168,6 +170,9 @@
       },
       nextQuestion() {
         this.$emit('nextquestion');
+      },
+      nextContent() {
+        this.$emit('nextcontent');
       },
       takeHint() {
         if (this.itemRenderer) {

@@ -34,6 +34,9 @@
         // still need to decide how we want to cycle through the questions
         this.setItemData();
       },
+      nextContent() {
+        console.log('*** nextContent ***');
+      },
       setItemData() {
         const items = this.exercise.all_assessment_items;
         const attempts = this.$refs.totalattempts || 0;
