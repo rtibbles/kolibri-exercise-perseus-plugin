@@ -9,6 +9,7 @@
           <div id="answer-area">
               <div class="info-box">
                   <div id="solutionarea"></div>
+                  <p> {{attemptProgress}} </p>
                   <button @click="checkAnswer" v-if="!correct" id="check-answer-button">{{ checkText }}</button>
                   <button @click="nextQuestion" v-else id="next-question-button">{{ $tr("correct") }}</button>
                   <button @click="takeHint">
@@ -176,6 +177,18 @@
     },
 
     computed: {
+      attemptProgress() {
+        if (this.pastattempts) {
+          if (this.pastattempts.length > 5){
+            const lastFiveAttempts = this.pastattempts.slice(Math.max(this.pastattempts.length - this.passRatioM, 1));
+            this.passNum = this.passRatioN - lastFiveAttempts.reduce((a,b)=>{return a + b;}, 0);
+            return lastFiveAttempts
+          } else {
+            this.passNum = this.passRatioN - this.pastattempts.reduce((a,b)=>{return a + b;}, 0);
+            return this.pastattempts
+          }
+        }
+      },
       checkText() {
         return this.empty ? this.$tr('check') : this.$tr('incorrect');
       },
@@ -201,6 +214,12 @@
       this.$watch('item', this.renderItem);
       // Do a first render with current item data
       this.renderItem();
+    },
+
+    vuex: {
+      getters: {
+        pastattempts: (state) => state.core.logging.mastery.pastattempts,
+      },
     },
   };
 
