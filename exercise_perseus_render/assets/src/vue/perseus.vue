@@ -10,8 +10,8 @@
               <div class="info-box">
                   <div id="solutionarea"></div>
                   <p> {{attemptProgress}} </p>
-                  <button @click="checkAnswer" v-if="!correct" id="check-answer-button">{{ checkText }}</button>
-                  <button @click="nextQuestion" v-else id="next-question-button">{{ $tr("correct") }}</button>
+                  <button @click="checkAnswer" v-if="!complete" id="check-answer-button">{{ checkText }}</button>
+                  <button @click="nextQuestion" v-if="complete && passNum >= 1" id="next-question-button">{{ $tr("correct") }}</button>
                   <button @click="nextContent" v-if="complete && passNum < 1" id="next-content-button">{{ $tr("nextContent") }}</button>
                   <button @click="takeHint">
                     {{ $tr("hint") }}
@@ -136,14 +136,28 @@
         type: Number,
         default: 1,
       },
+      passRatioM: {
+        type: Number,
+        default: 3,
+      },
+      passRatioN: {
+        type: Number,
+        default: 2,
+      },
     },
     data: () => ({
       // Is the perseus item renderer loading?
       loading: true,
       // Is the current answer correct?
       correct: false,
+      // Can move to next question?
+      complete: false,
       // Has an answer been submitted?
       empty: true,
+      // how far from passing the exercise?
+      passNum: 4,
+      // has the user used the hint?
+      hinted: false,
     }),
 
     methods: {
@@ -151,6 +165,7 @@
         // Reset the state tracking variables.
         this.empty = this.loading = true;
         this.correct = false;
+        this.complete = false;
         // Clean up any existing itemRenderer.
         this.reactDOM.unmountComponentAtNode(this.$els.perseusContainer);
 
@@ -164,11 +179,19 @@
       checkAnswer() {
         if (this.itemRenderer) {
           const check = this.itemRenderer.scoreInput();
-          this.correct = check.correct;
+          this.complete = check.correct;
+          this.correct = this.hinted ? false : check.correct;
           this.empty = check.empty;
+          if (!check.empty) {
+            this.$parent.$emit('checkanswer', this.correct);
+            if (this.correct && this.passNum == 1) {
+              this.$parent.$emit('passexercise');
+            }
+          }
         }
       },
       nextQuestion() {
+        this.hinted = false; // reset hinted.
         this.$emit('nextquestion');
       },
       nextContent() {
@@ -177,6 +200,8 @@
       takeHint() {
         if (this.itemRenderer) {
           this.itemRenderer.showHint();
+          this.hinted = true;
+          this.$parent.$emit('takehint');
         }
       },
     },
@@ -241,23 +266,23 @@
     @import '../../../node_modules/perseus/build/perseus.css'
     @import '../../../node_modules/perseus/lib/mathquill/mathquill.css'
 
-  #perseus
-    height: 100%
+  // #perseus
+  //   height: 100%
 
-  #problem-area
-    height: 70%
-    width: 100%
-    border: solid 3px #d5d5d5
-    border-radius: 4px
-    overflow-x: hidden
-    position: absolute;
+  // #problem-area
+  //   height: 70%
+  //   width: 100%
+  //   border: solid 3px #d5d5d5
+  //   border-radius: 4px
+  //   overflow-x: hidden
+  //   position: absolute
 
   #answer-area-wrap
     position: relative
     top: 70%
 
   #workarea
-    margin-left: 0;
+    margin-left: 0
 
   .info-box
     // background: #eee
@@ -282,7 +307,8 @@
 <style lang="stylus">
 
   img
-    max-width:100%;
-    max-height:100%;
+    width: 100%
+    height: 100%
+    max-width: 600px
 
 </style>
