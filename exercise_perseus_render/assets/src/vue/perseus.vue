@@ -215,8 +215,8 @@
     computed: {
       attemptProgress() {
         if (this.pastattempts) {
-          if (this.pastattempts.length > 5){
-            const lastFiveAttempts = this.pastattempts.slice(Math.max(this.pastattempts.length - this.passRatioM, 1));
+          if (this.pastattempts.length > this.passRatioM){
+            const lastFiveAttempts = this.pastattempts.slice(0, this.passRatioM);
             this.passNum = this.passRatioN - lastFiveAttempts.reduce((a,b)=>{return a + b;}, 0);
             return lastFiveAttempts
           } else {
