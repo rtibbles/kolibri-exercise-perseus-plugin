@@ -3,23 +3,24 @@
   <div id="perseus">
       <div id="problem-area">
         <div id="workarea"></div>
-        <div id="hintsarea"></div>
       </div>
-      <div id="answer-area-wrap">
-          <div id="answer-area">
-              <div class="info-box">
-                  <div id="solutionarea"></div>
-                  <p> {{attemptProgress}} </p>
-                  <button @click="checkAnswer" v-if="!complete" id="check-answer-button">{{ checkText }}</button>
-                  <button @click="nextQuestion" v-if="complete && passNum >= 1" id="next-question-button">{{ $tr("correct") }}</button>
-                  <button @click="nextContent" v-if="complete && passNum < 1" id="next-content-button">{{ $tr("nextContent") }}</button>
-                  <button @click="takeHint">
-                    {{ $tr("hint") }}
-                  </button>
-              </div>
-          </div>
-      </div>
+      <div id="hintlable" v-if="hinted">Hint:</div>
+      <div id="hintsarea"></div>
       <div style="clear: both;"></div>
+    </div>
+    <div id="answer-area-wrap">
+        <div id="answer-area">
+            <div class="info-box">
+                <div id="solutionarea"></div>
+                <button @click="checkAnswer" v-if="!complete" class="question-btn" id="check-answer-button">{{ checkText }}</button>
+                <button @click="nextQuestion" v-if="complete && passNum >= 1" class="question-btn" id="next-question-button">{{ $tr("correct") }}</button>
+                <button @click="nextContent" v-if="complete && passNum < 1" class="question-btn" id="next-content-button">{{ $tr("nextContent") }}</button>
+                <attemptprogress id="attemptprogress" :recent-attempts="recentAttempts"></attemptprogress>
+                <button @click="takeHint" id="take-hint">
+                  {{ $tr("hint") }}
+                </button>
+            </div>
+        </div>
     </div>
     <div id="scratchpad-btn-container">
         <button v-if="scratchpad" id="scratchpad-show">{{ $tr("showScratch") }}</button>
@@ -272,16 +273,18 @@
     @import '../../../node_modules/perseus/build/perseus.css'
     @import '../../../node_modules/perseus/lib/mathquill/mathquill.css'
 
-  // #perseus
-  //   height: 100%
+  #perseus
+    border: solid 2px $core-action-light;
+    border-radius: 10px;
+    padding: 15px;
+    background-color: $core-bg-light
 
   // #problem-area
-  //   height: 70%
-  //   width: 100%
-  //   border: solid 3px #d5d5d5
-  //   border-radius: 4px
-  //   overflow-x: hidden
-  //   position: absolute
+  //   border-bottom: 1px solid $core-text-annotation;
+    // border: solid 3px $core-text-disabled
+    // border-radius: 10px
+    // overflow-x: hidden
+    // position: absolute
 
   #answer-area-wrap
     position: relative
@@ -301,12 +304,31 @@
     // box-shadow: 0 1px 2px #ccc
     overflow: visible
 
+  #hintsarea
+    margin-left: 0
+    background: #f4f4f4;
+    // padding: 10px;
+    border-radius: 4px;
+
+  #hintlable
+    padding: 10px;
+    border-top: 1px solid
+
+  #take-hint
+    float: right
+
   #solutionarea
     min-height: 35px
     padding: 10px
     margin: 0 -10px
     border-bottom: 0
     overflow: visible
+
+  .question-btn
+    float: left
+
+  #attemptprogress
+    float: left
 
 </style>
 
@@ -316,5 +338,31 @@
     width: 100%
     height: 100%
     max-width: 600px
+
+  ul
+    border-bottom: 0
+    border-top: 0
+
+  fieldset
+    border: 0
+    background-color: $core-bg-light
+
+  fieldset > ul
+    border-bottom: 0
+    border-top: 0
+    background-color: red
+
+  .perseus-hint-renderer
+    color: #68b87f
+    padding: 6px 10px
+
+  .perseus-hint-label
+    color: #68b87f
+    font-weight: 600
+    margin-right: 13px
+    white-space: nowrap
+    float: left
+    left: 0
+    position: relative
 
 </style>
