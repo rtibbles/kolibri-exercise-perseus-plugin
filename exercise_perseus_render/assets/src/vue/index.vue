@@ -7,7 +7,8 @@
       v-if="exercise"
       :item-id="itemId"
       :mastery-model="exercise.mastery_model"
-      :mastery-spacing-time="exercise.masterySpacingTime">
+      :mastery-spacing-time="exercise.masterySpacingTime"
+      :mastery-criterion="exercise.masteryCriterion">
       <perseus v-if="item" :item="item" :pass-ratio-m="passRatioM" :pass-ratio-n="passRatioN" v-on:nextquestion="nextQuestion" v-on:nextcontent="nextContent"></perseus>
     </assessment-wrapper>
   </div>
@@ -40,8 +41,8 @@
       },
       loadItemData() {
         const attempts = this.pastattempts.length;
-        // const itemIndex = attempts % this.items.length;
-        const itemIndex = 1;
+        const itemIndex = attempts % this.items.length;
+        // const itemIndex = 1;
         this.itemId = this.items[itemIndex];
         this.Kolibri.client(
           `${this.defaultFile.storage_url}${this.itemId}.json`
@@ -73,6 +74,7 @@
       this.Kolibri.client(`${this.defaultFile.storage_url}exercise.json`).then(
         (exerciseResponse) => {
           this.exercise = exerciseResponse.entity;
+          this.exercise.masteryCriterion = "to be deleted";
           this.items = ss.shuffle(exerciseResponse.entity.all_assessment_items, this.userid, true);
           this.setItemData();
         }).catch(function(reason) {
