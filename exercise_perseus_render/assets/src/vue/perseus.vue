@@ -16,8 +16,8 @@
                 <button @click="nextQuestion" v-if="complete && passNum >= 1" class="question-btn" id="next-question-button">{{ $tr("correct") }}</button>
                 <button @click="nextContent" v-if="complete && passNum < 1" class="question-btn" id="next-content-button">{{ $tr("nextContent") }}</button>
                 <attemptprogress id="attemptprogress" :recent-attempts="recentAttempts"></attemptprogress>
-                <button @click="takeHint" id="take-hint">
-                  {{ $tr("hint") }}
+                <button @click="takeHint" id="hint-btn">
+                  <img id="lightbulb" src="./lightbulb_black.svg">{{ $tr("hint") }}
                 </button>
             </div>
         </div>
@@ -93,9 +93,9 @@
       notAvailable: 'Scratchpad not available',
       loading: 'Loading',
       check: 'Check Answer',
-      correct: 'Correct! Next Question.',
-      incorrect: 'Incorrect, try again.',
-      hint: 'Hint',
+      correct: 'Next Content.',
+      incorrect: 'Sorry, try again.',
+      hint: 'Get a hint',
       nextContent: 'Congrats! Move forward.'
     },
     props: {
@@ -282,17 +282,10 @@
     @import '../../../node_modules/perseus/lib/mathquill/mathquill.css'
 
   #perseus
-    border: solid 2px $core-action-light;
-    border-radius: 10px;
-    padding: 15px;
+    border-radius: 10px
+    padding: 15px
     background-color: $core-bg-light
-
-  // #problem-area
-  //   border-bottom: 1px solid $core-text-annotation;
-    // border: solid 3px $core-text-disabled
-    // border-radius: 10px
-    // overflow-x: hidden
-    // position: absolute
+    margin-top: 6px
 
   #answer-area-wrap
     position: relative
@@ -302,28 +295,32 @@
     margin-left: 0
 
   .info-box
-    // background: #eee
-    // border: 1px solid #aaa
-    // color: #333
     margin-bottom: 10
     padding: 10
     position: relative
     z-index: 10
-    // box-shadow: 0 1px 2px #ccc
     overflow: visible
 
   #hintsarea
     margin-left: 0
-    background: #f4f4f4;
-    // padding: 10px;
-    border-radius: 4px;
+    border-radius: 4px
 
   #hintlable
-    padding: 10px;
+    font-weight: bold
+    padding: 10px
     border-top: 1px solid
 
-  #take-hint
+  #hint-btn
     float: right
+    padding-left: 16px
+    padding-right: 16px
+
+  #lightbulb
+    display: inline-block
+    vertical-align: middle
+    height: 17px
+    width: auto
+    padding: 0
 
   #solutionarea
     min-height: 35px
@@ -334,9 +331,15 @@
 
   .question-btn
     float: left
+    background-color: $core-action-normal
+    color: $core-bg-light
+    padding-left: 16px
+    padding-right: 16px
 
   #attemptprogress
-    float: left
+    position: absolute
+    left: 50%
+    transform: translate(-50%, 0)
 
 </style>
 
@@ -346,6 +349,7 @@
     width: 100%
     height: 100%
     max-width: 600px
+    padding: 10px
 
   ul
     border-bottom: 0
@@ -353,19 +357,21 @@
 
   fieldset
     border: 0
-    background-color: $core-bg-light
 
   fieldset > ul
-    border-bottom: 0
-    border-top: 0
-    background-color: red
+    border: 1px solid #BABEC2
+    border-radius: 10px
+    padding: 0
+
+  fieldset > ul > li
+    list-style-type: none
 
   .perseus-hint-renderer
-    color: #68b87f
+    color: #686868
     padding: 6px 10px
 
   .perseus-hint-label
-    color: #68b87f
+    color: #686868
     font-weight: 600
     margin-right: 13px
     white-space: nowrap
