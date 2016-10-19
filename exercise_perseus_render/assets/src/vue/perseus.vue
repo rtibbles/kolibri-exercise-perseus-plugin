@@ -302,7 +302,6 @@
     overflow: visible
 
   #hintsarea
-    margin-left: 0
     border-radius: 4px
 
   #hintlable
@@ -369,14 +368,23 @@
   .perseus-hint-renderer
     color: #686868
     padding: 6px 10px
+    font-weight: normal
+
+  .perseus-hint-renderer
+    margin-left: 40px
 
   .perseus-hint-label
     color: #686868
     font-weight: 600
-    margin-right: 13px
     white-space: nowrap
-    float: left
-    left: 0
+    right: 50px
     position: relative
+    font-weight: bold
+
+  .perseus-hint-label:before
+    content: "("
+
+  .perseus-hint-label:after
+    content: ")"
 
 </style>
