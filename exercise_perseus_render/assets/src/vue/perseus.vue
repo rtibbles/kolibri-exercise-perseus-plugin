@@ -161,6 +161,8 @@
       hinted: false,
       // is first attempt?
       firstAttempt: true,
+      // recent attempts
+      recentAttempts: undefined,
     }),
 
     methods: {
@@ -211,21 +213,21 @@
           this.firstAttempt = false;
         }
       },
-    },
-
-    computed: {
       attemptProgress() {
         if (this.pastattempts) {
           if (this.pastattempts.length > this.passRatioM){
             const lastFiveAttempts = this.pastattempts.slice(0, this.passRatioM);
             this.passNum = this.passRatioN - lastFiveAttempts.reduce((a,b)=>{return a + b.correct;}, 0);
-            return lastFiveAttempts
+            this.recentAttempts = lastFiveAttempts;
           } else {
             this.passNum = this.passRatioN - this.pastattempts.reduce((a,b)=>{return a + b.correct;}, 0);
-            return this.pastattempts
+            this.recentAttempts = this.pastattempts;
           }
         }
       },
+    },
+
+    computed: {
       checkText() {
         return this.empty ? this.$tr('check') : this.$tr('incorrect');
       },
@@ -249,8 +251,14 @@
     ready() {
       // Rerender when item data changes
       this.$watch('item', this.renderItem);
+      this.$watch('pastattempts', this.attemptProgress);
+      this.attemptProgress()
       // Do a first render with current item data
       this.renderItem();
+    },
+
+    components: {
+      attemptprogress: require('./attemptprogress'),
     },
 
     vuex: {
