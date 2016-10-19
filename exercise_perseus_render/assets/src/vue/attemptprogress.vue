@@ -2,9 +2,9 @@
 
   <div>
     <div id="attempt" v-for="attempt in recentAttempts">
-      <div v-if="attempt.hinted">?</div>
-      <div v-if="!attempt.hinted && attempt.correct">1</div>
-      <div v-if="!attempt.hinted && !attempt.correct">0</div>
+      <div v-if="attempt.hinted"><img id="lightbulb" src="./lightbulb_black.svg"></div>
+      <div v-if="!attempt.hinted && attempt.correct"><img id="correct" src="./check_black.svg"></div>
+      <div v-if="!attempt.hinted && !attempt.correct"><img id="incorrect" src="./clear_black.svg"></div>
     </div>
   </div>
 
@@ -40,7 +40,7 @@
 
   @require '~kolibri/styles/coreTheme'
 
-  attempt
+  #attempt
     float: left;
 
 </style>
