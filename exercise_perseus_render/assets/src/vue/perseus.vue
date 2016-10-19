@@ -158,6 +158,8 @@
       passNum: 4,
       // has the user used the hint?
       hinted: false,
+      // is first attempt?
+      firstAttempt: true,
     }),
 
     methods: {
@@ -179,19 +181,22 @@
       checkAnswer() {
         if (this.itemRenderer) {
           const check = this.itemRenderer.scoreInput();
-          this.complete = check.correct;
-          this.correct = this.hinted ? false : check.correct;
           this.empty = check.empty;
           if (!check.empty) {
-            this.$parent.$emit('checkanswer', this.correct);
+            this.complete = check.correct;
+            this.correct = this.hinted || !this.firstAttempt ? false : check.correct;
+            this.$parent.$emit('checkanswer', this.correct, this.complete, this.firstAttempt);
             if (this.correct && this.passNum == 1) {
+              // we can reliably predict the passexercise before passNum is updated to meet the condition.
               this.$parent.$emit('passexercise');
             }
           }
         }
+        this.firstAttempt = false;
       },
       nextQuestion() {
         this.hinted = false; // reset hinted.
+        this.firstAttempt = true; // reset firstAttempt.
         this.$emit('nextquestion');
       },
       nextContent() {
@@ -201,7 +206,8 @@
         if (this.itemRenderer) {
           this.itemRenderer.showHint();
           this.hinted = true;
-          this.$parent.$emit('takehint');
+          this.$parent.$emit('takehint', this.firstAttempt);
+          this.firstAttempt = false;
         }
       },
     },
