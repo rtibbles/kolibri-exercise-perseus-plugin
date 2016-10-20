@@ -98,14 +98,5 @@
 
   @require '~kolibri/styles/coreTheme'
 
-  // #exercise-container
-  //   height: 120%
-  //   position: relative
-  //   padding-top: 8px
-
-  // #assessment-container
-  //   position: relative
-  //   height: 100%
-
 </style>
 

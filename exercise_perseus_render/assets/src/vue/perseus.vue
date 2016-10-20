@@ -14,8 +14,8 @@
                 <div id="solutionarea"></div>
                 <button @click="checkAnswer" v-if="!complete" class="question-btn" id="check-answer-button">{{ checkText }}</button>
                 <button @click="nextQuestion" v-if="complete && passNum >= 1" class="question-btn" id="next-question-button">{{ $tr("correct") }}</button>
-                <button @click="nextContent" v-if="complete && passNum < 1" class="question-btn" id="next-content-button">{{ $tr("nextContent") }}</button>
-                <attemptprogress id="attemptprogress" :recent-attempts="recentAttempts"></attemptprogress>
+                <button @click="nextContent" v-if="complete && passNum < 1" class="next-btn" id="next-content-button">{{ $tr("nextContent") }}</button>
+                <attemptprogress id="attemptprogress" :recent-attempts="recentAttempts" :pass-num="passNum" :pass-ratio-m="passRatioM" :pass-ratio-n="passRatioN"></attemptprogress>
                 <button v-if="availableHints > 0" @click="takeHint" id="hint-btn">
                   <svg class="lightbulb" src="./lightbulb_black.svg"></svg>{{ $tr("hint") }}
                 </button>
@@ -96,11 +96,11 @@
       notAvailable: 'Scratchpad not available',
       loading: 'Loading',
       check: 'Check Answer',
-      correct: 'Next Content.',
-      incorrect: 'Sorry, try again.',
+      correct: 'Next Content',
+      incorrect: 'Sorry, try again',
       hint: 'Get a hint',
       hintLable: 'Hint:',
-      nextContent: 'Congrats! Move forward.',
+      nextContent: 'Congrats! Move forward',
       noMoreHint: 'No more hint',
     },
     props: {
@@ -345,6 +345,14 @@
   .question-btn
     float: left
     background-color: $core-action-normal
+    color: $core-bg-light
+    padding-left: 16px
+    padding-right: 16px
+
+  .next-btn
+    float: left
+    background-color: #4A8DDC
+    border-color: #4A8DDC
     color: $core-bg-light
     padding-left: 16px
     padding-right: 16px
