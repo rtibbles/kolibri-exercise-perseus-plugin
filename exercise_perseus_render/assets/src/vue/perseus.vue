@@ -14,7 +14,7 @@
                 <div id="solutionarea"></div>
                 <button @click="checkAnswer" v-if="!complete" class="question-btn" id="check-answer-button">{{ checkText }}</button>
                 <button @click="nextQuestion" v-if="complete && passNum >= 1" class="question-btn" id="next-question-button">{{ $tr("correct") }}</button>
-                <button @click="nextContent" v-if="complete && passNum < 1" class="next-btn" id="next-content-button">{{ $tr("nextContent") }}</button>
+                <button @click="nextContent" v-if="complete && passNum < 1" class="next-btn" id="next-content-button">{{ $tr("nextContent") }}<svg class="right-arrow" src="./arrow_right.svg"></svg></button>
                 <attemptprogress id="attemptprogress" :recent-attempts="recentAttempts" :pass-num="passNum" :pass-ratio-m="passRatioM" :pass-ratio-n="passRatioN"></attemptprogress>
                 <button v-if="availableHints > 0" @click="takeHint" id="hint-btn">
                   <svg class="lightbulb" src="./lightbulb_black.svg"></svg>{{ $tr("hint") }}
@@ -96,11 +96,11 @@
       notAvailable: 'Scratchpad not available',
       loading: 'Loading',
       check: 'Check Answer',
-      correct: 'Next Content',
+      correct: 'Next Question',
       incorrect: 'Sorry, try again',
       hint: 'Get a hint',
       hintLable: 'Hint:',
-      nextContent: 'Congrats! Move forward',
+      nextContent: 'Next Content',
       noMoreHint: 'No more hint',
     },
     props: {
@@ -196,6 +196,7 @@
             this.complete = check.correct;
             this.correct = this.hinted || !this.firstAttempt ? false : check.correct;
             this.$parent.$emit('checkanswer', this.correct, this.complete, this.firstAttempt, this.hinted);
+            console.log('PPPPPPP:::: ', this.passNum);
             if (this.correct && this.passNum == 1) {
               // we can reliably predict the passexercise before passNum is updated to meet the condition.
               this.$parent.$emit('passexercise');
@@ -324,6 +325,11 @@
     padding-left: 16px
     padding-right: 16px
 
+  .right-arrow
+    position: relative
+    float: right
+    fill: $core-bg-light
+
   .lightbulb
     display: inline-block
     height: 17px
@@ -355,7 +361,8 @@
     border-color: #4A8DDC
     color: $core-bg-light
     padding-left: 16px
-    padding-right: 16px
+    padding-right: 6px
+    padding-bottom: 0
 
   #attemptprogress
     position: absolute

@@ -66,6 +66,7 @@
     position: relative
     text-align: center
     top: 6px
+    clear: both
 
   #attempt
     float: left;
