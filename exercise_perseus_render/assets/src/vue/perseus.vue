@@ -1,6 +1,7 @@
 <template>
 
-  <div id="perseus">
+  <div>
+    <div id="perseus">
       <div id="problem-area">
         <div id="workarea"></div>
       </div>
@@ -9,27 +10,27 @@
       <div style="clear: both;"></div>
     </div>
     <div id="answer-area-wrap">
-        <div id="answer-area">
-            <div class="info-box">
-                <div id="solutionarea"></div>
-                <button @click="checkAnswer" v-if="!complete" class="question-btn" id="check-answer-button">{{ checkText }}</button>
-                <button @click="nextQuestion" v-if="complete && passNum >= 1" class="question-btn" id="next-question-button">{{ $tr("correct") }}</button>
-                <button @click="nextContent" v-if="complete && passNum < 1" class="next-btn" id="next-content-button">{{ $tr("nextContent") }}<svg class="right-arrow" src="./arrow_right.svg"></svg></button>
-                <attemptprogress id="attemptprogress" :recent-attempts="recentAttempts" :pass-num="passNum" :pass-ratio-m="passRatioM" :pass-ratio-n="passRatioN"></attemptprogress>
-                <button v-if="availableHints > 0" @click="takeHint" id="hint-btn">
-                  <svg class="lightbulb" src="./lightbulb_black.svg"></svg>{{ $tr("hint") }}
-                </button>
-                <button v-else id="hint-btn" disabled>
-                  <svg class="lightbulb disabled" src="./lightbulb_black.svg"></svg>{{ $tr("noMoreHint") }}
-                </button>
-            </div>
+      <div id="answer-area">
+        <div class="info-box">
+          <div id="solutionarea"></div>
+          <button @click="checkAnswer" v-if="!complete" class="question-btn" id="check-answer-button">{{ checkText }}</button>
+          <button @click="nextQuestion" v-if="complete && passNum >= 1" class="question-btn" id="next-question-button">{{ $tr("correct") }}</button>
+          <button @click="nextContent" v-if="complete && passNum < 1" class="next-btn" id="next-content-button">{{ $tr("nextContent") }}<svg class="right-arrow" src="./arrow_right.svg"></svg></button>
+          <attemptprogress class="attemptprogress" :recent-attempts="recentAttempts" :pass-num="passNum" :pass-ratio-m="passRatioM" :pass-ratio-n="passRatioN"></attemptprogress>
+          <button v-if="availableHints > 0" @click="takeHint" id="hint-btn">
+            <svg class="lightbulb" src="./lightbulb_black.svg"></svg>{{ $tr("hint") }}
+          </button>
+          <button v-else id="hint-btn" disabled>
+            <svg class="lightbulb disabled" src="./lightbulb_black.svg"></svg>{{ $tr("noMoreHint") }}
+          </button>
         </div>
+      </div>
     </div>
     <div id="scratchpad-btn-container">
-        <button v-if="scratchpad" id="scratchpad-show">{{ $tr("showScratch") }}</button>
-        <button v-else disabled id="scratchpad-not-available">{{ $tr("notAvailable") }}</button>
+      <button v-if="scratchpad" id="scratchpad-show">{{ $tr("showScratch") }}</button>
+      <button v-else disabled id="scratchpad-not-available">{{ $tr("notAvailable") }}</button>
     </div>
-    <div v-el:perseus-container id="perseus-container">
+    <div v-el:perseus-container id="perseus-container"></div>
   </div>
 
 </template>
@@ -196,7 +197,6 @@
             this.complete = check.correct;
             this.correct = this.hinted || !this.firstAttempt ? false : check.correct;
             this.$parent.$emit('checkanswer', this.correct, this.complete, this.firstAttempt, this.hinted);
-            console.log('PPPPPPP:::: ', this.passNum);
             if (this.correct && this.passNum == 1) {
               // we can reliably predict the passexercise before passNum is updated to meet the condition.
               this.$parent.$emit('passexercise');
@@ -225,9 +225,9 @@
       attemptProgress() {
         if (this.pastattempts) {
           if (this.pastattempts.length > this.passRatioM){
-            const lastFiveAttempts = this.pastattempts.slice(0, this.passRatioM);
-            this.passNum = this.passRatioN - lastFiveAttempts.reduce((a,b)=>{return a + b.correct;}, 0);
-            this.recentAttempts = lastFiveAttempts;
+            const lastMAttempts = this.pastattempts.slice(0, this.passRatioM);
+            this.passNum = this.passRatioN - lastMAttempts.reduce((a,b)=>{return a + b.correct;}, 0);
+            this.recentAttempts = lastMAttempts;
           } else {
             this.passNum = this.passRatioN - this.pastattempts.reduce((a,b)=>{return a + b.correct;}, 0);
             this.recentAttempts = this.pastattempts;
