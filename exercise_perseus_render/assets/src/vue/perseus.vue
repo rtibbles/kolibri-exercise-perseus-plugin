@@ -4,7 +4,7 @@
       <div id="problem-area">
         <div id="workarea"></div>
       </div>
-      <div id="hintlable" v-if="hinted">Hint:</div>
+      <div id="hintlable" v-if="hinted">{{ $tr("hintLable") }}</div>
       <div id="hintsarea"></div>
       <div style="clear: both;"></div>
     </div>
@@ -16,8 +16,11 @@
                 <button @click="nextQuestion" v-if="complete && passNum >= 1" class="question-btn" id="next-question-button">{{ $tr("correct") }}</button>
                 <button @click="nextContent" v-if="complete && passNum < 1" class="question-btn" id="next-content-button">{{ $tr("nextContent") }}</button>
                 <attemptprogress id="attemptprogress" :recent-attempts="recentAttempts"></attemptprogress>
-                <button @click="takeHint" id="hint-btn">
-                  <img id="lightbulb" src="./lightbulb_black.svg">{{ $tr("hint") }}
+                <button v-if="availableHints > 0" @click="takeHint" id="hint-btn">
+                  <svg class="lightbulb" src="./lightbulb_black.svg"></svg>{{ $tr("hint") }}
+                </button>
+                <button v-else id="hint-btn" disabled>
+                  <svg class="lightbulb disabled" src="./lightbulb_black.svg"></svg>{{ $tr("noMoreHint") }}
                 </button>
             </div>
         </div>
@@ -96,7 +99,9 @@
       correct: 'Next Content.',
       incorrect: 'Sorry, try again.',
       hint: 'Get a hint',
-      nextContent: 'Congrats! Move forward.'
+      hintLable: 'Hint:',
+      nextContent: 'Congrats! Move forward.',
+      noMoreHint: 'No more hint',
     },
     props: {
       scratchpad: {
@@ -163,6 +168,8 @@
       firstAttempt: true,
       // recent attempts
       recentAttempts: undefined,
+      // number of available hints
+      availableHints: 0,
     }),
 
     methods: {
@@ -211,6 +218,7 @@
           this.hinted = true;
           this.$parent.$emit('takehint', this.firstAttempt, this.hinted);
           this.firstAttempt = false;
+          this.availableHints -= 1;
         }
       },
       attemptProgress() {
@@ -255,6 +263,8 @@
       this.attemptProgress()
       // Do a first render with current item data
       this.renderItem();
+      // init the availableHints;
+      this.availableHints = this.item.hints.length;
     },
 
     components: {
@@ -314,12 +324,16 @@
     padding-left: 16px
     padding-right: 16px
 
-  #lightbulb
+  .lightbulb
     display: inline-block
-    vertical-align: middle
     height: 17px
-    width: auto
     padding: 0
+    position: relative
+    top: 2px
+    fill: $core-text-annotation
+
+  .disabled
+    fill: #dfdfdf
 
   #solutionarea
     min-height: 35px
