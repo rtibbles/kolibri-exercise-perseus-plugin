@@ -13,22 +13,22 @@
       <div id="answer-area">
         <div class="info-box">
           <div id="solutionarea"></div>
-          <button @click="checkAnswer" v-if="!complete" class="question-btn" id="check-answer-button">{{ checkText }}</button>
-          <button @click="nextQuestion" v-if="complete && passNum >= 1" class="question-btn" id="next-question-button">{{ $tr("correct") }}</button>
-          <button @click="nextContent" v-if="complete && passNum < 1" class="next-btn" id="next-content-button">{{ $tr("nextContent") }}<svg class="right-arrow" src="./arrow_right.svg"></svg></button>
+          <icon-button @click="checkAnswer" v-if="!complete" class="question-btn" id="check-answer-button">{{ checkText }}</icon-button>
+          <icon-button @click="nextQuestion" v-if="complete && passNum >= 1" class="question-btn" id="next-question-button">{{ $tr("correct") }}</icon-button>
+          <icon-button @click="nextContent" v-if="complete && passNum < 1" class="next-btn" id="next-content-button">{{ $tr("nextContent") }}<svg class="right-arrow" src="./arrow_right.svg"></svg></icon-button>
           <attemptprogress class="attemptprogress" :recent-attempts="recentAttempts" :pass-num="passNum" :pass-ratio-m="passRatioM" :pass-ratio-n="passRatioN"></attemptprogress>
-          <button v-if="availableHints > 0" @click="takeHint" id="hint-btn">
+          <icon-button v-if="availableHints > 0" @click="takeHint" id="hint-btn">
             <svg class="lightbulb" src="./lightbulb_black.svg"></svg>{{ $tr("hint") }}
-          </button>
-          <button v-else id="hint-btn" disabled>
+          </icon-button>
+          <icon-button v-else id="hint-btn" disabled>
             <svg class="lightbulb disabled" src="./lightbulb_black.svg"></svg>{{ $tr("noMoreHint") }}
-          </button>
+          </icon-button>
         </div>
       </div>
     </div>
     <div id="scratchpad-btn-container">
-      <button v-if="scratchpad" id="scratchpad-show">{{ $tr("showScratch") }}</button>
-      <button v-else disabled id="scratchpad-not-available">{{ $tr("notAvailable") }}</button>
+      <icon-button v-if="scratchpad" id="scratchpad-show">{{ $tr("showScratch") }}</icon-button>
+      <icon-button v-else disabled id="scratchpad-not-available">{{ $tr("notAvailable") }}</icon-button>
     </div>
     <div v-el:perseus-container id="perseus-container"></div>
   </div>
@@ -270,6 +270,7 @@
 
     components: {
       attemptprogress: require('./attemptprogress'),
+      'icon-button': require('kolibri/coreVue/components/iconButton'),
     },
 
     vuex: {
@@ -326,16 +327,12 @@
     padding-right: 16px
 
   .right-arrow
-    position: relative
-    float: right
+    fill: $core-bg-light
+
+  .right-arrow:hover
     fill: $core-bg-light
 
   .lightbulb
-    display: inline-block
-    height: 17px
-    padding: 0
-    position: relative
-    top: 2px
     fill: $core-text-annotation
 
   .disabled
@@ -363,6 +360,9 @@
     padding-left: 16px
     padding-right: 6px
     padding-bottom: 0
+
+  .next-btn:hover svg
+    fill: $core-bg-light
 
   .attemptprogress
     position: absolute
