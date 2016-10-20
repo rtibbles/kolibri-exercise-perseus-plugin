@@ -364,7 +364,7 @@
     padding-right: 6px
     padding-bottom: 0
 
-  #attemptprogress
+  .attemptprogress
     position: absolute
     left: 50%
     transform: translate(-50%, 0)

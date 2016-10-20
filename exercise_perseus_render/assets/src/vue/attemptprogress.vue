@@ -1,10 +1,12 @@
 <template>
 
-  <div>
-    <div id="attempt" v-for="attempt in recentAttempts">
-      <div v-if="attempt.hinted"><svg id="lightbulb" src="./lightbulb_black.svg"></svg></div>
-      <div v-if="!attempt.hinted && attempt.correct"><svg id="correct" src="./check_black.svg"></svg></div>
-      <div v-if="!attempt.hinted && !attempt.correct"><svg id="incorrect" src="./clear_black.svg"></svg></div>
+  <div id="attempt-progress-container">
+    <div id="attempts">
+      <div id="attempt" v-for="attempt in recentAttempts">
+        <div v-if="attempt.hinted"><svg id="lightbulb" src="./lightbulb_black.svg"></svg></div>
+        <div v-if="!attempt.hinted && attempt.correct"><svg id="correct" src="./check_black.svg"></svg></div>
+        <div v-if="!attempt.hinted && !attempt.correct"><svg id="incorrect" src="./clear_black.svg"></svg></div>
+      </div>
     </div>
 
     <p id="message" v-if="passRatioN === passNum">{{ $tr("get") }} <b>{{passRatioN}} {{ $tr("outof") }} {{passRatioM}}</b> {{ $tr("correct") }}</p>
@@ -67,6 +69,17 @@
     text-align: center
     top: 6px
     clear: both
+    @media screen and (max-width: $portrait-breakpoint)
+      font-size: 12px
+      margin-top: 0
+
+  #attempts
+    @media screen and (max-width: $portrait-breakpoint)
+      position: relative
+      left: 50%
+      transform: translate(-50%, 0)
+      display: inline-block
+      top: 4px
 
   #attempt
     float: left;
@@ -81,5 +94,14 @@
 
   #correct
     fill: $core-action-normal
+
+  #attempt-progress-container
+    @media screen and (max-width: $portrait-breakpoint)
+      position: fixed
+      background-color: $core-bg-light
+      width: 100%
+      bottom: 56px
+      border-bottom: thin solid $core-text-annotation
+      border-top: thin solid $core-text-annotation
 
 </style>
