@@ -161,14 +161,10 @@
       complete: false,
       // Has an answer been submitted?
       empty: true,
-      // how far from passing the exercise?
-      passNum: 4,
       // has the user used the hint?
       hinted: false,
       // is first attempt?
       firstAttempt: true,
-      // recent attempts
-      recentAttempts: undefined,
       // number of available hints
       availableHints: 0,
     }),
@@ -196,7 +192,7 @@
           if (!check.empty) {
             this.complete = check.correct;
             this.correct = this.hinted || !this.firstAttempt ? false : check.correct;
-            this.$parent.$emit('checkanswer', this.correct, this.complete, this.firstAttempt, this.hinted);
+            this.$emit('checkanswer', this.correct, this.complete, this.firstAttempt, this.hinted);
             if (this.correct && this.passNum == 1) {
               // we can reliably predict the passexercise before passNum is updated to meet the condition.
               this.$parent.$emit('passexercise');
@@ -222,21 +218,30 @@
           this.availableHints -= 1;
         }
       },
-      attemptProgress() {
-        if (this.pastattempts) {
-          if (this.pastattempts.length > this.passRatioM){
-            const lastMAttempts = this.pastattempts.slice(0, this.passRatioM);
-            this.passNum = this.passRatioN - lastMAttempts.reduce((a,b)=>{return a + b.correct;}, 0);
-            this.recentAttempts = lastMAttempts;
-          } else {
-            this.passNum = this.passRatioN - this.pastattempts.reduce((a,b)=>{return a + b.correct;}, 0);
-            this.recentAttempts = this.pastattempts;
-          }
-        }
-      },
     },
 
     computed: {
+      lastMAttempts() {
+        if (this.pastattempts) {
+          return this.pastattempts.slice(0, this.passRatioM);
+        }
+        return [];
+      },
+      passNum() {
+        if (this.pastattempts.length > this.passRatioM) {
+          return this.passRatioN - this.lastMAttempts.reduce((a,b)=>{return a + b.correct;}, 0);
+        }
+        return this.passRatioN - this.pastattempts.reduce((a,b)=>{return a + b.correct;}, 0);
+      },
+      recentAttempts() {
+        if (!this.pastattempts) {
+          return undefined;
+        }
+        if (this.pastattempts.length > this.passRatioM) {
+          return this.lastMAttempts;
+        }
+        return this.pastattempts;
+      },
       checkText() {
         return this.empty ? this.$tr('check') : this.$tr('incorrect');
       },
@@ -260,8 +265,6 @@
     ready() {
       // Rerender when item data changes
       this.$watch('item', this.renderItem);
-      this.$watch('pastattempts', this.attemptProgress);
-      this.attemptProgress()
       // Do a first render with current item data
       this.renderItem();
       // init the availableHints;
