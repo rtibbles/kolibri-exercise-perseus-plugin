@@ -228,10 +228,13 @@
         return [];
       },
       passNum() {
-        if (this.pastattempts.length > this.passRatioM) {
-          return this.passRatioN - this.lastMAttempts.reduce((a,b)=>{return a + b.correct;}, 0);
+        if (this.pastattempts) {
+          if (this.pastattempts.length > this.passRatioM) {
+            return this.passRatioN - this.lastMAttempts.reduce((a,b)=>{return a + b.correct;}, 0);
+          }
+          return this.passRatioN - this.pastattempts.reduce((a,b)=>{return a + b.correct;}, 0);
         }
-        return this.passRatioN - this.pastattempts.reduce((a,b)=>{return a + b.correct;}, 0);
+        return this.passRatioN;
       },
       recentAttempts() {
         if (!this.pastattempts) {
