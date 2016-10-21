@@ -27,6 +27,7 @@
 <script>
 
   const ss = require('seededshuffle');
+  const UserKinds = require('kolibri/coreVue/vuex/constants').UserKinds;
 
   module.exports = {
 
@@ -47,10 +48,20 @@
       nextContent() {
         console.log('*** nextContent ***');
       },
-      loadItemData() {
-        const attempts = this.pastattempts.length;
+      setItemData() {
+        let attempts = 0;
+        if (this.userkind.includes(UserKinds.LEARNER)) {
+          if (!this.pastattempts) {
+            let watchRevoke;
+            watchRevoke = this.$watch('pastattempts', () => {
+              attempts = this.pastattempts.length;
+              watchRevoke();
+            }, {deep:true});
+          } else {
+            attempts = this.pastattempts.length;
+          }
+        }
         const itemIndex = attempts % this.items.length;
-        // const itemIndex = 1;
         this.itemId = this.items[itemIndex];
         this.Kolibri.client(
           `${this.defaultFile.storage_url}${this.itemId}.json`
@@ -60,19 +71,6 @@
             console.log('Oops, you got rejected: ', reason);
           });
       },
-      setItemData() {
-        // this.passRatioM = this.exercise.passRatioM;
-        // this.passRatioN = this.exercise.passRatioN;
-        if(!this.pastattempts) {
-          let watchRevoke;
-          watchRevoke = this.$watch('pastattempts', () => {
-            this.loadItemData();
-            watchRevoke();
-          }, {deep:true});
-        } else {
-          this.loadItemData();
-        }
-      }
     },
     components: {
       perseus: require('./perseus'),
@@ -83,7 +81,11 @@
         (exerciseResponse) => {
           this.exercise = exerciseResponse.entity;
           this.exercise.masteryCriterion = "to be deleted";
-          this.items = ss.shuffle(exerciseResponse.entity.all_assessment_items, this.userid, true);
+          if (this.userid) {
+            this.items = ss.shuffle(exerciseResponse.entity.all_assessment_items, this.userid, true);
+          } else {
+            this.items = exerciseResponse.entity.all_assessment_items;
+          }
           this.setItemData();
         }).catch(function(reason) {
           console.log('Oops, requesting exercise.json got rejected: ', reason);
@@ -96,6 +98,7 @@
       getters: {
         pastattempts: (state) => state.core.logging.mastery.pastattempts,
         userid: (state) => state.core.session.user_id,
+        userkind: (state) => state.core.session.kind,
       },
     },
   };
