@@ -100,7 +100,7 @@
       position: fixed
       background-color: $core-bg-light
       width: 100%
-      bottom: 56px
+      bottom: $nav-portrait-height
       border-bottom: thin solid $core-text-annotation
       border-top: thin solid $core-text-annotation
 
