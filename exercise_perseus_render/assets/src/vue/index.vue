@@ -8,8 +8,16 @@
       :item-id="itemId"
       :mastery-model="exercise.mastery_model"
       :mastery-spacing-time="exercise.masterySpacingTime"
-      :mastery-criterion="exercise.masteryCriterion">
-      <perseus v-if="item" :item="item" :pass-ratio-m="passRatioM" :pass-ratio-n="passRatioN" v-on:nextquestion="nextQuestion" v-on:nextcontent="nextContent"></perseus>
+      :mastery-criterion="exercise.masteryCriterion"
+    >
+      <perseus
+        v-if="item"
+        :item="item"
+        :pass-ratio-m="passRatioM"
+        :pass-ratio-n="passRatioN"
+        @nextquestion="nextQuestion"
+        @nextcontent="nextContent"
+      ></perseus>
     </assessment-wrapper>
   </div>
 
