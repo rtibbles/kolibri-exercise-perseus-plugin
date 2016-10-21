@@ -192,7 +192,7 @@
           if (!check.empty) {
             this.complete = check.correct;
             this.correct = this.hinted || !this.firstAttempt ? false : check.correct;
-            this.$emit('checkanswer', this.correct, this.complete, this.firstAttempt, this.hinted);
+            this.$parent.$emit('checkanswer', this.correct, this.complete, this.firstAttempt, this.hinted);
             if (this.correct && this.passNum == 1) {
               // we can reliably predict the passexercise before passNum is updated to meet the condition.
               this.$parent.$emit('passexercise');
