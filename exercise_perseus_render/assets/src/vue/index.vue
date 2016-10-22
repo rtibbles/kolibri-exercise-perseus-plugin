@@ -48,19 +48,7 @@
       nextContent() {
         console.log('*** nextContent ***');
       },
-      setItemData() {
-        let attempts = 0;
-        if (this.userkind.includes(UserKinds.LEARNER)) {
-          if (!this.pastattempts) {
-            let watchRevoke;
-            watchRevoke = this.$watch('pastattempts', () => {
-              attempts = this.pastattempts.length;
-              watchRevoke();
-            }, {deep:true});
-          } else {
-            attempts = this.pastattempts.length;
-          }
-        }
+      loadItemData(attempts) {
         const itemIndex = attempts % this.items.length;
         this.itemId = this.items[itemIndex];
         this.Kolibri.client(
@@ -71,6 +59,27 @@
             console.log('Oops, you got rejected: ', reason);
           });
       },
+      setItemData() {
+        // this.passRatioM = this.exercise.passRatioM;
+        // this.passRatioN = this.exercise.passRatioN;
+        if (this.userkind.includes(UserKinds.LEARNER)) {
+          if(!this.totalattempts) {
+            let watchRevoke;
+            watchRevoke = this.$watch('totalattempts', () => {
+              this.loadItemData(this.totalattempts);
+              watchRevoke();
+            }, {deep:true});
+          } else {
+            this.loadItemData(this.totalattempts);
+          }
+        } else {
+          /*
+          Require further work here.
+          Now for anonymous users they will always see the first question.
+          */
+          this.loadItemData(0);
+        }
+      }
     },
     components: {
       perseus: require('./perseus'),
@@ -96,7 +105,7 @@
     ],
     vuex: {
       getters: {
-        pastattempts: (state) => state.core.logging.mastery.pastattempts,
+        totalattempts: (state) => state.core.logging.mastery.totalattempts,
         userid: (state) => state.core.session.user_id,
         userkind: (state) => state.core.session.kind,
       },
