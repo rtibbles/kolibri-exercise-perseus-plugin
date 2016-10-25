@@ -27,7 +27,6 @@
 <script>
 
   const ss = require('seededshuffle');
-  const UserKinds = require('kolibri/coreVue/vuex/constants').UserKinds;
 
   module.exports = {
 
@@ -62,22 +61,14 @@
       setItemData() {
         // this.passRatioM = this.exercise.passRatioM;
         // this.passRatioN = this.exercise.passRatioN;
-        if (this.userkind.includes(UserKinds.LEARNER)) {
-          if(!this.totalattempts) {
-            let watchRevoke;
-            watchRevoke = this.$watch('totalattempts', () => {
-              this.loadItemData(this.totalattempts);
-              watchRevoke();
-            }, {deep:true});
-          } else {
+        if(!this.totalattempts) {
+          let watchRevoke;
+          watchRevoke = this.$watch('totalattempts', () => {
             this.loadItemData(this.totalattempts);
-          }
+            watchRevoke();
+          }, {deep:true});
         } else {
-          /*
-          Require further work here.
-          Now for anonymous users they will always see the first question.
-          */
-          this.loadItemData(0);
+          this.loadItemData(this.totalattempts);
         }
       }
     },
@@ -107,7 +98,6 @@
       getters: {
         totalattempts: (state) => state.core.logging.mastery.totalattempts,
         userid: (state) => state.core.session.user_id,
-        userkind: (state) => state.core.session.kind,
       },
     },
   };
