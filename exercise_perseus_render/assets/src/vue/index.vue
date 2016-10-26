@@ -27,7 +27,7 @@
 <script>
 
   const ss = require('seededshuffle');
-  const UserKinds = require('kolibri/coreVue/vuex/constants').UserKinds;
+  const UserKinds = require('kolibri.coreVue.vuex.constants').UserKinds;
 
   module.exports = {
 
@@ -83,7 +83,7 @@
     },
     components: {
       perseus: require('./perseus'),
-      assessmentWrapper: require('kolibri/core/assets/src/vue/assessment-wrapper'),
+      assessmentWrapper: require('kolibri.core.assets.src.vue.assessment-wrapper'),
     },
     created() {
       this.Kolibri.client(`${this.defaultFile.storage_url}exercise.json`).then(
@@ -116,7 +116,7 @@
 
 <style lang="stylus" scoped>
 
-  @require '~kolibri/styles/coreTheme'
+  @require '~kolibri.styles.coreTheme'
 
 </style>
 
