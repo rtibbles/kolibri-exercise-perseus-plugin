@@ -55,8 +55,8 @@
           });
       },
       setItemData() {
-        // this.passRatioM = this.exercise.passRatioM;
-        // this.passRatioN = this.exercise.passRatioN;
+        this.passRatioM = this.exercise.m;
+        this.passRatioN = this.exercise.n;
         if(!this.totalattempts) {
           let watchRevoke;
           watchRevoke = this.$watch('totalattempts', () => {
