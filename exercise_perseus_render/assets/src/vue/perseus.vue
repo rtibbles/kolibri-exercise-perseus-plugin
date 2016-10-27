@@ -37,7 +37,7 @@
 
 <script>
 
-  const actions = require('kolibri/coreVue/vuex/actions');
+  const coreActions = require('kolibri.coreVue.vuex.actions');
 
   module.exports = {
     init() {
@@ -284,7 +284,7 @@
     },
 
     vuex: {
-      actions: {
+      coreActions: {
         updateProgress: actions.updateProgress,
       },
       getters: {
