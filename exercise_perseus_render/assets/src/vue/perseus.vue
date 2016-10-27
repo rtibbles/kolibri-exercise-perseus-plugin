@@ -37,6 +37,8 @@
 
 <script>
 
+  const actions = require('kolibri/coreVue/vuex/actions');
+
   module.exports = {
     init() {
       // Perseus expects React to be available on the global object
@@ -191,9 +193,16 @@
             this.complete = check.correct;
             this.correct = this.hinted || !this.firstAttempt ? false : check.correct;
             this.$parent.$emit('checkanswer', this.correct, this.complete, this.firstAttempt, this.hinted);
-            if (this.correct && this.passNum == 1) {
-              // we can reliably predict the passexercise before passNum is updated to meet the condition.
-              this.$parent.$emit('passexercise');
+            if (this.correct) {
+              if (this.passNum === 0) {
+                // passNum reached 0 means pass the exercise.
+                this.updateProgress(this.Kolibri, 1);
+                this.$parent.$emit('passexercise');
+              } else {
+                if (this.summaryprogress === 0) {
+                  this.updateProgress(this.Kolibri, 0.5, true);
+                }
+              }
             }
           }
         }
@@ -203,9 +212,6 @@
         this.hinted = false; // reset hinted.
         this.firstAttempt = true; // reset firstAttempt.
         this.$emit('nextquestion');
-      },
-      emitNextContent() {
-        this.$emit('nextcontent');
       },
       takeHint() {
         if (this.itemRenderer) {
@@ -278,8 +284,12 @@
     },
 
     vuex: {
+      actions: {
+        updateProgress: actions.updateProgress,
+      },
       getters: {
         pastattempts: (state) => state.core.logging.mastery.pastattempts,
+        summaryprogress: (state) => state.core.logging.summary.progress,
       },
     },
   };

@@ -16,7 +16,6 @@
         :pass-ratio-m="passRatioM"
         :pass-ratio-n="passRatioN"
         @nextquestion="nextQuestion"
-        @nextcontent="nextContent"
       ></perseus>
     </assessment-wrapper>
   </div>
@@ -43,9 +42,6 @@
     methods: {
       nextQuestion() {
         this.setItemData();
-      },
-      nextContent() {
-        console.log('*** nextContent ***');
       },
       loadItemData(attempts) {
         const itemIndex = attempts % this.items.length;
