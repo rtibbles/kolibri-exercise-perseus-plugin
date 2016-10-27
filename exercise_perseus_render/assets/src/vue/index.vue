@@ -70,7 +70,6 @@
     },
     components: {
       perseus: require('./perseus'),
-      assessmentWrapper: require('kolibri/core/assets/src/vue/assessment-wrapper'),
     },
     created() {
       this.Kolibri.client(`${this.defaultFile.storage_url}exercise.json`).then(

@@ -280,12 +280,11 @@
 
     components: {
       attemptprogress: require('./attemptprogress'),
-      'icon-button': require('kolibri/coreVue/components/iconButton'),
     },
 
     vuex: {
-      coreActions: {
-        updateProgress: actions.updateProgress,
+      actions: {
+        updateProgress: coreActions.updateProgress,
       },
       getters: {
         pastattempts: (state) => state.core.logging.mastery.pastattempts,
