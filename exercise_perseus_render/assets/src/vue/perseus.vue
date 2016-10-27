@@ -15,7 +15,6 @@
           <div id="solutionarea"></div>
           <icon-button @click="checkAnswer" v-if="!complete" class="question-btn" id="check-answer-button">{{ checkText }}</icon-button>
           <icon-button @click="nextQuestion" v-if="complete && passNum >= 1" class="question-btn" id="next-question-button">{{ $tr("correct") }}</icon-button>
-          <icon-button @click="nextContent" v-if="complete && passNum < 1" class="next-btn" id="next-content-button">{{ $tr("nextContent") }}<svg class="right-arrow" src="./arrow_right.svg"></svg></icon-button>
           <attemptprogress class="attemptprogress" :recent-attempts="recentAttempts" :pass-num="passNum" :pass-ratio-m="passRatioM" :pass-ratio-n="passRatioN"></attemptprogress>
           <icon-button v-if="availableHints > 0" @click="takeHint" id="hint-btn">
             <svg class="lightbulb" src="./lightbulb_black.svg"></svg>{{ $tr("hint") }}
@@ -37,6 +36,8 @@
 
 
 <script>
+
+  const coreActions = require('kolibri.coreVue.vuex.actions');
 
   module.exports = {
     init() {
@@ -101,7 +102,6 @@
       incorrect: 'Sorry, try again',
       hint: 'Get a hint',
       hintLable: 'Hint:',
-      nextContent: 'Next Content',
       noMoreHint: 'No more hint',
     },
     props: {
@@ -193,9 +193,16 @@
             this.complete = check.correct;
             this.correct = this.hinted || !this.firstAttempt ? false : check.correct;
             this.$parent.$emit('checkanswer', this.correct, this.complete, this.firstAttempt, this.hinted);
-            if (this.correct && this.passNum == 1) {
-              // we can reliably predict the passexercise before passNum is updated to meet the condition.
-              this.$parent.$emit('passexercise');
+            if (this.correct) {
+              if (this.passNum === 0) {
+                // passNum reached 0 means pass the exercise.
+                this.updateProgress(this.Kolibri, 1);
+                this.$parent.$emit('passexercise');
+              } else {
+                if (this.summaryprogress === 0) {
+                  this.updateProgress(this.Kolibri, 0.5, true);
+                }
+              }
             }
           }
         }
@@ -205,9 +212,6 @@
         this.hinted = false; // reset hinted.
         this.firstAttempt = true; // reset firstAttempt.
         this.$emit('nextquestion');
-      },
-      nextContent() {
-        this.$emit('nextcontent');
       },
       takeHint() {
         if (this.itemRenderer) {
@@ -276,12 +280,15 @@
 
     components: {
       attemptprogress: require('./attemptprogress'),
-      'icon-button': require('kolibri.coreVue.components.iconButton'),
     },
 
     vuex: {
+      actions: {
+        updateProgress: coreActions.updateProgress,
+      },
       getters: {
         pastattempts: (state) => state.core.logging.mastery.pastattempts,
+        summaryprogress: (state) => state.core.logging.summary.progress,
       },
     },
   };
@@ -332,12 +339,6 @@
     padding-left: 16px
     padding-right: 16px
 
-  .right-arrow
-    fill: $core-bg-light
-
-  .right-arrow:hover
-    fill: $core-bg-light
-
   .lightbulb
     fill: $core-text-annotation
 
@@ -357,18 +358,6 @@
     color: $core-bg-light
     padding-left: 16px
     padding-right: 16px
-
-  .next-btn
-    float: left
-    background-color: #4A8DDC
-    border-color: #4A8DDC
-    color: $core-bg-light
-    padding-left: 16px
-    padding-right: 6px
-    padding-bottom: 0
-
-  .next-btn:hover svg
-    fill: $core-bg-light
 
   .attemptprogress
     position: absolute
