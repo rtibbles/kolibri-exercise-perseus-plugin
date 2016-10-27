@@ -6,9 +6,8 @@
       v-ref:wrapper
       v-if="exercise"
       :item-id="itemId"
-      :mastery-model="exercise.mastery_model"
       :mastery-spacing-time="exercise.masterySpacingTime"
-      :mastery-criterion="exercise.masteryCriterion"
+      :mastery-criterion="exercise.mastery_model"
     >
       <perseus
         v-if="item"
@@ -75,7 +74,6 @@
       this.Kolibri.client(`${this.defaultFile.storage_url}exercise.json`).then(
         (exerciseResponse) => {
           this.exercise = exerciseResponse.entity;
-          this.exercise.masteryCriterion = "to be deleted";
           if (this.userid) {
             this.items = ss.shuffle(exerciseResponse.entity.all_assessment_items, this.userid, true);
           } else {
