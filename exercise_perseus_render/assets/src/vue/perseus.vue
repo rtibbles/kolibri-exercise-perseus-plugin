@@ -299,7 +299,7 @@
 
 <style lang="stylus" scoped>
 
-  @require '~kolibri/styles/coreTheme'
+  @require '~kolibri.styles.coreTheme'
 
   #perseus
     @import '../../../node_modules/perseus/stylesheets/local-only/khan-exercise.css'
