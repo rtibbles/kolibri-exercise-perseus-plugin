@@ -39,10 +39,25 @@
 
   const coreActions = require('kolibri.coreVue.vuex.actions');
 
+  // keep references to these globally polluting libraries
+  // so that we can pollute the global again when necessary.
+  let i18nReference = undefined;
+  let jqueryReference = undefined;
+  let reactReference = undefined;
+
   module.exports = {
     init() {
       // Perseus expects React to be available on the global object
-      this.react = global.React = require('react');
+      // we save what ever is using this global name and assign it back
+      // when this component is destroied.
+      this.backupReact = global.React;
+      if (reactReference) {
+        // if this is not the first time, we will have a reference to this library.
+        this.react = global.React = reactReference;
+      } else {
+        // if this is the first time, load library.
+        this.react = global.React = require('react');
+      }
 
       // Perseus expects ReactDOM to be in a particular place on the React object.
       global.React.__internalReactDOM = require('react-dom');
@@ -60,15 +75,24 @@
       // Underscore as well! We use their bundled version for compatibility reasons.
       global._ = require('perseus/lib/underscore');
 
-      // Take note of the global '$' variable so we can replace it after we remove jQuery
+      // same treatment as loading React.
       this.backup$ = global.$;
+      if (jqueryReference) {
+         global.$ = jqueryReference;
+      } else {
+        // Load in jQuery, because apparently we still need that for a React app.
+        require('perseus/lib/jquery');
+      }
 
-      // Load in jQuery, because apparently we still need that for a React app.
-      require('perseus/lib/jquery');
-
-      // Perseus expects this i18n object, but hopefully we won't have to touch it
-      // We should try to only use our interface text, so as to avoid interacting with this.
-      require('perseus/lib/i18n');
+      // same treatment as loading React.
+      this.backupI18N = global.i18n;
+      if (i18nReference) {
+         global.i18n = i18nReference;
+      } else {
+        // Perseus expects this i18n object, but hopefully we won't have to touch it
+        // We should try to only use our interface text, so as to avoid interacting with this.
+        require('perseus/lib/i18n');
+      }
 
       // For reasons quite beyond my ken, some configuration is still delegated to this
       // global Exercises object.
@@ -85,6 +109,18 @@
 
     destroyed() {
       // Clean up the global namespace pollution that Perseus necessitates.
+
+      // Save the reference of the loaded library.
+      reactReference = global.React;
+      // Assign the global name back to its original object.
+      global.React = this.backupReact;
+
+      jqueryReference = global.$;
+      global.$ = this.backup$;
+
+      i18nReference = global.i18n;
+      global.i18n = this.backupI18N;
+
       delete global.ReactDOM;
       delete global.Exercises;
     },
