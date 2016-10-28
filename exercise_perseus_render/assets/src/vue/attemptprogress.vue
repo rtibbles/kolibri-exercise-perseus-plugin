@@ -9,9 +9,9 @@
       </div>
     </div>
 
-    <p id="message" v-if="passRatioM === passNum">{{ $tr("get") }} <b>{{passRatioM}} {{ $tr("outof") }} {{passRatioN}}</b> {{ $tr("correct") }}</p>
-    <p id="message" v-if="passNum > 0 && passRatioM !== passNum">{{ $tr("get") }} <b>{{ passNum }}</b> {{ $tr("more") }}</p>
-    <p id="message" v-if="passNum <= 0 && passRatioM !== passNum">{{ $tr("hooray") }}</p>
+    <p id="message" v-if="passRatioM === passNum">Get <b>{{passRatioM}} out of {{passRatioN}}</b> correct!</p>
+    <p id="message" v-if="passNum > 0 && passRatioM !== passNum">Get <b>{{ passNum }}</b> more correct!</p>
+    <p id="message" v-if="passNum <= 0 && passRatioM !== passNum">Hooray! Good job.</p>
   </div>
 
 </template>
@@ -45,14 +45,6 @@
       passRatioN: {
         type: Number,
       },
-    },
-    $trNameSpace: 'attemptprogress',
-    $trs: {
-      hooray: 'Hooray! Good job.',
-      get: 'Get',
-      outof: 'out of',
-      correct: 'correct!',
-      more: 'more correct!',
     },
   };
 
