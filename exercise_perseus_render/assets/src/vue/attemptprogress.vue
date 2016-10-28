@@ -9,9 +9,9 @@
       </div>
     </div>
 
-    <p id="message" v-if="passRatioN === passNum">{{ $tr("get") }} <b>{{passRatioM}} {{ $tr("outof") }} {{passRatioN}}</b> {{ $tr("correct") }}</p>
-    <p id="message" v-if="passNum > 0 && passRatioN !== passNum">{{ $tr("get") }} <b>{{ passNum }}</b> {{ $tr("more") }}</p>
-    <p id="message" v-if="passNum <= 0 && passRatioN !== passNum">{{ $tr("hooray") }}</p>
+    <p id="message" v-if="passRatioM === passNum">{{ $tr("get") }} <b>{{passRatioM}} {{ $tr("outof") }} {{passRatioN}}</b> {{ $tr("correct") }}</p>
+    <p id="message" v-if="passNum > 0 && passRatioM !== passNum">{{ $tr("get") }} <b>{{ passNum }}</b> {{ $tr("more") }}</p>
+    <p id="message" v-if="passNum <= 0 && passRatioM !== passNum">{{ $tr("hooray") }}</p>
   </div>
 
 </template>

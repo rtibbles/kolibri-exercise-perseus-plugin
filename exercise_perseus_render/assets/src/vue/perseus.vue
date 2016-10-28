@@ -225,18 +225,18 @@
     },
 
     computed: {
-      lastMAttempts() {
+      lastNAttempts() {
         if (this.pastattempts) {
-          return this.pastattempts.slice(0, this.passRatioM);
+          return this.pastattempts.slice(0, this.passRatioN);
         }
         return [];
       },
       passNum() {
         if (this.pastattempts) {
-          if (this.pastattempts.length > this.passRatioM) {
-            return this.passRatioN - this.lastMAttempts.reduce((a,b)=>{return a + b.correct;}, 0);
+          if (this.pastattempts.length > this.passRatioN) {
+            return this.passRatioM - this.lastNAttempts.reduce((a,b)=>{return a + b.correct;}, 0);
           }
-          return this.passRatioN - this.pastattempts.reduce((a,b)=>{return a + b.correct;}, 0);
+          return this.passRatioM - this.pastattempts.reduce((a,b)=>{return a + b.correct;}, 0);
         }
         return this.passRatioN;
       },
@@ -244,8 +244,8 @@
         if (!this.pastattempts) {
           return undefined;
         }
-        if (this.pastattempts.length > this.passRatioM) {
-          return this.lastMAttempts;
+        if (this.pastattempts.length > this.passRatioN) {
+          return this.lastNAttempts;
         }
         return this.pastattempts;
       },
