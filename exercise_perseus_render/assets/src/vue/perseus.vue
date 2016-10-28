@@ -85,10 +85,7 @@
 
     destroyed() {
       // Clean up the global namespace pollution that Perseus necessitates.
-      delete global.React;
       delete global.ReactDOM;
-      global.$ = this.backup$;
-      delete global.i18n;
       delete global.Exercises;
     },
 
