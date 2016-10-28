@@ -33,10 +33,10 @@
       items: undefined,
       exercise: undefined,
       itemId: undefined,
-      // how many most recent questions taken into account?
-      passRatioM: 5,
       // how many questions need to get right?
-      passRatioN: 4,
+      passRatioM: 4,
+      // how many most recent questions taken into account?
+      passRatioN: 5,
     }),
     methods: {
       nextQuestion() {
@@ -56,7 +56,7 @@
       setItemData() {
         this.passRatioM = this.exercise.m;
         this.passRatioN = this.exercise.n;
-        if(!this.totalattempts) {
+        if(!this.totalattempts && this.totalattempts !== 0) {
           let watchRevoke;
           watchRevoke = this.$watch('totalattempts', () => {
             this.loadItemData(this.totalattempts);
