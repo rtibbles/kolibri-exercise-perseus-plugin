@@ -11,20 +11,32 @@ network, without an internet connection. Kolibri installations can be linked to 
 content can be shared. Users can create content for Kolibri and share it when there is network access to another
 Kolibri installation or the internet.
 
-At its core, Kolibri is about serving educational content. A typical user (called a Learner) will log in to Kolibri
-to consume educational content (videos, documents, other multimedia) and test their understanding of the content by
-completing exercises and quizzes, with immediate feedback. A user’s activity will be tracked to offer individualized
-insight (like "next lesson" recommendations), and to allow user data to be synced across different installations --
-thus a Kolibri learner can use his or her credentials on any linked Kolibri installation, for instance on different
-devices at a school.
-
 See https://learningequality.org/kolibri/ for more info.
 
+What is Perseus?
+----------------
 
-How can I use it?
------------------
+Khan Academy's exercise question editor and renderer.
 
+See https://github.com/Khan/perseus for more info.
 
+What is this plugin?
+--------------------
+
+A Perseus renderer wrapper for Kolibri that can track learning progress and save to the database.
+
+How can I install this plugin?
+------------------------------
+
+1. Download this repo.
+2. Terminal move to your Kolibri dir
+3. run the following command line:
+    `pip install -e <KOLIBRI-PERSEUS-PLUGIN-LOCAL-PATH>`
+    `python setup.py sdist`
+    `git submodule update —init —recursive`
+    `kolibri plugin exercise_perseus_render enable`
+    `npm install`
+    `pip install -e .`
 
 
 How can I contribute?
