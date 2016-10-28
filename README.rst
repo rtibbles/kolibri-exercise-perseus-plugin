@@ -33,7 +33,6 @@ How can I install this plugin?
 2. Terminal move to your Kolibri dir
 3. run the following command line:
     `pip install -e <KOLIBRI-PERSEUS-PLUGIN-LOCAL-PATH>`
-    `python setup.py sdist`
     `kolibri plugin exercise_perseus_render enable`
     `npm install`
 
