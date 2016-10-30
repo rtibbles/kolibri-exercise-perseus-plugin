@@ -225,18 +225,20 @@
           if (!check.empty) {
             this.complete = check.correct;
             this.correct = this.hinted || !this.firstAttempt ? false : check.correct;
-            this.$parent.$emit('checkanswer', this.correct, this.complete, this.firstAttempt, this.hinted);
+            this.$parent.$emit('updateAMLogs', this.correct, this.complete, this.firstAttempt, this.hinted);
+            let exercisePassed = false;
             if (this.correct) {
               if (this.passNum === 0) {
                 // passNum reached 0 means pass the exercise.
                 this.updateProgress(this.Kolibri, 1);
-                this.$parent.$emit('passexercise');
+                exercisePassed = true;
               } else {
                 if (this.summaryprogress === 0) {
                   this.updateProgress(this.Kolibri, 0.5, true);
                 }
               }
             }
+            this.$parent.$emit('saveAMLogs', exercisePassed);
           }
         }
         this.firstAttempt = false;
@@ -244,7 +246,7 @@
       nextQuestion() {
         this.hinted = false; // reset hinted.
         this.firstAttempt = true; // reset firstAttempt.
-        this.$emit('nextquestion');
+        this.$parent.$emit('toNextQuestion');
       },
       takeHint() {
         if (this.itemRenderer) {

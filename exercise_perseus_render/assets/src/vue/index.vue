@@ -8,13 +8,13 @@
       :item-id="itemId"
       :mastery-spacing-time="exercise.masterySpacingTime"
       :mastery-criterion="exercise.mastery_model"
+      @nextquestion="nextQuestion"
     >
       <perseus
         v-if="item"
         :item="item"
         :pass-ratio-m="passRatioM"
         :pass-ratio-n="passRatioN"
-        @nextquestion="nextQuestion"
       ></perseus>
     </assessment-wrapper>
   </div>
@@ -75,9 +75,9 @@
         (exerciseResponse) => {
           this.exercise = exerciseResponse.entity;
           if (this.userid) {
-            this.items = ss.shuffle(exerciseResponse.entity.all_assessment_items, this.userid, true);
+            this.items = ss.shuffle(this.exercise.all_assessment_items, this.userid, true);
           } else {
-            this.items = exerciseResponse.entity.all_assessment_items;
+            this.items = this.exercise.all_assessment_items;
           }
           this.setItemData();
         }).catch(function(reason) {
