@@ -22,6 +22,7 @@
           <icon-button v-else id="hint-btn" disabled>
             <svg class="lightbulb disabled" src="./lightbulb_black.svg"></svg>{{ $tr("noMoreHint") }}
           </icon-button>
+          <div style="clear: both"></div>
         </div>
       </div>
     </div>
