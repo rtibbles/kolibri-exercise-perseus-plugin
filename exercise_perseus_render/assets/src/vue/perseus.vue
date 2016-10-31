@@ -16,12 +16,13 @@
           <icon-button @click="checkAnswer" v-if="!complete" class="question-btn" id="check-answer-button">{{ checkText }}</icon-button>
           <icon-button @click="nextQuestion" v-if="complete && passNum >= 1" class="question-btn" id="next-question-button">{{ $tr("correct") }}</icon-button>
           <attemptprogress class="attemptprogress" :recent-attempts="recentAttempts" :pass-num="passNum" :pass-ratio-m="passRatioM" :pass-ratio-n="passRatioN"></attemptprogress>
-          <icon-button v-if="availableHints > 0" @click="takeHint" id="hint-btn">
+          <icon-button v-if="availableHints > 0" @click="takeHint" class="hint-btn">
             <svg class="lightbulb" src="./lightbulb_black.svg"></svg>{{ $tr("hint") }}
           </icon-button>
-          <icon-button v-else id="hint-btn" disabled>
+          <icon-button v-else class="hint-btn" disabled>
             <svg class="lightbulb disabled" src="./lightbulb_black.svg"></svg>{{ $tr("noMoreHint") }}
           </icon-button>
+          <div style="clear: both"></div>
         </div>
       </div>
     </div>
@@ -39,10 +40,25 @@
 
   const coreActions = require('kolibri.coreVue.vuex.actions');
 
+  // keep references to these globally polluting libraries
+  // so that we can pollute the global again when necessary.
+  let i18nReference = undefined;
+  let jqueryReference = undefined;
+  let reactReference = undefined;
+
   module.exports = {
     init() {
       // Perseus expects React to be available on the global object
-      this.react = global.React = require('react');
+      // we save what ever is using this global name and assign it back
+      // when this component is destroied.
+      this.backupReact = global.React;
+      if (reactReference) {
+        // if this is not the first time, we will have a reference to this library.
+        this.react = global.React = reactReference;
+      } else {
+        // if this is the first time, load library.
+        this.react = global.React = require('react');
+      }
 
       // Perseus expects ReactDOM to be in a particular place on the React object.
       global.React.__internalReactDOM = require('react-dom');
@@ -60,15 +76,24 @@
       // Underscore as well! We use their bundled version for compatibility reasons.
       global._ = require('perseus/lib/underscore');
 
-      // Take note of the global '$' variable so we can replace it after we remove jQuery
+      // same treatment as loading React.
       this.backup$ = global.$;
+      if (jqueryReference) {
+        global.$ = jqueryReference;
+      } else {
+        // Load in jQuery, because apparently we still need that for a React app.
+        require('perseus/lib/jquery');
+      }
 
-      // Load in jQuery, because apparently we still need that for a React app.
-      require('perseus/lib/jquery');
-
-      // Perseus expects this i18n object, but hopefully we won't have to touch it
-      // We should try to only use our interface text, so as to avoid interacting with this.
-      require('perseus/lib/i18n');
+      // same treatment as loading React.
+      this.backupI18N = global.i18n;
+      if (i18nReference) {
+        global.i18n = i18nReference;
+      } else {
+        // Perseus expects this i18n object, but hopefully we won't have to touch it
+        // We should try to only use our interface text, so as to avoid interacting with this.
+        require('perseus/lib/i18n');
+      }
 
       // For reasons quite beyond my ken, some configuration is still delegated to this
       // global Exercises object.
@@ -85,10 +110,19 @@
 
     destroyed() {
       // Clean up the global namespace pollution that Perseus necessitates.
-      delete global.React;
-      delete global.ReactDOM;
+
+      // Save the reference of the loaded library.
+      reactReference = global.React;
+      // Assign the global name back to its original object.
+      global.React = this.backupReact;
+
+      jqueryReference = global.$;
       global.$ = this.backup$;
-      delete global.i18n;
+
+      i18nReference = global.i18n;
+      global.i18n = this.backupI18N;
+
+      delete global.ReactDOM;
       delete global.Exercises;
     },
 
@@ -180,10 +214,10 @@
 
         // Create a new one with current item data.
         this.itemRenderer =
-        this.reactDOM.render(this.itemRendererFactory( // eslint-disable-line new-cap
-          this.itemRenderData, null), this.$els.perseusContainer, () => {
-          this.loading = false;
-        });
+        this.reactDOM.render( // eslint-disable-line new-cap
+          this.itemRendererFactory(this.itemRenderData, null),
+          this.$els.perseusContainer, () => { this.loading = false; }
+        );
       },
       checkAnswer() {
         if (this.itemRenderer) {
@@ -192,18 +226,26 @@
           if (!check.empty) {
             this.complete = check.correct;
             this.correct = this.hinted || !this.firstAttempt ? false : check.correct;
-            this.$parent.$emit('checkanswer', this.correct, this.complete, this.firstAttempt, this.hinted);
+            this.$parent.$emit(
+              'updateAMLogs',
+              this.correct,
+              this.complete,
+              this.firstAttempt,
+              this.hinted
+            );
+            let exercisePassed = false;
             if (this.correct) {
               if (this.passNum === 0) {
                 // passNum reached 0 means pass the exercise.
-                this.updateProgress(this.Kolibri, 1);
-                this.$parent.$emit('passexercise');
+                this.updateExerciseProgress(this.Kolibri, 1);
+                exercisePassed = true;
               } else {
                 if (this.summaryprogress === 0) {
-                  this.updateProgress(this.Kolibri, 0.5, true);
+                  this.updateExerciseProgress(this.Kolibri, 0.5, true);
                 }
               }
             }
+            this.$parent.$emit('saveAMLogs', exercisePassed);
           }
         }
         this.firstAttempt = false;
@@ -211,7 +253,7 @@
       nextQuestion() {
         this.hinted = false; // reset hinted.
         this.firstAttempt = true; // reset firstAttempt.
-        this.$emit('nextquestion');
+        this.$parent.$emit('toNextQuestion');
       },
       takeHint() {
         if (this.itemRenderer) {
@@ -225,18 +267,18 @@
     },
 
     computed: {
-      lastMAttempts() {
+      lastNAttempts() {
         if (this.pastattempts) {
-          return this.pastattempts.slice(0, this.passRatioM);
+          return this.pastattempts.slice(0, this.passRatioN);
         }
         return [];
       },
       passNum() {
         if (this.pastattempts) {
-          if (this.pastattempts.length > this.passRatioM) {
-            return this.passRatioN - this.lastMAttempts.reduce((a,b)=>{return a + b.correct;}, 0);
+          if (this.pastattempts.length > this.passRatioN) {
+            return this.passRatioM - this.lastNAttempts.reduce((a, b) => a + b.correct, 0);
           }
-          return this.passRatioN - this.pastattempts.reduce((a,b)=>{return a + b.correct;}, 0);
+          return this.passRatioM - this.pastattempts.reduce((a, b) => a + b.correct, 0);
         }
         return this.passRatioN;
       },
@@ -244,8 +286,8 @@
         if (!this.pastattempts) {
           return undefined;
         }
-        if (this.pastattempts.length > this.passRatioM) {
-          return this.lastMAttempts;
+        if (this.pastattempts.length > this.passRatioN) {
+          return this.lastNAttempts;
         }
         return this.pastattempts;
       },
@@ -284,7 +326,7 @@
 
     vuex: {
       actions: {
-        updateProgress: coreActions.updateProgress,
+        updateExerciseProgress: coreActions.updateExerciseProgress,
       },
       getters: {
         pastattempts: (state) => state.core.logging.mastery.pastattempts,
@@ -334,7 +376,7 @@
     padding: 10px
     border-top: 1px solid
 
-  #hint-btn
+  .hint-btn
     float: right
     padding-left: 16px
     padding-right: 16px
@@ -366,6 +408,7 @@
 
 </style>
 
+
 <style lang="stylus">
 
   img
@@ -379,7 +422,7 @@
     border-top: 0
 
   fieldset
-    border: 0
+    border: none
 
   fieldset > ul
     border: 1px solid #BABEC2
@@ -406,9 +449,9 @@
     font-weight: bold
 
   .perseus-hint-label:before
-    content: "("
+    content: '('
 
   .perseus-hint-label:after
-    content: ")"
+    content: ')'
 
 </style>

@@ -9,9 +9,9 @@
       </div>
     </div>
 
-    <p id="message" v-if="passRatioN === passNum">{{ $tr("get") }} <b>{{passRatioN}} {{ $tr("outof") }} {{passRatioM}}</b> {{ $tr("correct") }}</p>
-    <p id="message" v-if="passNum > 0 && passRatioN !== passNum">{{ $tr("get") }} <b>{{ passNum }}</b> {{ $tr("more") }}</p>
-    <p id="message" v-if="passNum <= 0 && passRatioN !== passNum">{{ $tr("hooray") }}</p>
+    <p class="message" v-if="passRatioM === passNum">Get <b>{{passRatioM}} out of {{passRatioN}}</b> correct!</p>
+    <p class="message" v-if="passNum > 0 && passRatioM !== passNum">Get <b>{{ passNum }}</b> more correct!</p>
+    <p class="message" v-if="passNum <= 0 && passRatioM !== passNum">Hooray! Good job.</p>
   </div>
 
 </template>
@@ -32,9 +32,7 @@
     props: {
       recentAttempts: {
         type: Array,
-        default: function () {
-          return [{ correct: 0 }]
-        },
+        default: () => [{ correct: 0 }],
       },
       passNum: {
         type: Number,
@@ -46,14 +44,6 @@
         type: Number,
       },
     },
-    $trNameSpace: 'attemptprogress',
-    $trs: {
-      hooray: 'Hooray! Good job.',
-      get: 'Get',
-      outof: 'out of',
-      correct: 'correct!',
-      more: 'more correct!',
-    },
   };
 
 </script>
@@ -63,7 +53,7 @@
 
   @require '~kolibri.styles.coreTheme'
 
-  #message
+  .message
     color: grey
     position: relative
     text-align: center
@@ -82,7 +72,7 @@
       top: 4px
 
   #attempt
-    float: left;
+    float: left
     border-bottom: thin solid grey
     margin-left: 6px
 
