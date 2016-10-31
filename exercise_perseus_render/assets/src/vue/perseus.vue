@@ -231,11 +231,11 @@
             if (this.correct) {
               if (this.passNum === 0) {
                 // passNum reached 0 means pass the exercise.
-                this.updateProgress(this.Kolibri, 1);
+                this.updateExerciseProgress(this.Kolibri, 1);
                 exercisePassed = true;
               } else {
                 if (this.summaryprogress === 0) {
-                  this.updateProgress(this.Kolibri, 0.5, true);
+                  this.updateExerciseProgress(this.Kolibri, 0.5, true);
                 }
               }
             }
@@ -320,7 +320,7 @@
 
     vuex: {
       actions: {
-        updateProgress: coreActions.updateProgress,
+        updateExerciseProgress: coreActions.updateExerciseProgress,
       },
       getters: {
         pastattempts: (state) => state.core.logging.mastery.pastattempts,

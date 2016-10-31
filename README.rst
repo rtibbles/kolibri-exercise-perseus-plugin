@@ -29,7 +29,7 @@ How can I install this plugin?
 ------------------------------
 
 1. Download this repo.
-2. Terminal move to the repo dir and run `git submodule update —init —recursive`
+2. Terminal move to the repo dir and run `git submodule update --init --recursive`
 3. Terminal move to your Kolibri dir
 4. run the following command line:
     `pip install -e <KOLIBRI-PERSEUS-PLUGIN-LOCAL-PATH>`
