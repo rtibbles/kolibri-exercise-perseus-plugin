@@ -49,23 +49,26 @@
           `${this.defaultFile.storage_url}${this.itemId}.json`
           ).then((itemResponse) => {
             this.item = itemResponse.entity;
-          }).catch(function(reason) {
+          }).catch(reason => {
             console.log('Oops, you got rejected: ', reason);
           });
       },
       setItemData() {
         this.passRatioM = this.exercise.m;
         this.passRatioN = this.exercise.n;
-        if(!this.totalattempts && this.totalattempts !== 0) {
-          let watchRevoke;
-          watchRevoke = this.$watch('totalattempts', () => {
-            this.loadItemData(this.totalattempts);
-            watchRevoke();
-          }, {deep:true});
+        if (!this.totalattempts && this.totalattempts !== 0) {
+          const watchRevoke = this.$watch(
+            'totalattempts',
+            () => {
+              this.loadItemData(this.totalattempts);
+              watchRevoke();
+            },
+            { deep: true }
+          );
         } else {
           this.loadItemData(this.totalattempts);
         }
-      }
+      },
     },
     components: {
       perseus: require('./perseus'),
@@ -80,7 +83,7 @@
             this.items = this.exercise.all_assessment_items;
           }
           this.setItemData();
-        }).catch(function(reason) {
+        }).catch(reason => {
           console.log('Oops, requesting exercise.json got rejected: ', reason);
         });
     },
@@ -96,6 +99,7 @@
   };
 
 </script>
+
 
 <style lang="stylus" scoped>
 

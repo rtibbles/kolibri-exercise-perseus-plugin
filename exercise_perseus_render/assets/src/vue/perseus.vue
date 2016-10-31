@@ -16,10 +16,10 @@
           <icon-button @click="checkAnswer" v-if="!complete" class="question-btn" id="check-answer-button">{{ checkText }}</icon-button>
           <icon-button @click="nextQuestion" v-if="complete && passNum >= 1" class="question-btn" id="next-question-button">{{ $tr("correct") }}</icon-button>
           <attemptprogress class="attemptprogress" :recent-attempts="recentAttempts" :pass-num="passNum" :pass-ratio-m="passRatioM" :pass-ratio-n="passRatioN"></attemptprogress>
-          <icon-button v-if="availableHints > 0" @click="takeHint" id="hint-btn">
+          <icon-button v-if="availableHints > 0" @click="takeHint" class="hint-btn">
             <svg class="lightbulb" src="./lightbulb_black.svg"></svg>{{ $tr("hint") }}
           </icon-button>
-          <icon-button v-else id="hint-btn" disabled>
+          <icon-button v-else class="hint-btn" disabled>
             <svg class="lightbulb disabled" src="./lightbulb_black.svg"></svg>{{ $tr("noMoreHint") }}
           </icon-button>
           <div style="clear: both"></div>
@@ -79,7 +79,7 @@
       // same treatment as loading React.
       this.backup$ = global.$;
       if (jqueryReference) {
-         global.$ = jqueryReference;
+        global.$ = jqueryReference;
       } else {
         // Load in jQuery, because apparently we still need that for a React app.
         require('perseus/lib/jquery');
@@ -88,7 +88,7 @@
       // same treatment as loading React.
       this.backupI18N = global.i18n;
       if (i18nReference) {
-         global.i18n = i18nReference;
+        global.i18n = i18nReference;
       } else {
         // Perseus expects this i18n object, but hopefully we won't have to touch it
         // We should try to only use our interface text, so as to avoid interacting with this.
@@ -214,10 +214,10 @@
 
         // Create a new one with current item data.
         this.itemRenderer =
-        this.reactDOM.render(this.itemRendererFactory( // eslint-disable-line new-cap
-          this.itemRenderData, null), this.$els.perseusContainer, () => {
-          this.loading = false;
-        });
+        this.reactDOM.render( // eslint-disable-line new-cap
+          this.itemRendererFactory(this.itemRenderData, null),
+          this.$els.perseusContainer, () => { this.loading = false; }
+        );
       },
       checkAnswer() {
         if (this.itemRenderer) {
@@ -226,7 +226,13 @@
           if (!check.empty) {
             this.complete = check.correct;
             this.correct = this.hinted || !this.firstAttempt ? false : check.correct;
-            this.$parent.$emit('updateAMLogs', this.correct, this.complete, this.firstAttempt, this.hinted);
+            this.$parent.$emit(
+              'updateAMLogs',
+              this.correct,
+              this.complete,
+              this.firstAttempt,
+              this.hinted
+            );
             let exercisePassed = false;
             if (this.correct) {
               if (this.passNum === 0) {
@@ -270,9 +276,9 @@
       passNum() {
         if (this.pastattempts) {
           if (this.pastattempts.length > this.passRatioN) {
-            return this.passRatioM - this.lastNAttempts.reduce((a,b)=>{return a + b.correct;}, 0);
+            return this.passRatioM - this.lastNAttempts.reduce((a, b) => a + b.correct, 0);
           }
-          return this.passRatioM - this.pastattempts.reduce((a,b)=>{return a + b.correct;}, 0);
+          return this.passRatioM - this.pastattempts.reduce((a, b) => a + b.correct, 0);
         }
         return this.passRatioN;
       },
@@ -370,7 +376,7 @@
     padding: 10px
     border-top: 1px solid
 
-  #hint-btn
+  .hint-btn
     float: right
     padding-left: 16px
     padding-right: 16px
@@ -402,6 +408,7 @@
 
 </style>
 
+
 <style lang="stylus">
 
   img
@@ -415,7 +422,7 @@
     border-top: 0
 
   fieldset
-    border: 0
+    border: none
 
   fieldset > ul
     border: 1px solid #BABEC2
@@ -442,9 +449,9 @@
     font-weight: bold
 
   .perseus-hint-label:before
-    content: "("
+    content: '('
 
   .perseus-hint-label:after
-    content: ")"
+    content: ')'
 
 </style>
