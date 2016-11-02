@@ -29,15 +29,17 @@ How can I install this plugin?
 ------------------------------
 
 1. Download this repo.
-2. Terminal move to the repo dir and run ```git submodule update --init --recursive```
+2. Terminal move to the repo dir and run ``git submodule update --init --recursive``
 3. Terminal move to your Kolibri dir
 4. run the following command line:
 
-    ```pip install -e <KOLIBRI-PERSEUS-PLUGIN-LOCAL-PATH>```
+    ``pip install -e <KOLIBRI-PERSEUS-PLUGIN-LOCAL-PATH>``
 
-    ```kolibri plugin exercise_perseus_render enable```
+    ``kolibri plugin exercise_perseus_render enable``
 
-    ```npm install```
+    ``npm install``
+
+If there's error complaining `Jquery` and `underscore` not found in node_modules folder, you may need to upate your `Node` and `npm` to the latest version.
 
 
 How can I contribute?
