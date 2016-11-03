@@ -11,12 +11,25 @@
       @nextquestion="nextQuestion"
     >
       <perseus
-        v-if="item"
         :item="item"
         :pass-ratio-m="passRatioM"
         :pass-ratio-n="passRatioN"
+        @hinttaken="hintTaken"
+        @answerchecked="answerChecked"
+        @exercisepassed="exercisePassed"
       ></perseus>
     </assessment-wrapper>
+    <div id="attemptprogress-container">
+      <exercise-attempts
+        class="attemptprogress"
+        :waiting="waiting"
+        :success="success"
+        :numspaces="passRatioN"
+        :log="recentAttempts"
+      >
+      </exercise-attempts>
+      <p class="message">Get <b>{{passRatioM}}</b> check marks showing up!</p>
+    </div>
   </div>
 
 </template>
@@ -37,10 +50,35 @@
       passRatioM: 4,
       // how many most recent questions taken into account?
       passRatioN: 5,
+      waiting: true,
+      success: false,
     }),
+
+    computed: {
+      recentAttempts() {
+        if (!this.pastattempts) {
+          return undefined;
+        }
+        if (this.pastattempts.length > this.passRatioN) {
+          return this.pastattempts.slice(0, this.passRatioN);
+        }
+        return this.pastattempts;
+      },
+    },
+
     methods: {
+      answerChecked() {
+        this.waiting = false;
+      },
+      hintTaken() {
+        this.waiting = false;
+      },
       nextQuestion() {
+        this.waiting = true;
         this.setItemData();
+      },
+      exercisePassed() {
+        this.success = true;
       },
       loadItemData(attempts) {
         const itemIndex = attempts % this.items.length;
@@ -62,8 +100,7 @@
             () => {
               this.loadItemData(this.totalattempts);
               watchRevoke();
-            },
-            { deep: true }
+            }
           );
         } else {
           this.loadItemData(this.totalattempts);
@@ -93,6 +130,7 @@
     vuex: {
       getters: {
         totalattempts: (state) => state.core.logging.mastery.totalattempts,
+        pastattempts: (state) => state.core.logging.mastery.pastattempts,
         userid: (state) => state.core.session.user_id,
       },
     },
@@ -104,6 +142,35 @@
 <style lang="stylus" scoped>
 
   @require '~kolibri.styles.coreTheme'
+
+  .message
+    color: grey
+    position: relative
+    text-align: center
+    clear: both
+    top: 40px
+    @media screen and (max-width: $portrait-breakpoint)
+      font-size: 12px
+      margin-top: 0
+
+  .attemptprogress
+    position: absolute
+    left: 50%
+    transform: translate(-50%, 0)
+
+  #attemptprogress-container
+    position: relative
+    bottom: 60px
+    @media screen and (max-width: $portrait-breakpoint)
+      position: fixed
+      background-color: $core-bg-light
+      width: 100%
+      height: 60px
+      bottom: $nav-portrait-height
+      border-bottom: thin solid $core-text-annotation
+      border-top: thin solid $core-text-annotation
+      z-index: 1
+      left: 0
 
 </style>
 

@@ -15,7 +15,6 @@
           <div id="solutionarea"></div>
           <icon-button @click="checkAnswer" v-if="!complete" class="question-btn" id="check-answer-button">{{ checkText }}</icon-button>
           <icon-button @click="nextQuestion" v-if="complete && passNum >= 1" class="question-btn" id="next-question-button">{{ $tr("correct") }}</icon-button>
-          <attemptprogress class="attemptprogress" :recent-attempts="recentAttempts" :pass-num="passNum" :pass-ratio-m="passRatioM" :pass-ratio-n="passRatioN"></attemptprogress>
           <icon-button v-if="availableHints > 0" @click="takeHint" class="hint-btn">
             <svg class="lightbulb" src="./lightbulb_black.svg"></svg>{{ $tr("hint") }}
           </icon-button>
@@ -239,6 +238,7 @@
                 // passNum reached 0 means pass the exercise.
                 this.updateExerciseProgress(this.Kolibri, 1);
                 exercisePassed = true;
+                this.$emit('exercisepassed');
               } else {
                 if (this.summaryprogress === 0) {
                   this.updateExerciseProgress(this.Kolibri, 0.5, true);
@@ -246,9 +246,10 @@
               }
             }
             this.$parent.$emit('saveAMLogs', exercisePassed);
+            this.$emit('answerchecked');
+            this.firstAttempt = false;
           }
         }
-        this.firstAttempt = false;
       },
       nextQuestion() {
         this.hinted = false; // reset hinted.
@@ -260,6 +261,7 @@
           this.itemRenderer.showHint();
           this.hinted = true;
           this.$parent.$emit('takehint', this.firstAttempt, this.hinted);
+          this.$emit('hinttaken');
           this.firstAttempt = false;
           this.availableHints -= 1;
         }
@@ -267,29 +269,15 @@
     },
 
     computed: {
-      lastNAttempts() {
-        if (this.pastattempts) {
-          return this.pastattempts.slice(0, this.passRatioN);
-        }
-        return [];
-      },
       passNum() {
         if (this.pastattempts) {
           if (this.pastattempts.length > this.passRatioN) {
-            return this.passRatioM - this.lastNAttempts.reduce((a, b) => a + b.correct, 0);
+            return this.passRatioM - this.pastattempts.slice(0, this.passRatioN).reduce(
+              (a, b) => a + b.correct, 0);
           }
           return this.passRatioM - this.pastattempts.reduce((a, b) => a + b.correct, 0);
         }
         return this.passRatioN;
-      },
-      recentAttempts() {
-        if (!this.pastattempts) {
-          return undefined;
-        }
-        if (this.pastattempts.length > this.passRatioN) {
-          return this.lastNAttempts;
-        }
-        return this.pastattempts;
       },
       checkText() {
         return this.empty ? this.$tr('check') : this.$tr('incorrect');
@@ -400,11 +388,6 @@
     color: $core-bg-light
     padding-left: 16px
     padding-right: 16px
-
-  .attemptprogress
-    position: absolute
-    left: 50%
-    transform: translate(-50%, 0)
 
 </style>
 
