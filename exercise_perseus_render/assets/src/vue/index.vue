@@ -11,6 +11,7 @@
       @nextquestion="nextQuestion"
     >
       <perseus
+        v-if="item"
         :item="item"
         :pass-ratio-m="passRatioM"
         :pass-ratio-n="passRatioN"

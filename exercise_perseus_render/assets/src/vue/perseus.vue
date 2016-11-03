@@ -208,8 +208,6 @@
         this.empty = this.loading = true;
         this.correct = false;
         this.complete = false;
-        // Clean up any existing itemRenderer.
-        this.reactDOM.unmountComponentAtNode(this.$els.perseusContainer);
 
         // Create a new one with current item data.
         this.itemRenderer =
@@ -300,16 +298,18 @@
     },
 
     ready() {
-      // Rerender when item data changes
-      this.$watch('item', this.renderItem);
-      // Do a first render with current item data
+      // Do a first render with current available item data
       this.renderItem();
       // init the availableHints;
       this.availableHints = this.item.hints.length;
-    },
 
-    components: {
-      attemptprogress: require('./attemptprogress'),
+      this.$watch('item', () => {
+        // Rerender when item data changes
+        if (this.item) {
+          this.renderItem();
+          this.availableHints = this.item.hints.length;
+        }
+      });
     },
 
     vuex: {
