@@ -170,7 +170,7 @@
       bottom: $nav-portrait-height
       border-bottom: thin solid $core-text-annotation
       border-top: thin solid $core-text-annotation
-      z-index: 1
+      z-index: 10
       left: 0
 
 </style>
