@@ -407,37 +407,38 @@
 
 
 <style lang="stylus">
+// Use namespcesd unscoped styling here to alter Perseus' original styling in order to fit kolibri
 
-  img
+  #perseus img
     width: 100%
     height: 100%
     max-width: 600px
     padding: 10px
 
-  ul
+  #perseus ul
     border-bottom: 0
     border-top: 0
 
-  fieldset
+  #perseus fieldset
     border: none
 
-  fieldset > ul
+  #perseus fieldset > ul
     border: 1px solid #BABEC2
     border-radius: 10px
     padding: 0
 
-  fieldset > ul > li
+  #perseus fieldset > ul > li
     list-style-type: none
 
-  .perseus-hint-renderer
+  #perseus .perseus-hint-renderer
     color: #686868
     padding: 6px 10px
     font-weight: normal
 
-  .perseus-hint-renderer
+  #perseus .perseus-hint-renderer
     margin-left: 40px
 
-  .perseus-hint-label
+  #perseus .perseus-hint-label
     color: #686868
     font-weight: 600
     white-space: nowrap
@@ -445,16 +446,16 @@
     position: relative
     font-weight: bold
 
-  .perseus-hint-label:before
+  #perseus .perseus-hint-label:before
     content: '('
 
-  .perseus-hint-label:after
+  #perseus .perseus-hint-label:after
     content: ')'
 
-  .paragraph
+  #perseus .paragraph
     padding: 4px
 
-  .svg-image *
+  #perseus .svg-image *
     padding-bottom: 0 !important
 
 
