@@ -437,4 +437,11 @@
   .perseus-hint-label:after
     content: ')'
 
+  .paragraph
+    padding: 4px
+
+  .svg-image *
+    padding-bottom: 0 !important
+
+
 </style>
