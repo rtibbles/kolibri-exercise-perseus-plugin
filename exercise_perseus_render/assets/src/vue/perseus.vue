@@ -209,7 +209,15 @@
         this.correct = false;
         this.complete = false;
 
-        // Create a new one with current item data.
+        if (this.itemRenderer) {
+          // reset the state of the react component.
+          // Otherwise props like hintsVisible left from previous question
+          // will get current question's hint revealed.
+          this.itemRenderer.setState(this.itemRenderer.getInitialState());
+        }
+
+        // Create react component with current item data.
+        // If the component already existed, this will perform an update.
         this.itemRenderer =
         this.reactDOM.render( // eslint-disable-line new-cap
           this.itemRendererFactory(this.itemRenderData, null),
