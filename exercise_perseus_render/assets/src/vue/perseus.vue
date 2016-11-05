@@ -107,6 +107,12 @@
       this.itemRendererFactory = this.react.createFactory(this.perseus.ItemRenderer);
     },
 
+    beforeDestroy() {
+      // Clean up any existing itemRenderer to avoid leak memory
+      // https://facebook.github.io/react/blog/2015/10/01/react-render-and-top-level-api.html
+      this.reactDOM.unmountComponentAtNode(this.$els.perseusContainer);
+    },
+
     destroyed() {
       // Clean up the global namespace pollution that Perseus necessitates.
 
