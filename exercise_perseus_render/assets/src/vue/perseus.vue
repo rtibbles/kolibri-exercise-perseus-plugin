@@ -407,56 +407,57 @@
 
 
 <style lang="stylus">
-// Use namespcesd unscoped styling here to alter Perseus' original styling in order to fit kolibri
 
-  #perseus img
-    width: 100%
-    height: 100%
-    max-width: 600px
-    padding: 10px
+  // Use namespaced unscoped styling here to alter Perseus' original styling in order to fit kolibri
+  #perseus
 
-  #perseus ul
-    border-bottom: 0
-    border-top: 0
+    img
+      width: 100%
+      height: 100%
+      max-width: 600px
+      padding: 10px
 
-  #perseus fieldset
-    border: none
+    ul
+      border-bottom: 0
+      border-top: 0
 
-  #perseus fieldset > ul
-    border: 1px solid #BABEC2
-    border-radius: 10px
-    padding: 0
+    fieldset
+      border: none
 
-  #perseus fieldset > ul > li
-    list-style-type: none
+    fieldset > ul
+      border: 1px solid #BABEC2
+      border-radius: 10px
+      padding: 0
 
-  #perseus .perseus-hint-renderer
-    color: #686868
-    padding: 6px 10px
-    font-weight: normal
+    fieldset > ul > li
+      list-style-type: none
 
-  #perseus .perseus-hint-renderer
-    margin-left: 40px
+    .perseus-hint-renderer
+      color: #686868
+      padding: 6px 10px
+      font-weight: normal
 
-  #perseus .perseus-hint-label
-    color: #686868
-    font-weight: 600
-    white-space: nowrap
-    right: 50px
-    position: relative
-    font-weight: bold
+    .perseus-hint-renderer
+      margin-left: 40px
 
-  #perseus .perseus-hint-label:before
-    content: '('
+    .perseus-hint-label
+      color: #686868
+      font-weight: 600
+      white-space: nowrap
+      right: 50px
+      position: relative
+      font-weight: bold
 
-  #perseus .perseus-hint-label:after
-    content: ')'
+    .perseus-hint-label:before
+      content: '('
 
-  #perseus .paragraph
-    padding: 4px
+    .perseus-hint-label:after
+      content: ')'
 
-  #perseus .svg-image *
-    padding-bottom: 0 !important
+    .paragraph
+      padding: 4px
 
+    // .svg-image *
+    //   padding-bottom: 0 !important
 
 </style>
