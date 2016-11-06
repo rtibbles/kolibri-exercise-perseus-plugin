@@ -15,7 +15,6 @@
           <div id="solutionarea"></div>
           <icon-button @click="checkAnswer" v-if="!complete" class="question-btn" id="check-answer-button">{{ checkText }}</icon-button>
           <icon-button @click="nextQuestion" v-if="complete && passNum >= 1" class="question-btn" id="next-question-button">{{ $tr("correct") }}</icon-button>
-          <attemptprogress class="attemptprogress" :recent-attempts="recentAttempts" :pass-num="passNum" :pass-ratio-m="passRatioM" :pass-ratio-n="passRatioN"></attemptprogress>
           <icon-button v-if="availableHints > 0" @click="takeHint" class="hint-btn">
             <svg class="lightbulb" src="./lightbulb_black.svg"></svg>{{ $tr("hint") }}
           </icon-button>
@@ -106,6 +105,12 @@
       // A handy convenience mapping to what is essentially a constructor for Item Renderer
       // components.
       this.itemRendererFactory = this.react.createFactory(this.perseus.ItemRenderer);
+    },
+
+    beforeDestroy() {
+      // Clean up any existing itemRenderer to avoid leak memory
+      // https://facebook.github.io/react/blog/2015/10/01/react-render-and-top-level-api.html
+      this.reactDOM.unmountComponentAtNode(this.$els.perseusContainer);
     },
 
     destroyed() {
@@ -209,10 +214,16 @@
         this.empty = this.loading = true;
         this.correct = false;
         this.complete = false;
-        // Clean up any existing itemRenderer.
-        this.reactDOM.unmountComponentAtNode(this.$els.perseusContainer);
 
-        // Create a new one with current item data.
+        if (this.itemRenderer) {
+          // reset the state of the react component.
+          // Otherwise props like hintsVisible left from previous question
+          // will get current question's hint revealed.
+          this.itemRenderer.setState(this.itemRenderer.getInitialState());
+        }
+
+        // Create react component with current item data.
+        // If the component already existed, this will perform an update.
         this.itemRenderer =
         this.reactDOM.render( // eslint-disable-line new-cap
           this.itemRendererFactory(this.itemRenderData, null),
@@ -239,6 +250,7 @@
                 // passNum reached 0 means pass the exercise.
                 this.updateExerciseProgress(this.Kolibri, 1);
                 exercisePassed = true;
+                this.$emit('exercisepassed');
               } else {
                 if (this.summaryprogress === 0) {
                   this.updateExerciseProgress(this.Kolibri, 0.5, true);
@@ -246,9 +258,10 @@
               }
             }
             this.$parent.$emit('saveAMLogs', exercisePassed);
+            this.$emit('answerchecked');
+            this.firstAttempt = false;
           }
         }
-        this.firstAttempt = false;
       },
       nextQuestion() {
         this.hinted = false; // reset hinted.
@@ -260,6 +273,7 @@
           this.itemRenderer.showHint();
           this.hinted = true;
           this.$parent.$emit('takehint', this.firstAttempt, this.hinted);
+          this.$emit('hinttaken');
           this.firstAttempt = false;
           this.availableHints -= 1;
         }
@@ -267,29 +281,15 @@
     },
 
     computed: {
-      lastNAttempts() {
-        if (this.pastattempts) {
-          return this.pastattempts.slice(0, this.passRatioN);
-        }
-        return [];
-      },
       passNum() {
         if (this.pastattempts) {
           if (this.pastattempts.length > this.passRatioN) {
-            return this.passRatioM - this.lastNAttempts.reduce((a, b) => a + b.correct, 0);
+            return this.passRatioM - this.pastattempts.slice(0, this.passRatioN).reduce(
+              (a, b) => a + b.correct, 0);
           }
           return this.passRatioM - this.pastattempts.reduce((a, b) => a + b.correct, 0);
         }
         return this.passRatioN;
-      },
-      recentAttempts() {
-        if (!this.pastattempts) {
-          return undefined;
-        }
-        if (this.pastattempts.length > this.passRatioN) {
-          return this.lastNAttempts;
-        }
-        return this.pastattempts;
       },
       checkText() {
         return this.empty ? this.$tr('check') : this.$tr('incorrect');
@@ -312,16 +312,18 @@
     },
 
     ready() {
-      // Rerender when item data changes
-      this.$watch('item', this.renderItem);
-      // Do a first render with current item data
+      // Do a first render with current available item data
       this.renderItem();
       // init the availableHints;
       this.availableHints = this.item.hints.length;
-    },
 
-    components: {
-      attemptprogress: require('./attemptprogress'),
+      this.$watch('item', () => {
+        // Rerender when item data changes
+        if (this.item) {
+          this.renderItem();
+          this.availableHints = this.item.hints.length;
+        }
+      });
     },
 
     vuex: {
@@ -401,46 +403,42 @@
     padding-left: 16px
     padding-right: 16px
 
-  .attemptprogress
-    position: absolute
-    left: 50%
-    transform: translate(-50%, 0)
-
 </style>
 
 
 <style lang="stylus">
+// Use namespcesd unscoped styling here to alter Perseus' original styling in order to fit kolibri
 
-  img
+  #perseus img
     width: 100%
     height: 100%
     max-width: 600px
     padding: 10px
 
-  ul
+  #perseus ul
     border-bottom: 0
     border-top: 0
 
-  fieldset
+  #perseus fieldset
     border: none
 
-  fieldset > ul
+  #perseus fieldset > ul
     border: 1px solid #BABEC2
     border-radius: 10px
     padding: 0
 
-  fieldset > ul > li
+  #perseus fieldset > ul > li
     list-style-type: none
 
-  .perseus-hint-renderer
+  #perseus .perseus-hint-renderer
     color: #686868
     padding: 6px 10px
     font-weight: normal
 
-  .perseus-hint-renderer
+  #perseus .perseus-hint-renderer
     margin-left: 40px
 
-  .perseus-hint-label
+  #perseus .perseus-hint-label
     color: #686868
     font-weight: 600
     white-space: nowrap
@@ -448,10 +446,17 @@
     position: relative
     font-weight: bold
 
-  .perseus-hint-label:before
+  #perseus .perseus-hint-label:before
     content: '('
 
-  .perseus-hint-label:after
+  #perseus .perseus-hint-label:after
     content: ')'
+
+  #perseus .paragraph
+    padding: 4px
+
+  #perseus .svg-image *
+    padding-bottom: 0 !important
+
 
 </style>
