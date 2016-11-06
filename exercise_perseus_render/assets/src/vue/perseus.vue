@@ -457,7 +457,7 @@
     .paragraph
       padding: 4px
 
-    .svg-image *
-      padding-bottom: 0 !important
+    // .svg-image *
+    //   padding-bottom: 0 !important
 
 </style>
