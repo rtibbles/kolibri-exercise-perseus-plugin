@@ -457,7 +457,8 @@
     .paragraph
       padding: 4px
 
-    // .svg-image *
-    //   padding-bottom: 0 !important
+    // Perseus will add padding-bottom: 100 to every svg-image, we don't want that.
+    .svg-image * // eslint-disable-line no-use-before-define
+      padding-bottom: 0 !important // eslint-disable-line no-use-before-define
 
 </style>
