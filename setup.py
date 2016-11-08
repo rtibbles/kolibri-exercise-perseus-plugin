@@ -16,7 +16,7 @@ def read_file(fname):
         return open(fname).read().decode("utf-8")
     return open(fname).read()
 
-dist_name = 'kolibri-exercise-perseus-renderer'
+dist_name = 'exercise_perseus_render'
 
 readme = read_file('README.rst')
 doclink = """
@@ -63,6 +63,7 @@ setup(
     ],
     package_dir={'exercise_perseus_render': 'exercise_perseus_render'},
     include_package_data=True,
+    install_requires=[],
     license='MIT',
     zip_safe=False,
     keywords='kolibri',
