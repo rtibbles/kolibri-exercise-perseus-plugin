@@ -457,6 +457,9 @@
     .paragraph
       padding: 4px
 
+    .fixed-to-responsive
+      display: inline-block
+
     // Perseus will add padding-bottom: 100 to every svg-image, we don't want that.
     // @stylint off
     .svg-image *
