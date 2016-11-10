@@ -37,6 +37,13 @@
 
 <script>
 
+  // because MathJax isn't compatible with webpack, we are loading it this way.
+  const script_load_hack = document.createElement('script');
+  const config_file_name = require('../constants').ConfigFileName;
+  // the config is fragile, Khan may change it and we need to update the following hardcoded path.
+  script_load_hack.setAttribute('src','/static/mathjax/2.1/MathJax.js?config=' + config_file_name);
+  document.head.appendChild(script_load_hack);
+
   const coreActions = require('kolibri.coreVue.vuex.actions');
 
   // keep references to these globally polluting libraries
