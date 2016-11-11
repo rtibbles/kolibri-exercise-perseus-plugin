@@ -17,10 +17,10 @@
           <icon-button @click="checkAnswer" v-if="!complete" class="question-btn" id="check-answer-button">{{ checkText }}</icon-button>
           <icon-button @click="nextQuestion" v-if="complete && passNum >= 1" class="question-btn" id="next-question-button">{{ $tr("correct") }}</icon-button>
           <icon-button v-if="availableHints > 0" @click="takeHint" class="hint-btn">
-            <svg class="lightbulb" src="./lightbulb_black.svg"></svg>{{ $tr("hint") }}
+            {{ $tr("hint") }}
           </icon-button>
           <icon-button v-else class="hint-btn" disabled>
-            <svg class="lightbulb disabled" src="./lightbulb_black.svg"></svg>{{ $tr("noMoreHint") }}
+            {{ $tr("noMoreHint") }}
           </icon-button>
           <div style="clear: both"></div>
         </div>
@@ -401,12 +401,6 @@
     float: right
     padding-left: 16px
     padding-right: 16px
-
-  .lightbulb
-    fill: $core-text-annotation
-
-  .disabled
-    fill: #dfdfdf
 
   #solutionarea
     min-height: 35px
