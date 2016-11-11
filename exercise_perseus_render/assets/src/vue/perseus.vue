@@ -9,6 +9,7 @@
       <div id="hintsarea"></div>
       <div style="clear: both;"></div>
     </div>
+    <div id="message" v-show="message">{{ message }}</div>
     <div id="answer-area-wrap">
       <div id="answer-area">
         <div class="info-box">
@@ -200,6 +201,8 @@
       complete: false,
       // Has an answer been submitted?
       empty: true,
+      // state about the answer
+      message: null,
       // has the user used the hint?
       hinted: false,
       // is first attempt?
@@ -234,32 +237,37 @@
         if (this.itemRenderer) {
           const check = this.itemRenderer.scoreInput();
           this.empty = check.empty;
-          if (!check.empty) {
-            this.complete = check.correct;
-            this.correct = this.hinted || !this.firstAttempt ? false : check.correct;
-            this.$parent.$emit(
-              'updateAMLogs',
-              this.correct,
-              this.complete,
-              this.firstAttempt,
-              this.hinted
-            );
-            let exercisePassed = false;
-            if (this.correct) {
-              if (this.passNum === 0) {
-                // passNum reached 0 means pass the exercise.
-                this.updateExerciseProgress(this.Kolibri, 1);
-                exercisePassed = true;
-                this.$emit('exercisepassed');
-              } else {
-                if (this.summaryprogress === 0) {
-                  this.updateExerciseProgress(this.Kolibri, 0.5, true);
+          if (check.message && check.empty) {
+            this.message = check.message;
+          } else {
+            this.message = null;
+            if (!check.empty) {
+              this.complete = check.correct;
+              this.correct = this.hinted || !this.firstAttempt ? false : check.correct;
+              this.$parent.$emit(
+                'updateAMLogs',
+                this.correct,
+                this.complete,
+                this.firstAttempt,
+                this.hinted
+              );
+              let exercisePassed = false;
+              if (this.correct) {
+                if (this.passNum === 0) {
+                  // passNum reached 0 means pass the exercise.
+                  this.updateExerciseProgress(this.Kolibri, 1);
+                  exercisePassed = true;
+                  this.$emit('exercisepassed');
+                } else {
+                  if (this.summaryprogress === 0) {
+                    this.updateExerciseProgress(this.Kolibri, 0.5, true);
+                  }
                 }
               }
+              this.$parent.$emit('saveAMLogs', exercisePassed);
+              this.$emit('answerchecked');
+              this.firstAttempt = false;
             }
-            this.$parent.$emit('saveAMLogs', exercisePassed);
-            this.$emit('answerchecked');
-            this.firstAttempt = false;
           }
         }
       },
@@ -351,7 +359,7 @@
     @import '../../../node_modules/perseus/lib/mathquill/mathquill.css'
 
   #perseus
-    border-radius: 10px
+    border-radius: $radius
     padding: 15px
     background-color: $core-bg-light
     margin-top: 6px
@@ -363,6 +371,14 @@
   #workarea
     margin-left: 0
 
+  #message
+    background-color: $core-bg-warning
+    color: $core-text-default
+    border-radius: $radius
+    width: 100%
+    padding: 10px 15px
+    margin-top: 6px
+
   .info-box
     margin-bottom: 10
     padding: 10
@@ -371,7 +387,7 @@
     overflow: visible
 
   #hintsarea
-    border-radius: 4px
+    border-radius: $radius
 
   #hintlable
     font-weight: bold
@@ -408,6 +424,8 @@
 
 <style lang="stylus">
 
+  @require '~kolibri.styles.coreTheme'
+
   // Use namespaced unscoped styling here to alter Perseus' original styling in order to fit kolibri
   #perseus
 
@@ -426,14 +444,14 @@
 
     fieldset > ul
       border: 1px solid #BABEC2
-      border-radius: 10px
+      border-radius: $radius
       padding: 0
 
     fieldset > ul > li
       list-style-type: none
 
     .perseus-hint-renderer
-      color: #686868
+      color: $core-text-annotation
       padding: 6px 10px
       font-weight: normal
 
@@ -441,7 +459,7 @@
       margin-left: 40px
 
     .perseus-hint-label
-      color: #686868
+      color: $core-text-annotation
       font-weight: 600
       white-space: nowrap
       right: 50px
