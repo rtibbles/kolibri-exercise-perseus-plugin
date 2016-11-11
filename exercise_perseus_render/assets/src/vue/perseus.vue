@@ -271,7 +271,10 @@
       takeHint() {
         if (this.itemRenderer) {
           this.itemRenderer.showHint();
-          this.hinted = true;
+          if (this.firstAttempt) {
+            // mark as hinted only if the first attempt is taking a hint.
+            this.hinted = true;
+          }
           this.$parent.$emit('takehint', this.firstAttempt, this.hinted);
           this.$emit('hinttaken');
           this.firstAttempt = false;
