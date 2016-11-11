@@ -29,7 +29,12 @@ How can I install this plugin?
 ------------------------------
 
 1. Download this repo.
-2. Terminal move to the repo dir and run ``git submodule update --init --recursive``
+2. Terminal move to the repo dir and run the following commands:
+
+    ``git submodule update --init --recursive``
+
+    ``./prepare.sh``
+
 3. Terminal move to your Kolibri dir
 4. run the following command line:
 
