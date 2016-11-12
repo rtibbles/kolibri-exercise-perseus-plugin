@@ -4,4 +4,5 @@ include CHANGELOG.rst
 include LICENSE
 include README.rst
 include requirements.txt
+recursive-exclude exercise_perseus_render/* *pyc
 recursive-include exercise_perseus_render *
