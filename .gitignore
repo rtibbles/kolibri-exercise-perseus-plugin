@@ -48,7 +48,6 @@ npm-debug.log
 
 # webpack built files
 **/build/*
-**/static/*
 
 # swap files
 *.swp

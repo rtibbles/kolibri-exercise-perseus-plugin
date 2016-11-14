@@ -38,6 +38,13 @@
 
 <script>
 
+  // because MathJax isn't compatible with webpack, we are loading it this way.
+  const scriptLoadHack = document.createElement('script');
+  const configFileName = require('../constants').ConfigFileName;
+  // the config is fragile, Khan may change it and we need to update the following hardcoded path.
+  scriptLoadHack.setAttribute('src', `/static/mathjax/2.1/MathJax.js?config=${configFileName}`);
+  document.head.appendChild(scriptLoadHack);
+
   const coreActions = require('kolibri.coreVue.vuex.actions');
 
   // keep references to these globally polluting libraries
@@ -471,6 +478,9 @@
 
     .paragraph
       padding: 4px
+
+    .fixed-to-responsive
+      display: inline-block
 
     // Perseus will add padding-bottom: 100 to every svg-image, we don't want that.
     // @stylint off
