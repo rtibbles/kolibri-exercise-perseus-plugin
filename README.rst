@@ -33,7 +33,7 @@ How can I install this plugin?
 
     ``git submodule update --init --recursive``
 
-    ``./prepare.sh``
+    ``./update_perseus.sh``
 
 3. Terminal move to your Kolibri dir
 4. run the following command line:
