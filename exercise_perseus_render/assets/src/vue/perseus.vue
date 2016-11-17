@@ -218,7 +218,6 @@
       availableHints: 0,
       // trigger checkAnswer btn animation
       shake: false,
-      throttle: false,
     }),
 
     methods: {
@@ -246,7 +245,6 @@
       checkAnswer() {
         if (this.itemRenderer) {
           const check = this.itemRenderer.scoreInput();
-          window.eli = check;
           this.empty = check.empty;
           if (check.message && check.empty) {
             this.message = check.message;
@@ -255,13 +253,11 @@
             if (!check.empty) {
               if (!check.correct) {
                 // btn animation on incorrect answer.
-                this.shake = true;
-                if (!this.throttle) {
-                  this.throttle = true;
+                if (!this.shake) {
                   setTimeout(() => {
                     this.shake = false;
-                    this.throttle = false;
                   }, 1000);
+                  this.shake = true;
                 }
               }
               this.complete = check.correct;
