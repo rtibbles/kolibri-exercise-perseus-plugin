@@ -9,7 +9,7 @@
       <div id="hintsarea"></div>
       <div style="clear: both;"></div>
     </div>
-    <div id="message" v-show="message">{{ message }}</div>
+    <div id="message" v-show="message" transition="expand">{{ message }}</div>
     <div id="answer-area-wrap">
       <div id="answer-area">
         <div class="info-box">
@@ -246,6 +246,7 @@
       checkAnswer() {
         if (this.itemRenderer) {
           const check = this.itemRenderer.scoreInput();
+          window.eli = check;
           this.empty = check.empty;
           if (check.message && check.empty) {
             this.message = check.message;
@@ -253,6 +254,7 @@
             this.message = null;
             if (!check.empty) {
               if (!check.correct) {
+                // btn animation on incorrect answer.
                 this.shake = true;
                 if (!this.throttle) {
                   this.throttle = true;
@@ -398,7 +400,6 @@
     background-color: $core-bg-warning
     color: $core-text-default
     border-radius: $radius
-    width: 100%
     padding: 10px 15px
     margin-top: 6px
 
@@ -452,6 +453,14 @@
       transform: translate3d(-4px, 0, 0)
     40%, 60%
       transform: translate3d(4px, 0, 0)
+
+  // message transition effect
+  .expand-transition
+    transition: all 1s ease
+
+  .expand-enter, .expand-leave
+    position: absolute
+    opacity: 0
 
 </style>
 
