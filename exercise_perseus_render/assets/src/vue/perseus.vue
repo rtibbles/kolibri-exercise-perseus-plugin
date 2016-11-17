@@ -14,7 +14,7 @@
       <div id="answer-area">
         <div class="info-box">
           <div id="solutionarea"></div>
-          <icon-button @click="checkAnswer" v-if="!complete" class="question-btn" id="check-answer-button">{{ checkText }}</icon-button>
+          <icon-button @click="checkAnswer" v-if="!complete" class="question-btn" :class="{shaking: shake}" id="check-answer-button">{{ checkText }}</icon-button>
           <icon-button @click="nextQuestion" v-if="complete && passNum >= 1" class="question-btn" id="next-question-button">{{ $tr("correct") }}</icon-button>
           <icon-button v-if="availableHints > 0" @click="takeHint" class="hint-btn">
             {{ $tr("hint") }}
@@ -216,6 +216,9 @@
       firstAttempt: true,
       // number of available hints
       availableHints: 0,
+      // trigger checkAnswer btn animation
+      shake: false,
+      throttle: false,
     }),
 
     methods: {
@@ -249,6 +252,16 @@
           } else {
             this.message = null;
             if (!check.empty) {
+              if (!check.correct) {
+                this.shake = true;
+                if (!this.throttle) {
+                  this.throttle = true;
+                  setTimeout(() => {
+                    this.shake = false;
+                    this.throttle = false;
+                  }, 1000);
+                }
+              }
               this.complete = check.correct;
               this.correct = this.hinted || !this.firstAttempt ? false : check.correct;
               this.$parent.$emit(
@@ -422,6 +435,23 @@
     color: $core-bg-light
     padding-left: 16px
     padding-right: 16px
+
+  // checkAnswer btn animation
+  .shaking
+    animation: shake 0.8s cubic-bezier(0.36, 0.07, 0.19, 0.97) both
+    transform: translate3d(0, 0, 0)
+    backface-visibility: hidden
+    perspective: 1000px
+
+  @keyframes shake
+    10%, 90%
+      transform: translate3d(-1px, 0, 0)
+    20%, 80%
+      transform: translate3d(2px, 0, 0)
+    30%, 50%, 70%
+      transform: translate3d(-4px, 0, 0)
+    40%, 60%
+      transform: translate3d(4px, 0, 0)
 
 </style>
 
