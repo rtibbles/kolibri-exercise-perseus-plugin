@@ -25,6 +25,25 @@ What is this plugin?
 
 A Perseus renderer wrapper for Kolibri that can track learning progress and save to the database.
 
+How to publish to PyPi?
+------------------------------
+
+1. Download this repo.
+2. Terminal move to the root level of repo dir and run the following commands:
+
+    ``git submodule update --init --recursive``
+
+    ``./update_perseus.sh``
+
+3. update `setup.py` to a newer version.
+4. Terminal move to `exercise_perseus_render` folder and run ``npm install``.
+5. Terminal move to the root level of repo dir and run the following commands to publish to PyPi:
+
+    ``python setup.py register -r pypi``
+
+    ``python setup.py sdist upload -r pypi``
+
+
 How can I install this plugin?
 ------------------------------
 
@@ -36,7 +55,7 @@ How can I install this plugin?
     ``./update_perseus.sh``
 
 3. Terminal move to your Kolibri dir
-4. run the following command line:
+4. run the following commands:
 
     ``pip install -e <KOLIBRI-PERSEUS-PLUGIN-LOCAL-PATH>``
 
