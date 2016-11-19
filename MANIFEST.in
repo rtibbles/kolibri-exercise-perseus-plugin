@@ -3,6 +3,5 @@ include CONTRIBUTING.rst
 include CHANGELOG.rst
 include LICENSE
 include README.rst
-include .eslintrc.js
 recursive-exclude exercise_perseus_render/* *pyc
 recursive-include exercise_perseus_render *
