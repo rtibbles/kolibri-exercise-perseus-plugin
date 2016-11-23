@@ -29,7 +29,7 @@
         :log="recentAttempts"
       >
       </exercise-attempts>
-      <p class="message">Get <b>{{passRatioM}}</b> check marks showing up!</p>
+      <p class="message">GOAL: Get <b>{{passRatioM}}</b> check marks showing up!</p>
     </div>
   </div>
 
@@ -146,27 +146,38 @@
 
   .message
     color: grey
-    position: relative
-    text-align: center
-    clear: both
-    top: 40px
+    padding: 16px
+    font-size: 14px
     @media screen and (max-width: $portrait-breakpoint)
+      position: relative
+      text-align: center
+      clear: both
+      top: 40px
       font-size: 12px
       margin-top: 0
+      padding: 0
 
   .attemptprogress
     position: absolute
-    left: 50%
-    transform: translate(-50%, 0)
+    padding-left: 14px
+    top: 38px
+    @media screen and (max-width: $portrait-breakpoint)
+      top: 0
+      padding-left: 0
+      left: 50%
+      transform: translate(-50%, 0)
 
   #attemptprogress-container
+    border-radius: $radius
     position: relative
-    bottom: 60px
+    background-color: $core-bg-light
+    height: 84px
+    bottom: 74px
     @media screen and (max-width: $portrait-breakpoint)
       position: fixed
-      background-color: $core-bg-light
-      width: 100%
       height: 60px
+      width: 100%
+      border-radius: 0
       bottom: $nav-portrait-height
       border-bottom: thin solid $core-text-annotation
       border-top: thin solid $core-text-annotation

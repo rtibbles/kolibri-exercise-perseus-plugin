@@ -14,8 +14,8 @@
       <div id="answer-area">
         <div class="info-box">
           <div id="solutionarea"></div>
-          <icon-button @click="checkAnswer" v-if="!complete" class="question-btn" :class="{shaking: shake}" id="check-answer-button">{{ checkText }}</icon-button>
-          <icon-button @click="nextQuestion" v-if="complete && passNum >= 1" class="question-btn" id="next-question-button">{{ $tr("correct") }}</icon-button>
+          <icon-button @click="checkAnswer" v-show="!complete" class="question-btn" :class="{shaking: shake}" id="check-answer-button">{{ checkText }}</icon-button>
+          <icon-button @click="nextQuestion" v-show="complete" class="question-btn" id="next-question-button">{{ $tr("correct") }}</icon-button>
           <icon-button v-if="availableHints > 0" @click="takeHint" class="hint-btn">
             {{ $tr("hint") }}
           </icon-button>
@@ -387,7 +387,9 @@
 
   #answer-area-wrap
     position: relative
-    top: 70%
+    top: 74px
+    @media screen and (max-width: $portrait-breakpoint)
+      top: -18px
 
   #workarea
     margin-left: 0
