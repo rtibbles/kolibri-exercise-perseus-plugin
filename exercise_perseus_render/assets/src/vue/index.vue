@@ -3,7 +3,7 @@
   <div id="exercise-container">
     <assessment-wrapper
       id = "assessment-container"
-      v-ref:wrapper
+      ref:wrapper
       v-if="exercise"
       :item-id="itemId"
       :mastery-spacing-time="exercise.masterySpacingTime"

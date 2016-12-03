@@ -9,7 +9,7 @@
       <div id="hintsarea"></div>
       <div style="clear: both;"></div>
     </div>
-    <div id="message" v-show="message" transition="expand">{{ message }}</div>
+    <transition id="message" v-show="message" name="expand">{{ message }}</transition>
     <div id="answer-area-wrap">
       <div id="answer-area">
         <div class="info-box">
@@ -30,7 +30,7 @@
       <icon-button v-if="scratchpad" id="scratchpad-show">{{ $tr("showScratch") }}</icon-button>
       <icon-button v-else disabled id="scratchpad-not-available">{{ $tr("notAvailable") }}</icon-button>
     </div>
-    <div v-el:perseus-container id="perseus-container"></div>
+    <div ref="perseusContainer" id="perseus-container"></div>
   </div>
 
 </template>
@@ -54,7 +54,7 @@
   let reactReference = undefined;
 
   module.exports = {
-    init() {
+    beforeCreate() {
       // Perseus expects React to be available on the global object
       // we save what ever is using this global name and assign it back
       // when this component is destroied.
@@ -118,7 +118,7 @@
     beforeDestroy() {
       // Clean up any existing itemRenderer to avoid leak memory
       // https://facebook.github.io/react/blog/2015/10/01/react-render-and-top-level-api.html
-      this.reactDOM.unmountComponentAtNode(this.$els.perseusContainer);
+      this.reactDOM.unmountComponentAtNode(this.$refs.perseusContainer);
     },
 
     destroyed() {
@@ -239,7 +239,7 @@
         this.itemRenderer =
         this.reactDOM.render( // eslint-disable-line new-cap
           this.itemRendererFactory(this.itemRenderData, null),
-          this.$els.perseusContainer, () => { this.loading = false; }
+          this.$refs.perseusContainer, () => { this.loading = false; }
         );
       },
       checkAnswer() {
@@ -340,19 +340,21 @@
       },
     },
 
-    ready() {
-      // Do a first render with current available item data
-      this.renderItem();
-      // init the availableHints;
-      this.availableHints = this.item.hints.length;
+    mounted() {
+      this.$nextTick(function () {
+        // Do a first render with current available item data
+        this.renderItem();
+        // init the availableHints;
+        this.availableHints = this.item.hints.length;
 
-      this.$watch('item', () => {
-        // Rerender when item data changes
-        if (this.item) {
-          this.renderItem();
-          this.availableHints = this.item.hints.length;
-        }
-      });
+        this.$watch('item', () => {
+          // Rerender when item data changes
+          if (this.item) {
+            this.renderItem();
+            this.availableHints = this.item.hints.length;
+          }
+        });
+      })
     },
 
     vuex: {
