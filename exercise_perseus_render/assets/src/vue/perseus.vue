@@ -341,7 +341,7 @@
     },
 
     mounted() {
-      this.$nextTick(function () {
+      this.$nextTick(() => {
         // Do a first render with current available item data
         this.renderItem();
         // init the availableHints;
@@ -354,7 +354,7 @@
             this.availableHints = this.item.hints.length;
           }
         });
-      })
+      });
     },
 
     vuex: {
