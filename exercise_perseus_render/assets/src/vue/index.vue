@@ -39,6 +39,7 @@
 <script>
 
   const ss = require('seededshuffle');
+  const logging = require('kolibri.lib.logging').getLogger(__filename);
 
   module.exports = {
 
@@ -89,7 +90,7 @@
           ).then((itemResponse) => {
             this.item = itemResponse.entity;
           }).catch(reason => {
-            console.log('Oops, you got rejected: ', reason);
+            logging.debug(`Oops, you got rejected: ${reason}`);
           });
       },
       setItemData() {
@@ -122,7 +123,7 @@
           }
           this.setItemData();
         }).catch(reason => {
-          console.log('Oops, requesting exercise.json got rejected: ', reason);
+          logging.debug(`Oops, requesting exercise.json got rejected: ${reason}`);
         });
     },
     props: [
