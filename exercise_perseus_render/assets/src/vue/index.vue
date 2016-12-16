@@ -5,16 +5,16 @@
       id = "assessment-container"
       ref:wrapper
       v-if="exercise"
-      :item-id="itemId"
-      :mastery-spacing-time="exercise.masterySpacingTime"
-      :mastery-criterion="exercise.mastery_model"
+      :itemId="itemId"
+      :masterySpacingTime="exercise.masterySpacingTime"
+      :masteryCriterion="exercise.mastery_model"
       @nextquestion="nextQuestion"
     >
       <perseus
         v-if="item"
         :item="item"
-        :pass-ratio-m="passRatioM"
-        :pass-ratio-n="passRatioN"
+        :passRatioM="passRatioM"
+        :passRatioN="passRatioN"
         @hinttaken="hintTaken"
         @answerchecked="answerChecked"
         @exercisepassed="exercisePassed"
@@ -25,7 +25,7 @@
         class="attemptprogress"
         :waiting="waiting"
         :success="success"
-        :numspaces="passRatioN"
+        :numSpaces="passRatioN"
         :log="recentAttempts"
       >
       </exercise-attempts>
