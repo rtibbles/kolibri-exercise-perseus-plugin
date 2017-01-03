@@ -27,8 +27,7 @@
         :success="success"
         :numSpaces="passRatioN"
         :log="recentAttempts"
-      >
-      </exercise-attempts>
+      />
       <p class="message">GOAL: Get <b>{{passRatioM}}</b> check marks showing up!</p>
     </div>
   </div>
@@ -59,12 +58,16 @@
     computed: {
       recentAttempts() {
         if (!this.pastattempts) {
-          return undefined;
+          return [];
         }
-        if (this.pastattempts.length > this.passRatioN) {
-          return this.pastattempts.slice(0, this.passRatioN);
-        }
-        return this.pastattempts;
+        // map the list of attempt objects to simple strings
+        // ordered from first to last
+        return this.pastattempts.map(attempt => {
+          if (attempt.hinted) {
+            return 'hint';
+          }
+          return attempt.correct ? 'right' : 'wrong';
+        }).reverse();
       },
     },
 
