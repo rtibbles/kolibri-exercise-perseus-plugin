@@ -2,7 +2,7 @@
 const ContentRendererModule = require('content_renderer_module');
 const ExerciseComponent = require('./vue/index');
 // Add window.btoa polyfill
-global.btoa = global.btoa ? global.btoa : require("btoa");
+global.btoa = global.btoa ? global.btoa : require('btoa');
 
 class ExercisePerseusModule extends ContentRendererModule {
   get rendererComponent() {
