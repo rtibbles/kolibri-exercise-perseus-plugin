@@ -49,7 +49,7 @@ def enable_log_to_stdout(logname):
 
 setup(
     name=dist_name,
-    version="0.2.6",
+    version="0.2.7",
     description=description,
     long_description="{readme}\n\n{doclink}".format(
         readme=readme,
