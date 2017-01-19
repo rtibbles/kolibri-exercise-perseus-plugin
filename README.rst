@@ -29,11 +29,11 @@ How can I install this plugin?
 ------------------------------
 
 1. Inside your Kolibri virtual environment:
-    ``pip install kolibri-perseus-exercise-renderer``
+    ``pip install kolibri-perseus-exercise-plugin``
 
 2. Activate the plugin:
 
-    ``kolibri plugin exercise_perseus_render enable``
+    ``kolibri plugin exercise_perseus_renderer enable``
 
 3. Restart Kolibri.
 
@@ -41,22 +41,18 @@ How can I install this plugin for development?
 ------------------------------
 
 1. Download this repo.
-2. Terminal move to the repo dir and run the following commands:
-
-    ``git submodule update --init --recursive``
-
-    ``./update_perseus.sh``
-
-3. Terminal move to your Kolibri dir
+2. Open terminal in your Kolibri repo.
 4. run the following commands:
 
     ``pip install -e <KOLIBRI-PERSEUS-PLUGIN-LOCAL-PATH>``
 
-    ``kolibri plugin exercise_perseus_render enable``
+    ``kolibri plugin exercise_perseus_renderer enable``
 
 5. Then run the commands to install frontend packages in Kolibri, this plugin will have its recursively installed.
 
-If there's error complaining `Jquery` and `underscore` not found in node_modules folder, you may need to upate your `Node` and `npm` to the latest version.
+6. If you have updated the version of Perseus in the repo, run the following command:
+
+    ``./update_perseus.sh``
 
 How to publish to PyPi?
 ------------------------------
