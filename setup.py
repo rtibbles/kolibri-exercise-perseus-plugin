@@ -59,9 +59,9 @@ setup(
     author_email='info@learningequality.org',
     url='https://github.com/learningequality/kolibri-exercise-perseus-plugin',
     packages=[
-        str('exercise_perseus_render'),  # https://github.com/pypa/setuptools/pull/597
+        str('exercise_perseus_renderer'),  # https://github.com/pypa/setuptools/pull/597
     ],
-    package_dir={'exercise_perseus_render': 'exercise_perseus_render'},
+    package_dir={'exercise_perseus_renderer': 'exercise_perseus_renderer'},
     include_package_data=True,
     license='MIT',
     zip_safe=False,
