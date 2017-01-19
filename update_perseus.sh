@@ -4,7 +4,7 @@ mkdir exercise_perseus_renderer/static
 cp -r exercise_perseus_renderer/node_modules/perseus/lib/mathjax exercise_perseus_renderer/static/
 
 # update the constants.js to store the mathjax config file name.
-> exercise_perseus_render/assets/src/constants.js
+> exercise_perseus_renderer/assets/src/constants.js
 config_file_name="$(basename exercise_perseus_renderer/static/mathjax/2.1/config/*)"
 file_content="const ConfigFileName = '${config_file_name}';
 module.exports = { ConfigFileName };"

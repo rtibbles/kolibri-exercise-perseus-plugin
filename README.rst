@@ -64,11 +64,9 @@ How to publish to PyPi?
 1. Follow the instructions above to installing the plugin for development.
 2. From the Kolibri directory run the frontend build command.
 3. update `setup.py` to a newer version.
-4. Terminal move to the root level of repo dir and run the following commands to publish to PyPi:
+4. Terminal move to the root level of repo dir and run the following command to publish to PyPi:
 
-    ``python setup.py register -r pypi``
-
-    ``python setup.py sdist upload -r pypi``
+    ``make release``
 
 
 How can I contribute?
