@@ -6,7 +6,6 @@
 module.exports = {
   resolve: {
     alias: {
-      jquery: 'perseus/lib/jquery',
       underscore: 'perseus/lib/underscore'
     }
   }

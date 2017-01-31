@@ -51,6 +51,13 @@
 
   module.exports = {
     beforeCreate() {
+      // Load in jQuery, because apparently we still need that for a React app.
+      global.$ = require('jquery');
+      global.jQuery = global.$;
+
+      // Underscore as well! We use their bundled version for compatibility reasons.
+      global._ = require('underscore');
+
       // Perseus expects React to be available on the global object
       this.react = global.React = require('react');
 
@@ -67,15 +74,11 @@
       // Perseus also expects katex to be globally imported.
       global.katex = require('perseus/lib/katex/katex');
 
-      // Underscore as well! We use their bundled version for compatibility reasons.
-      global._ = require('perseus/lib/underscore');
-
-      // Load in jQuery, because apparently we still need that for a React app.
-      global.$ = require('perseus/lib/jquery');
-
       // Perseus expects this i18n object, but hopefully we won't have to touch it
       // We should try to only use our interface text, so as to avoid interacting with this.
-      global.i18n = require('perseus/lib/i18n');
+      global.i18n = require('imports?window=>{}!exports?window.i18n!perseus/lib/i18n');
+
+      require('qtip2');
 
       // For reasons quite beyond my ken, some configuration is still delegated to this
       // global Exercises object.
@@ -100,6 +103,7 @@
       // Clean up the global namespace pollution that Perseus necessitates.
       delete global.React;
       delete global.$;
+      delete global.jQuery;
       delete global.i18n;
       delete global.ReactDOM;
       delete global.Exercises;
