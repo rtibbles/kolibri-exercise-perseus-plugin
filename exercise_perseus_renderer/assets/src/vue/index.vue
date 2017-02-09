@@ -113,7 +113,7 @@
       },
     },
     components: {
-      perseus: require('./perseus'),
+      'perseus': require('./perseus'),
       'assessment-wrapper': require('kolibri.coreVue.components.assessmentWrapper'),
       'exercise-attempts': require('kolibri.coreVue.components.exerciseAttempts'),
     },
