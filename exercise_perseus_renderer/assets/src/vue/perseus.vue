@@ -121,6 +121,9 @@
       hintLable: 'Hint:',
       noMoreHint: 'No more hint',
     },
+    components: {
+      'icon-button': require('kolibri.coreVue.components.iconButton'),
+    },
     props: {
       scratchpad: {
         type: Boolean,

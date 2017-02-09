@@ -114,6 +114,8 @@
     },
     components: {
       perseus: require('./perseus'),
+      'assessment-wrapper': require('kolibri.coreVue.components.assessmentWrapper'),
+      'exercise-attempts': require('kolibri.coreVue.components.exerciseAttempts'),
     },
     created() {
       this.Kolibri.client(`${this.defaultFile.storage_url}exercise.json`).then(
