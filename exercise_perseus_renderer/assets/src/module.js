@@ -1,5 +1,5 @@
 
-const ContentRendererModule = require('kolibri.coreModules.contentRenderer');
+const ContentRendererModule = require('content_renderer_module');
 const ExerciseComponent = require('./vue/index');
 // Add window.btoa polyfill
 global.btoa = global.btoa ? global.btoa : require('btoa');
