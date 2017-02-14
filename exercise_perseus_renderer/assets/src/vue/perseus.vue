@@ -76,7 +76,7 @@
 
       // Perseus expects this i18n object, but hopefully we won't have to touch it
       // We should try to only use our interface text, so as to avoid interacting with this.
-      global.i18n = require('imports?window=>{}!exports?window.i18n!perseus/lib/i18n');
+      global.i18n = require('imports-loader?window=>{}!exports-loader?window.i18n!perseus/lib/i18n');
 
       require('qtip2');
 
