@@ -41,16 +41,20 @@ How can I install this plugin for development?
 ------------------------------
 
 1. Download this repo.
+
 2. Open terminal in your Kolibri repo.
-4. run the following commands:
+
+3. run the following commands:
 
     ``pip install -e <KOLIBRI-PERSEUS-PLUGIN-LOCAL-PATH>``
 
     ``kolibri plugin exercise_perseus_renderer enable``
 
-5. Then run the commands to install frontend packages in Kolibri, this plugin will have its recursively installed.
+4. Then run the commands to install frontend packages in Kolibri, this plugin will have its dependencies recursively installed:
 
-6. If you have updated the version of Perseus in the repo, run the following command:
+    ``yarn install``
+
+5. Finally, to copy over Mathjax into the static folder, run the following command (you will need to do this if you update the version of Perseus in the repo also):
 
     ``./update_perseus.sh``
 
