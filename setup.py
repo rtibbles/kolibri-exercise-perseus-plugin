@@ -16,14 +16,9 @@ def read_file(fname):
         return open(fname).read().decode("utf-8")
     return open(fname).read()
 
-dist_name = 'kolibri-exercise-perseus-renderer'
+dist_name = 'kolibri-exercise-perseus-plugin'
 
 readme = read_file('README.rst')
-doclink = """
-Documentation
--------------
-
-The full documentation is at."""
 
 # Default description of the distributed package
 description = (
@@ -49,19 +44,18 @@ def enable_log_to_stdout(logname):
 
 setup(
     name=dist_name,
-    version="0.2.8",
+    version="0.3.4",
     description=description,
-    long_description="{readme}\n\n{doclink}".format(
+    long_description="{readme}".format(
         readme=readme,
-        doclink=doclink
     ),
     author='Learning Equality',
     author_email='info@learningequality.org',
     url='https://github.com/learningequality/kolibri-exercise-perseus-plugin',
     packages=[
-        str('exercise_perseus_render'),  # https://github.com/pypa/setuptools/pull/597
+        str('exercise_perseus_renderer'),  # https://github.com/pypa/setuptools/pull/597
     ],
-    package_dir={'exercise_perseus_render': 'exercise_perseus_render'},
+    package_dir={'exercise_perseus_renderer': 'exercise_perseus_renderer'},
     include_package_data=True,
     license='MIT',
     zip_safe=False,

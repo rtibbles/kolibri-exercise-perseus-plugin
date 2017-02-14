@@ -1,0 +1,18 @@
+{
+  "scripts": {
+    "postinstall": "git submodule update --init --recursive && cd node_modules/perseus && yarn install"
+  },
+  "name": "kolibri-exercise-perseus-render-plugin",
+  "description": "Exercise/Perseus Render Plugin for Kolibri",
+  "private": true,
+  "dependencies": {
+    "btoa": "1.1.2",
+    "jquery": "2.2.4",
+    "qtip2": "2.20",
+    "react": "0.14.7",
+    "react-addons-css-transition-group": "0.14.7",
+    "react-addons-pure-render-mixin": "0.14.7",
+    "react-dom": "0.14.7",
+    "seededshuffle": "0.1.1"
+  }
+}

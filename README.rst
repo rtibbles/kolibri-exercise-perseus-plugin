@@ -25,45 +25,48 @@ What is this plugin?
 
 A Perseus renderer wrapper for Kolibri that can track learning progress and save to the database.
 
-How to publish to PyPi?
-------------------------------
-
-1. Download this repo.
-2. Terminal move to the root level of repo dir and run the following commands:
-
-    ``git submodule update --init --recursive``
-
-    ``./update_perseus.sh``
-
-3. update `setup.py` to a newer version.
-4. Terminal move to `exercise_perseus_render` folder and run ``npm install``.
-5. Terminal move to the root level of repo dir and run the following commands to publish to PyPi:
-
-    ``python setup.py register -r pypi``
-
-    ``python setup.py sdist upload -r pypi``
-
-
 How can I install this plugin?
 ------------------------------
 
+1. Inside your Kolibri virtual environment:
+    ``pip install kolibri-perseus-exercise-plugin``
+
+2. Activate the plugin:
+
+    ``kolibri plugin exercise_perseus_renderer enable``
+
+3. Restart Kolibri.
+
+How can I install this plugin for development?
+------------------------------
+
 1. Download this repo.
-2. Terminal move to the repo dir and run the following commands:
 
-    ``git submodule update --init --recursive``
+2. Open terminal in your Kolibri repo.
 
-    ``./update_perseus.sh``
-
-3. Terminal move to your Kolibri dir
-4. run the following commands:
+3. run the following commands:
 
     ``pip install -e <KOLIBRI-PERSEUS-PLUGIN-LOCAL-PATH>``
 
-    ``kolibri plugin exercise_perseus_render enable``
+    ``kolibri plugin exercise_perseus_renderer enable``
 
-    ``npm install``
+4. Then run the commands to install frontend packages in Kolibri, this plugin will have its dependencies recursively installed:
 
-If there's error complaining `Jquery` and `underscore` not found in node_modules folder, you may need to upate your `Node` and `npm` to the latest version.
+    ``yarn install``
+
+5. Finally, to copy over Mathjax into the static folder, run the following command (you will need to do this if you update the version of Perseus in the repo also):
+
+    ``./update_perseus.sh``
+
+How to publish to PyPi?
+------------------------------
+
+1. Follow the instructions above to installing the plugin for development.
+2. From the Kolibri directory run the frontend build command.
+3. update `setup.py` to a newer version.
+4. Terminal move to the root level of repo dir and run the following command to publish to PyPi:
+
+    ``make release``
 
 
 How can I contribute?
