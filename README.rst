@@ -1,5 +1,5 @@
 
-Kolibri Exercise Renderer for Perseus
+Perseus Exercise Renderer for Kolibri
 =====================================
 
 What is Kolibri?
