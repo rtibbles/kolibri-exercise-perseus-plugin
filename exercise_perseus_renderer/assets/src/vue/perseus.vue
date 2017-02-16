@@ -1,7 +1,7 @@
 <template>
 
   <div>
-    <div id="perseus">
+    <div id="perseus" @click="dismissMessage">
       <div id="problem-area">
         <div id="workarea"></div>
       </div>
@@ -280,6 +280,10 @@
           this.availableHints -= 1;
         }
       },
+      dismissMessage() {
+        // dismiss the error message when user click anywhere inside the perseus element.
+        this.message = null;
+      }
     },
 
     computed: {
