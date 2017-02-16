@@ -346,7 +346,7 @@
 
 <style lang="stylus" scoped>
 
-  @require '~kolibri.styles.coreTheme'
+  @require '~kolibri.styles.theme'
 
   #perseus
     @import '../../../node_modules/perseus/stylesheets/local-only/khan-exercise.css'
@@ -440,7 +440,7 @@
 
 <style lang="stylus">
 
-  @require '~kolibri.styles.coreTheme'
+  @require '~kolibri.styles.theme'
 
   // Use namespaced unscoped styling here to alter Perseus' original styling in order to fit kolibri
   #perseus

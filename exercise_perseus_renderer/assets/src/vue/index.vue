@@ -148,7 +148,7 @@
 
 <style lang="stylus" scoped>
 
-  @require '~kolibri.styles.coreTheme'
+  @require '~kolibri.styles.theme'
 
   .message
     color: grey
