@@ -58,6 +58,11 @@ How can I install this plugin for development?
 
     ``./update_perseus.sh``
 
+Known issues
+------------
+
+If you ran `make dist` or `make pex` on Kolibri with `kolibri-exercise-perseus-plugin==x.x.x` present in `kolibri/requirements/base.txt`, Kolibri will generate a exercise_perseus_renderer instance inside its `dist` folder and use it afterwards. That means manually installing exercise_perseus_renderer for development won't take any effects. One way to fix this issue is to restore the `dist` folder.
+
 How to publish to PyPi?
 ------------------------------
 
