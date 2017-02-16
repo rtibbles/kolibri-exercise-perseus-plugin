@@ -446,10 +446,9 @@
   #perseus
 
     img
-      width: 100%
-      height: 100%
-      max-width: 600px
+      max-width: 100%
       padding: 10px
+      vertical-align: middle
 
     ul
       border-bottom: 0
