@@ -16,21 +16,17 @@
       <div id="answer-area">
         <div class="info-box">
           <div id="solutionarea"></div>
-          <icon-button @click="checkAnswer" v-show="!complete" class="question-btn" :class="{shaking: shake}" id="check-answer-button">{{ checkText }}</icon-button>
-          <icon-button @click="nextQuestion" v-show="complete" class="question-btn" id="next-question-button">{{ $tr("correct") }}</icon-button>
-          <icon-button v-if="availableHints > 0" @click="takeHint" class="hint-btn">
-            {{ $tr("hint") }}
-          </icon-button>
-          <icon-button v-else class="hint-btn" disabled>
-            {{ $tr("noMoreHint") }}
-          </icon-button>
+          <icon-button @click="checkAnswer" v-show="!complete" class="question-btn" :class="{shaking: shake}" id="check-answer-button" :text="$tr('check')"></icon-button>
+          <icon-button @click="nextQuestion" v-show="complete" class="question-btn" id="next-question-button" :text="$tr('correct')"></icon-button>
+          <icon-button v-if="availableHints > 0" @click="takeHint" class="hint-btn" :text="$tr('hint')"></icon-button>
+          <icon-button v-else class="hint-btn" disabled :text="$tr('noMoreHint')"></icon-button>
           <div style="clear: both"></div>
         </div>
       </div>
     </div>
     <div id="scratchpad-btn-container">
-      <icon-button v-if="scratchpad" id="scratchpad-show">{{ $tr("showScratch") }}</icon-button>
-      <icon-button v-else disabled id="scratchpad-not-available">{{ $tr("notAvailable") }}</icon-button>
+      <icon-button v-if="scratchpad" id="scratchpad-show" :text="$tr('showScratch')"></icon-button>
+      <icon-button v-else disabled id="scratchpad-not-available" :text="$tr('notAvailable')"></icon-button>
     </div>
     <div ref="perseusContainer" id="perseus-container"></div>
   </div>
