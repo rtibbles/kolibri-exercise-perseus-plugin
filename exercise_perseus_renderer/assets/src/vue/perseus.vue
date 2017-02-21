@@ -218,9 +218,9 @@
         // Get all inputs in perseus and add event listeners to them.
         // Here we dismiss answer error message on focus.
         const perseusInputs = this.$refs.perseus.getElementsByTagName('input');
-        for (let i = 0; i < perseusInputs.length; i++) {
-          perseusInputs[i].addEventListener('focus', this.dismissMessage);
-        }
+        Array.prototype.forEach.call(perseusInputs, (perseusInput) => {
+          perseusInput.addEventListener('focus', this.dismissMessage);
+        });
       },
       checkAnswer() {
         if (this.itemRenderer) {
