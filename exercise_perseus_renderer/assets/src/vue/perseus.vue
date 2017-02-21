@@ -1,7 +1,7 @@
 <template>
 
   <div>
-    <div id="perseus" @click="dismissMessage">
+    <div ref="perseus" id="perseus">
       <div id="problem-area">
         <div id="workarea"></div>
       </div>
@@ -214,6 +214,13 @@
           this.itemRendererFactory(this.itemRenderData, null),
           this.$refs.perseusContainer, () => { this.loading = false; }
         );
+
+        // Get all inputs in perseus and add event listeners to them.
+        // Here we dismiss answer error message on focus.
+        const perseusInputs = this.$refs.perseus.getElementsByTagName('input');
+        for (let i = 0; i < perseusInputs.length; i++) {
+          perseusInputs[i].addEventListener('focus', this.dismissMessage);
+        }
       },
       checkAnswer() {
         if (this.itemRenderer) {
@@ -283,7 +290,7 @@
       dismissMessage() {
         // dismiss the error message when user click anywhere inside the perseus element.
         this.message = null;
-      }
+      },
     },
 
     computed: {
