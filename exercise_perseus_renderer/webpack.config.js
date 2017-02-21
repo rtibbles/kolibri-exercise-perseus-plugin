@@ -11,5 +11,18 @@ module.exports = {
       underscore: 'perseus/lib/underscore'
     },
     modules: [path.resolve(__dirname, 'node_modules/perseus/node_modules')]
+  },
+  module: {
+    rules: [
+      {
+        test: /perseus\.js/,
+        loader: 'string-replace-loader',
+        enforce: 'pre',
+        options: {
+          search: '"url(/images/throbber.gif) no-repeat"',
+          replace: '"url(static/images/throbber.gif) no-repeat"'
+        }
+      }
+    ]
   }
 };

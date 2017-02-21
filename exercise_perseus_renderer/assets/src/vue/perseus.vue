@@ -47,6 +47,7 @@
 
   module.exports = {
     beforeCreate() {
+
       // Load in jQuery, because apparently we still need that for a React app.
       global.$ = require('jquery');
       global.jQuery = global.$;
@@ -66,12 +67,14 @@
         CSSTransitionGroup: require('react-addons-css-transition-group'),
         PureRenderMixin: require('react-addons-pure-render-mixin'),
       };
-
       // Perseus also expects katex to be globally imported.
       global.katex = require('perseus/lib/katex/katex');
 
-      // Add in the Khan Academy parser object too.
-      global.KAS = require('imports-loader?window=>{}!exports-loader?window.KAS!perseus/lib/kas');
+      // Add in the Khan Academy parser object too, this automatically registers itself to the global object.
+      require('perseus/lib/kas');
+
+      // Load MathQuill
+      require('perseus/lib/mathquill/mathquill-basic');
 
       // Perseus expects this i18n object, but hopefully we won't have to touch it
       // We should try to only use our interface text, so as to avoid interacting with this.
@@ -105,6 +108,7 @@
       delete global.jQuery;
       delete global.i18n;
       delete global.KAS;
+      delete global.MathQuill;
       delete global.ReactDOM;
       delete global.Exercises;
     },
@@ -363,7 +367,7 @@
     @import '../../../node_modules/perseus/stylesheets/local-only/khan-exercise.css'
     @import '../../../node_modules/perseus/lib/katex/katex.css'
     @import '../../../node_modules/perseus/build/perseus.css'
-    @import '../../../node_modules/perseus/lib/mathquill/mathquill.css'
+    require 'css-loader?root=../../../node_modules/perseus/lib/mathquill!../../../node_modules/perseus/lib/mathquill/mathquill.css'
 
   #perseus
     border-radius: $radius
