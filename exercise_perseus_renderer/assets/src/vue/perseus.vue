@@ -47,7 +47,6 @@
 
   module.exports = {
     beforeCreate() {
-
       // Load in jQuery, because apparently we still need that for a React app.
       global.$ = require('jquery');
       global.jQuery = global.$;
@@ -70,7 +69,8 @@
       // Perseus also expects katex to be globally imported.
       global.katex = require('perseus/lib/katex/katex');
 
-      // Add in the Khan Academy parser object too, this automatically registers itself to the global object.
+      // Add in the Khan Academy parser object too, this automatically registers
+      // itself to the global object.
       require('perseus/lib/kas');
 
       // Load MathQuill
@@ -367,7 +367,7 @@
     @import '../../../node_modules/perseus/stylesheets/local-only/khan-exercise.css'
     @import '../../../node_modules/perseus/lib/katex/katex.css'
     @import '../../../node_modules/perseus/build/perseus.css'
-    require 'css-loader?root=../../../node_modules/perseus/lib/mathquill!../../../node_modules/perseus/lib/mathquill/mathquill.css'
+    require('css-loader?root=../../../node_modules/perseus/lib/mathquill!../../../node_modules/perseus/lib/mathquill/mathquill.css')
 
   #perseus
     border-radius: $radius

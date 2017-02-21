@@ -2,7 +2,8 @@
 rm -r exercise_perseus_renderer/static
 mkdir exercise_perseus_renderer/static
 cp -r exercise_perseus_renderer/node_modules/perseus/lib/mathjax exercise_perseus_renderer/static/
-cp -r exercise_perseus_renderer/node_modules/perseus/images exercise_perseus_renderer/static/
+mkdir exercise_perseus_renderer/static/images
+cp exercise_perseus_renderer/node_modules/perseus/images/throbber.gif exercise_perseus_renderer/static/images
 
 # update the constants.js to store the mathjax config file name.
 > exercise_perseus_renderer/assets/src/constants.js
