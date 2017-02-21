@@ -70,6 +70,9 @@
       // Perseus also expects katex to be globally imported.
       global.katex = require('perseus/lib/katex/katex');
 
+      // Add in the Khan Academy parser object too.
+      global.KAS = require('imports-loader?window=>{}!exports-loader?window.KAS!perseus/lib/kas');
+
       // Perseus expects this i18n object, but hopefully we won't have to touch it
       // We should try to only use our interface text, so as to avoid interacting with this.
       global.i18n = require('imports-loader?window=>{}!exports-loader?window.i18n!perseus/lib/i18n');
@@ -101,6 +104,7 @@
       delete global.$;
       delete global.jQuery;
       delete global.i18n;
+      delete global.KAS;
       delete global.ReactDOM;
       delete global.Exercises;
     },
