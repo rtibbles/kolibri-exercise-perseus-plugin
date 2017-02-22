@@ -257,12 +257,12 @@
               if (this.correct) {
                 if (this.passNum === 0) {
                   // passNum reached 0 means pass the exercise.
-                  this.updateExerciseProgress(this.Kolibri, 1);
+                  this.updateExerciseProgress(1);
                   exercisePassed = true;
                   this.$emit('exercisepassed');
                 } else {
                   if (this.summaryprogress === 0) {
-                    this.updateExerciseProgress(this.Kolibri, 0.5, true);
+                    this.updateExerciseProgress(0.5, true);
                   }
                 }
               }
