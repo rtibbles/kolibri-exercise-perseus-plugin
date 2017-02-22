@@ -28,7 +28,7 @@
         :numSpaces="passRatioN"
         :log="recentAttempts"
       />
-      <p class="message">GOAL: Get <b>{{passRatioM}}</b> check marks showing up!</p>
+      <p class="message">{{ $tr('goal', {count: passRatioM}) }}</p>
     </div>
   </div>
 
@@ -41,7 +41,10 @@
   const logging = require('kolibri.lib.logging').getLogger(__filename);
 
   module.exports = {
-
+    $trNameSpace: 'perseus-renderer',
+    $trs: {
+      goal: 'Try to get {count, number, integer} {count, plural, one {check mark} other {check marks}} to show up',
+    },
     data: () => ({
       item: undefined,
       items: undefined,
@@ -54,7 +57,6 @@
       waiting: true,
       success: false,
     }),
-
     computed: {
       recentAttempts() {
         if (!this.pastattempts) {
@@ -70,7 +72,6 @@
         }).reverse();
       },
     },
-
     methods: {
       answerChecked() {
         this.waiting = false;

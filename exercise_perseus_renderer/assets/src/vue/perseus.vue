@@ -116,14 +116,14 @@
     $trNameSpace: 'perseus',
     $trs: {
       showScratch: 'Show scratchpad',
-      notAvailable: 'Scratchpad not available',
+      notAvailable: 'The scratchpad is not available',
       loading: 'Loading',
-      check: 'Check Answer',
-      correct: 'Next Question',
+      check: 'Check answer',
+      correct: 'Next question',
       incorrect: 'Sorry, try again',
       hint: 'Get a hint',
       hintLable: 'Hint:',
-      noMoreHint: 'No more hint',
+      noMoreHint: 'No more hints',
     },
     components: {
       'icon-button': require('kolibri.coreVue.components.iconButton'),
