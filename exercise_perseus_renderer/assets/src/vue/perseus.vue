@@ -269,7 +269,7 @@
                 }
               }
               this.$parent.$emit('saveAMLogs', exercisePassed);
-              this.$emit('answerchecked');
+              this.$emit('answerchecked', check.correct);
               this.firstAttempt = false;
             }
           }
@@ -379,7 +379,7 @@
 
   #answer-area-wrap
     position: relative
-    top: 74px
+    top: 92px
     @media screen and (max-width: $portrait-breakpoint)
       top: -18px
 
