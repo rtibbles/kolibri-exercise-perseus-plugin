@@ -18,7 +18,7 @@
         @hinttaken="hintTaken"
         @answerchecked="answerChecked"
         @exercisepassed="exercisePassed"
-      ></perseus>
+      />
     </assessment-wrapper>
     <div id="attemptprogress-container">
       <exercise-attempts
@@ -29,6 +29,7 @@
         :log="recentAttempts"
       />
       <p class="message">{{ $tr('goal', {count: passRatioM}) }}</p>
+      <p id="try-again" v-if="!correctness && !waiting">{{ $tr('tryAgain') }}</p>
     </div>
   </div>
 
@@ -45,6 +46,7 @@
     $trs: {
       goal: 'Try to get {count, number, integer} ' +
         '{count, plural, one {check mark} other {check marks}} to show up',
+      tryAgain: 'Try again!',
     },
     data: () => ({
       item: undefined,
@@ -57,6 +59,7 @@
       passRatioN: 5,
       waiting: true,
       success: false,
+      correctness: true,
     }),
     computed: {
       recentAttempts() {
@@ -74,8 +77,9 @@
       },
     },
     methods: {
-      answerChecked() {
+      answerChecked(correctness) {
         this.waiting = false;
+        this.correctness = correctness;
       },
       hintTaken() {
         this.waiting = false;
@@ -179,7 +183,7 @@
     border-radius: $radius
     position: relative
     background-color: $core-bg-light
-    height: 84px
+    height: 104px
     bottom: 74px
     @media screen and (max-width: $portrait-breakpoint)
       position: fixed
@@ -191,6 +195,13 @@
       border-top: thin solid $core-text-annotation
       z-index: 10
       left: 0
+
+  #try-again
+    color: #DF0F0F
+    font-size: 14px
+    font-weight: bold
+    padding: 16px
+    padding-top: 20px
 
 </style>
 

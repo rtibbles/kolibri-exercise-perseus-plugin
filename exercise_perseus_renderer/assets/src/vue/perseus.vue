@@ -17,7 +17,9 @@
         <div class="info-box">
           <div id="solutionarea"></div>
           <icon-button @click="checkAnswer" v-show="!complete" class="question-btn" :class="{shaking: shake}" id="check-answer-button" :text="$tr('check')"></icon-button>
-          <icon-button @click="nextQuestion" v-show="complete" class="question-btn" id="next-question-button" :text="$tr('correct')"></icon-button>
+          <transition name="delay">
+            <icon-button @click="nextQuestion" v-show="complete" class="question-btn next-question-button" :text="$tr('correct')"></icon-button>
+          </transition>
           <icon-button v-if="availableHints > 0" @click="takeHint" class="hint-btn" :text="$tr('hint')"></icon-button>
           <icon-button v-else class="hint-btn" disabled :text="$tr('noMoreHint')"></icon-button>
           <div style="clear: both"></div>
@@ -267,7 +269,7 @@
                 }
               }
               this.$parent.$emit('saveAMLogs', exercisePassed);
-              this.$emit('answerchecked');
+              this.$emit('answerchecked', check.correct);
               this.firstAttempt = false;
             }
           }
@@ -377,7 +379,7 @@
 
   #answer-area-wrap
     position: relative
-    top: 74px
+    top: 92px
     @media screen and (max-width: $portrait-breakpoint)
       top: -18px
 
@@ -420,10 +422,23 @@
 
   .question-btn
     float: left
-    background-color: $core-action-normal
     color: $core-bg-light
     padding-left: 16px
     padding-right: 16px
+
+  #check-answer-button
+    background-color: $core-action-normal
+
+  .next-question-button
+    background-color: #43A047
+
+  // next-question-button transition effect
+  .delay-enter-active
+    background-color: #43A047
+    transition: background-color 1s
+
+  .delay-enter
+    background-color: $core-action-normal
 
   // checkAnswer btn animation
   .shaking
