@@ -1,4 +1,4 @@
 [submodule "perseus"]
-	path = exercise_perseus_renderer/node_modules/perseus
+	path = kolibri_exercise_perseus_plugin/node_modules/perseus
 	url = https://github.com/Khan/perseus.git
   branch = 9f4c2b05cea3cf9251d19da87fb28d0bb9fd38eb

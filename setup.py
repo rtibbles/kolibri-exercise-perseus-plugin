@@ -16,7 +16,7 @@ def read_file(fname):
         return open(fname).read().decode("utf-8")
     return open(fname).read()
 
-dist_name = 'kolibri-exercise-perseus-plugin'
+dist_name = 'kolibri_exercise_perseus_plugin'
 
 readme = read_file('README.rst')
 
@@ -53,9 +53,9 @@ setup(
     author_email='info@learningequality.org',
     url='https://github.com/learningequality/kolibri-exercise-perseus-plugin',
     packages=[
-        str('exercise_perseus_renderer'),  # https://github.com/pypa/setuptools/pull/597
+        str('kolibri_exercise_perseus_plugin'),  # https://github.com/pypa/setuptools/pull/597
     ],
-    package_dir={'exercise_perseus_renderer': 'exercise_perseus_renderer'},
+    package_dir={'kolibri_exercise_perseus_plugin': 'kolibri_exercise_perseus_plugin'},
     include_package_data=True,
     license='MIT',
     zip_safe=False,
