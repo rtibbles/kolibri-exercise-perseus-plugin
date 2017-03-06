@@ -57,17 +57,20 @@
       global._ = require('underscore');
 
       // Perseus expects React to be available on the global object
-      this.react = global.React = require('react');
+      this.react = require('react');
+      global.React = this.react;
 
       // Perseus expects ReactDOM to be in a particular place on the React object.
       global.React.__internalReactDOM = require('react-dom');
-      this.reactDOM = global.ReactDOM = global.React.__internalReactDOM;
+      this.reactDOM = global.React.__internalReactDOM;
+      global.ReactDOM = this.reactDOM;
 
       // Add in a couple of addons that Perseus needs.
-      global.React.addons = global.React.__internalAddons = {
+      global.React.__internalAddons = {
         CSSTransitionGroup: require('react-addons-css-transition-group'),
         PureRenderMixin: require('react-addons-pure-render-mixin'),
       };
+      global.React.addons = global.React.__internalAddons;
       // Perseus also expects katex to be globally imported.
       global.katex = require('perseus/lib/katex/katex');
 
@@ -80,15 +83,19 @@
 
       // Perseus expects this i18n object, but hopefully we won't have to touch it
       // We should try to only use our interface text, so as to avoid interacting with this.
+      /* eslint-disable import/no-webpack-loader-syntax */
       global.i18n = require('imports-loader?window=>{}!exports-loader?window.i18n!perseus/lib/i18n');
+      /* eslint-enable import/no-webpack-loader-syntax */
 
       require('qtip2');
 
       // For reasons quite beyond my ken, some configuration is still delegated to this
       // global Exercises object.
-      this.Exercises = global.Exercises = {
+      this.Exercises = {
         useKatex: true,
       };
+
+      global.Exercises = this.Exercises;
 
       this.perseus = require('perseus/build/perseus');
 
@@ -151,10 +158,11 @@
           'tTable',
           'zTable',
         ].reduce(
+            /* eslint-disable no-mixed-operators */
             // Loop through all of the above properties and ensure that if the 'answerArea'
             // property of the item has them, then their values are set to Booleans.
             (prev, key) => !(!prev ||
-              obj.answerArea.hasOwnProperty(key) &&
+              Object.prototype.hasOwnProperty.call(obj.answerArea, key) &&
               typeof obj.answerArea[key] !== 'boolean'), true) &&
             // Check that the 'hints' property is an Array.
           Array.isArray(obj.hints) &&
@@ -163,6 +171,7 @@
             (prev, item) => item && typeof item === 'object', true) &&
           // Check that the question property is an object (and not null)
           obj.question && typeof obj.question === 'object',
+          /* eslint-enable no-mixed-operators */
         required: true,
       },
       problemNumber: {
@@ -202,7 +211,8 @@
     methods: {
       renderItem() {
         // Reset the state tracking variables.
-        this.empty = this.loading = true;
+        this.empty = true;
+        this.loading = true;
         this.correct = false;
         this.complete = false;
 
@@ -234,6 +244,7 @@
           this.empty = check.empty;
           if (check.message && check.empty) {
             this.message = check.message;
+          /* eslint-disable no-lonely-if */
           } else {
             this.message = null;
             if (!check.empty) {
@@ -271,6 +282,7 @@
               this.$parent.$emit('saveAMLogs', exercisePassed);
               this.$emit('answerchecked', check.correct);
               this.firstAttempt = false;
+              /* eslint-enable no-lonely-if */
             }
           }
         }
