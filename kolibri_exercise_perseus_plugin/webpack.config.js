@@ -7,9 +7,6 @@ var path = require('path');
 
 module.exports = {
   resolve: {
-    alias: {
-      underscore: 'perseus/lib/underscore'
-    },
     modules: [path.resolve(__dirname, 'node_modules/perseus/node_modules')]
   },
   module: {
