@@ -8,9 +8,6 @@ class ExercisePerseusModule extends ContentRendererModule {
   get rendererComponent() {
     return ExerciseComponent;
   }
-  get contentType() {
-    return 'exercise/perseus';
-  }
 }
 
 module.exports = new ExercisePerseusModule();
