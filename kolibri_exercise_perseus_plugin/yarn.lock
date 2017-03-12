@@ -263,10 +263,6 @@ recast@^0.11.17:
     private "~0.1.5"
     source-map "~0.5.0"
 
-seededshuffle@0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/seededshuffle/-/seededshuffle-0.1.1.tgz#3eed2279d10e8bab5563b464841ee703dbc16a7a"
-
 source-map@^0.4.2:
   version "0.4.4"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.4.4.tgz#eba4f5da9c0dc999de68032d8b4f76173652036b"
