@@ -128,6 +128,7 @@
     components: {
       'icon-button': require('kolibri.coreVue.components.iconButton'),
     },
+    name: 'exercise-perseus-renderer',
     props: {
       scratchpad: {
         type: Boolean,
@@ -218,7 +219,14 @@
       clearItemRenderer() {
         // Clean up any existing itemRenderer to avoid leak memory
         // https://facebook.github.io/react/blog/2015/10/01/react-render-and-top-level-api.html
-        this.reactDOM.unmountComponentAtNode(this.$refs.perseusContainer);
+        // Nest this in a try catch block so that we can call this method aggressively
+        // to ensure clean up without worrying about whether React has already cleaned up this
+        // component.
+        try {
+          this.reactDOM.unmountComponentAtNode(this.$refs.perseusContainer);
+        } catch (e) {
+          logging.debug('Error during unmounting of item renderer', e);
+        }
       },
       checkAnswer() {
         if (this.itemRenderer) {
