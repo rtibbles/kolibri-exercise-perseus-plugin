@@ -247,9 +247,9 @@
         return null;
       },
       takeHint() {
-        if (this.itemRenderer) {
+        if (this.itemRenderer && this.itemRenderer.availableHints()) {
           this.itemRenderer.showHint();
-          this.$parent.$emit('hintTaken');
+          this.$parent.$emit('hintTaken', { answerState: this.itemRenderer.getSerializedState() });
         }
       },
       dismissMessage() {
