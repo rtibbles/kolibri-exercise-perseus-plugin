@@ -388,6 +388,7 @@
     padding: 15px
     background-color: $core-bg-light
     margin-top: 6px
+    overflow-x: auto
 
   #answer-area-wrap
     position: relative
