@@ -42,7 +42,7 @@
   const logging = require('kolibri.lib.logging').getLogger(__filename);
 
   module.exports = {
-    $trNameSpace: 'perseus-renderer',
+    $trNameSpace: 'perseusRenderer',
     $trs: {
       goal: 'Try to get {count, number, integer} ' +
         '{count, plural, one {check mark} other {check marks}} to show up',
