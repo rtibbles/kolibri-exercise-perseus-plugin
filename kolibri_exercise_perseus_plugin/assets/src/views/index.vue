@@ -115,8 +115,7 @@
       delete global.ReactDOM;
       delete global.Exercises;
     },
-
-    $trNameSpace: 'perseus',
+    $trNameSpace: 'perseusRenderer',
     $trs: {
       showScratch: 'Show scratchpad',
       notAvailable: 'The scratchpad is not available',
@@ -343,6 +342,7 @@
     padding: 15px
     background-color: $core-bg-light
     margin-top: 6px
+    overflow-x: auto
 
   #answer-area-wrap
     position: relative
