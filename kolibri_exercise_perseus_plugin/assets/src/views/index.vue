@@ -44,8 +44,7 @@
   module.exports = {
     $trNameSpace: 'perseusRenderer',
     $trs: {
-      goal: 'Try to get {count, number, integer} ' +
-        '{count, plural, one {check mark} other {check marks}} to show up',
+      goal: 'Try to get {count, number, integer} {count, plural, one {check mark} other {check marks}} to show up', // eslint-disable-line max-len
       tryAgain: 'Try again!',
     },
     data: () => ({
