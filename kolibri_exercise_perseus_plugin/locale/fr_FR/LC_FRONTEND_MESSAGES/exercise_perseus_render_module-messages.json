@@ -1,4 +1,5 @@
 {
+  "perseusRenderer.goal":"Essayez d'obtenir {count, number, integer} {count, plural, one {marque} other {marques}} de contrôle",
   "perseus-renderer.tryAgain":"Réessayez !",
   "perseus.showScratch":"Afficher le bloc-notes",
   "perseus.notAvailable":"Bloc-notes indisponible",
