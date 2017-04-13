@@ -16,8 +16,10 @@
       <div id="answer-area">
         <div class="info-box">
           <div id="solutionarea"></div>
-          <icon-button v-if="availableHints > 0" @click="takeHint" class="hint-btn" :text="$tr('hint')"></icon-button>
-          <icon-button v-else class="hint-btn" disabled :text="$tr('noMoreHint')"></icon-button>
+          <div v-if="anyHints">
+            <icon-button v-if="availableHints > 0" @click="takeHint" class="hint-btn" :text="$tr('hint')"></icon-button>
+            <icon-button v-else class="hint-btn" disabled :text="$tr('noMoreHint')"></icon-button>
+          </div>
         </div>
       </div>
     </div>
@@ -153,6 +155,10 @@
         type: Object,
         default: {},
       },
+      allowHints: {
+        type: Boolean,
+        default: true,
+      },
     },
     data: () => ({
       // Is the perseus item renderer loading?
@@ -163,6 +169,7 @@
       availableHints: 0,
       // default item data
       item: {},
+      itemRenderer: null,
     }),
 
     methods: {
@@ -310,7 +317,10 @@
       availableHints() {
         return this.itemRenderer ? this.itemRenderer.getNumHints() -
         this.itemRenderer.state.hintsVisible : 0;
-      }
+      },
+      anyHints() {
+        return this.allowHints && (this.itemRenderer ? this.itemRenderer.getNumHints() : 0);
+      },
     },
     watch: {
       itemId: 'loadItemData',
