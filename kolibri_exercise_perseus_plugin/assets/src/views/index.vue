@@ -171,7 +171,6 @@
       item: {},
       itemRenderer: null,
     }),
-
     methods: {
       validateItemData(obj) {
         return [
@@ -203,24 +202,15 @@
         // Reset the state tracking variables.
         this.loading = true;
 
-        if (this.itemRenderer) {
-          // remove any existing renderer
-          this.clearItemRenderer();
-        }
-
         // Create react component with current item data.
         // If the component already existed, this will perform an update.
-        this.itemRenderer =
+        this.$set(this, 'itemRenderer',
         this.reactDOM.render( // eslint-disable-line new-cap
           this.itemRendererFactory(this.itemRenderData, null),
           this.$refs.perseusContainer, () => {
             this.loading = false;
-            // If a passed in answerState is an object with the right keys, restore.
-            if (this.answerState && this.answerState.question && this.answerState.hints) {
-              this.itemRenderer.restoreSerializedState(this.answerState);
-            }
           }
-        );
+        ));
       },
       clearItemRenderer() {
         // Clean up any existing itemRenderer to avoid leak memory
@@ -230,8 +220,19 @@
         // component.
         try {
           this.reactDOM.unmountComponentAtNode(this.$refs.perseusContainer);
+          this.$set(this, 'itemRenderer', null);
         } catch (e) {
           logging.debug('Error during unmounting of item renderer', e);
+        }
+      },
+      setAnswer() {
+        // If a passed in answerState is an object with the right keys, restore.
+        if (this.itemRenderer &&
+          this.answerState &&
+          this.answerState.question &&
+          this.answerState.hints &&
+          !this.loading) {
+          this.itemRenderer.restoreSerializedState(this.answerState);
         }
       },
       checkAnswer() {
@@ -265,6 +266,7 @@
       loadItemData() {
         // Only try to do this if itemId is defined.
         if (this.itemId.length) {
+          this.loading = true;
           this.Kolibri.client(
             `${this.defaultFile.storage_url}${this.itemId}.json`
             ).then((itemResponse) => {
@@ -324,6 +326,8 @@
     },
     watch: {
       itemId: 'loadItemData',
+      loading: 'setAnswer',
+      answerState: 'setAnswer',
     },
     created() {
       this.loadItemData();
