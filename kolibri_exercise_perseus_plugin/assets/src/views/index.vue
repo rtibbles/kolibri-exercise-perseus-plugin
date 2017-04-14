@@ -204,13 +204,12 @@
 
         // Create react component with current item data.
         // If the component already existed, this will perform an update.
-        this.$set(this, 'itemRenderer',
-        this.reactDOM.render( // eslint-disable-line new-cap
+        this.$set(this, 'itemRenderer', this.reactDOM.render(
           this.itemRendererFactory(this.itemRenderData, null),
           this.$refs.perseusContainer, () => {
             this.loading = false;
-          }
-        ));
+          })
+        );
       },
       clearItemRenderer() {
         // Clean up any existing itemRenderer to avoid leak memory
