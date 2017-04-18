@@ -258,6 +258,10 @@
           this.$parent.$emit('hintTaken', { answerState: this.itemRenderer.getSerializedState() });
         }
       },
+      interactionCallback() {
+        this.$emit('interaction');
+        this.dismissMessage();
+      },
       dismissMessage() {
         // dismiss the error message when user click anywhere inside the perseus element.
         this.message = null;
@@ -307,7 +311,7 @@
           apiOptions: {
             // Pass in callbacks for widget interaction and focus change.
             // Here we dismiss answer error message on interaction and focus change.
-            interactionCallback: this.dismissMessage,
+            interactionCallback: this.interactionCallback,
             onFocusChange: this.dismissMessage,
           },
         };
