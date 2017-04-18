@@ -267,7 +267,7 @@
       },
       loadItemData() {
         // Only try to do this if itemId is defined.
-        if (this.itemId.length) {
+        if (this.itemId) {
           this.loading = true;
           this.Kolibri.client(
             `${this.defaultFile.storage_url}${this.itemId}.json`
