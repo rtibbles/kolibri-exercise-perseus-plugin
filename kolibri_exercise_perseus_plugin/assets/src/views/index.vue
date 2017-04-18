@@ -165,8 +165,6 @@
       loading: true,
       // state about the answer
       message: null,
-      // number of available hints
-      availableHints: 0,
       // default item data
       item: {},
       itemRenderer: null,
@@ -253,7 +251,8 @@
         return null;
       },
       takeHint() {
-        if (this.itemRenderer && this.itemRenderer.availableHints()) {
+        if (this.itemRenderer &&
+          this.itemRenderer.state.hintsVisible < this.itemRenderer.getNumHints()) {
           this.itemRenderer.showHint();
           this.$parent.$emit('hintTaken', { answerState: this.itemRenderer.getSerializedState() });
         }
@@ -276,7 +275,6 @@
               if (this.validateItemData(itemResponse.entity)) {
                 this.item = itemResponse.entity;
                 // init the availableHints;
-                this.availableHints = this.item.hints.length;
                 if (this.$el) {
                   // Don't try to render if our component is not mounted yet.
                   this.renderItem();
