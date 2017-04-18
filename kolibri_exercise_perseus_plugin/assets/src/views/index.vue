@@ -235,7 +235,7 @@
         }
       },
       checkAnswer() {
-        if (this.itemRenderer) {
+        if (this.itemRenderer && !this.loading) {
           const check = this.itemRenderer.scoreInput();
           this.empty = check.empty;
           if (check.message && check.empty) {
