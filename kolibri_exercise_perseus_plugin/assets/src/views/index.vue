@@ -165,8 +165,6 @@
       loading: true,
       // state about the answer
       message: null,
-      // number of available hints
-      availableHints: 0,
       // default item data
       item: {},
       itemRenderer: null,
@@ -235,7 +233,7 @@
         }
       },
       checkAnswer() {
-        if (this.itemRenderer) {
+        if (this.itemRenderer && !this.loading) {
           const check = this.itemRenderer.scoreInput();
           this.empty = check.empty;
           if (check.message && check.empty) {
@@ -253,10 +251,15 @@
         return null;
       },
       takeHint() {
-        if (this.itemRenderer && this.itemRenderer.availableHints()) {
+        if (this.itemRenderer &&
+          this.itemRenderer.state.hintsVisible < this.itemRenderer.getNumHints()) {
           this.itemRenderer.showHint();
           this.$parent.$emit('hintTaken', { answerState: this.itemRenderer.getSerializedState() });
         }
+      },
+      interactionCallback() {
+        this.$emit('interaction');
+        this.dismissMessage();
       },
       dismissMessage() {
         // dismiss the error message when user click anywhere inside the perseus element.
@@ -264,7 +267,7 @@
       },
       loadItemData() {
         // Only try to do this if itemId is defined.
-        if (this.itemId.length) {
+        if (this.itemId) {
           this.loading = true;
           this.Kolibri.client(
             `${this.defaultFile.storage_url}${this.itemId}.json`
@@ -272,7 +275,6 @@
               if (this.validateItemData(itemResponse.entity)) {
                 this.item = itemResponse.entity;
                 // init the availableHints;
-                this.availableHints = this.item.hints.length;
                 if (this.$el) {
                   // Don't try to render if our component is not mounted yet.
                   this.renderItem();
@@ -307,7 +309,7 @@
           apiOptions: {
             // Pass in callbacks for widget interaction and focus change.
             // Here we dismiss answer error message on interaction and focus change.
-            interactionCallback: this.dismissMessage,
+            interactionCallback: this.interactionCallback,
             onFocusChange: this.dismissMessage,
           },
         };
