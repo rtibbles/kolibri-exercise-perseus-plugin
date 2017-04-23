@@ -240,7 +240,8 @@
             this.message = check.message;
           } else if (!check.empty) {
             const answerState = this.itemRenderer.getSerializedState();
-            const simpleAnswer = check.guess;
+            // We cannot reliably get simplified answers from Perseus, so don't try.
+            const simpleAnswer = '';
             return {
               correct: check.correct,
               answerState,
@@ -357,7 +358,7 @@
     padding: 15px
     background-color: $core-bg-light
     margin-top: 6px
-    overflow-x: auto
+    overflow-x: visible
 
   #answer-area-wrap
     position: relative
