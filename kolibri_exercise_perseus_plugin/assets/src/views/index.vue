@@ -230,6 +230,11 @@
           this.answerState.hints &&
           !this.loading) {
           this.itemRenderer.restoreSerializedState(this.answerState);
+        } else if (this.itemRenderer && !this.loading) {
+          // Not setting an answer state, but need to hide any hints.
+          this.itemRenderer.setState({
+            hintsVisible: this.initialHintsVisible,
+          });
         }
       },
       checkAnswer() {
