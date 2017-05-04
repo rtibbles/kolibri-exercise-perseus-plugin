@@ -5,6 +5,10 @@
       <div id="problem-area">
         <div id="workarea"></div>
       </div>
+      <div v-if="anyHints">
+        <icon-button v-if="availableHints > 0" @click="takeHint" class="hint-btn" :text="$tr('hint')"></icon-button>
+        <icon-button v-else class="hint-btn" disabled :text="$tr('noMoreHint')"></icon-button>
+      </div>
       <div id="hintlabel" v-if="hinted">{{ $tr("hintLabel") }}</div>
       <div id="hintsarea"></div>
       <div style="clear: both;"></div>
@@ -16,10 +20,6 @@
       <div id="answer-area">
         <div class="info-box">
           <div id="solutionarea"></div>
-          <div v-if="anyHints">
-            <icon-button v-if="availableHints > 0" @click="takeHint" class="hint-btn" :text="$tr('hint')"></icon-button>
-            <icon-button v-else class="hint-btn" disabled :text="$tr('noMoreHint')"></icon-button>
-          </div>
         </div>
       </div>
     </div>
@@ -396,9 +396,8 @@
     border-top: 1px solid
 
   .hint-btn
-    float: right
-    padding-left: 16px
-    padding-right: 16px
+    margin-bottom: 1em
+    margin-left: 1em
 
   #solutionarea
     min-height: 35px
