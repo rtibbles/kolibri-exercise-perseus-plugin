@@ -357,8 +357,6 @@
     @import '../../../node_modules/perseus/lib/katex/katex.css'
     @import '../../../node_modules/perseus/build/perseus.css'
     require('css-loader?root=../../../node_modules/perseus/lib/mathquill!../../../node_modules/perseus/lib/mathquill/mathquill.css')
-
-  #perseus
     border-radius: $radius
     padding: 15px
     background-color: $core-bg-light
@@ -423,7 +421,6 @@
 
   // Use namespaced unscoped styling here to alter Perseus' original styling in order to fit kolibri
   #perseus
-
     img
       max-width: 100%
       padding: 10px
@@ -443,6 +440,12 @@
 
     fieldset > ul > li
       list-style-type: none
+
+    .graphie-container
+      position: absolute
+      height: 100%
+      width: 100%
+      top: 0
 
     .perseus-hint-renderer
       color: $core-text-annotation
