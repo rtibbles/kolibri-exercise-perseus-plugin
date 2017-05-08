@@ -6,8 +6,8 @@
         <div id="workarea"></div>
       </div>
       <div v-if="anyHints">
-        <icon-button v-if="availableHints > 0" @click="takeHint" class="hint-btn" :text="$tr('hint')"></icon-button>
-        <icon-button v-else class="hint-btn" disabled :text="$tr('noMoreHint')"></icon-button>
+        <icon-button v-if="availableHints > 0" @click="takeHint" class="hint-btn" :text="$tr('hint', {hintsLeft: availableHints})"/>
+        <icon-button v-else class="hint-btn" disabled :text="$tr('noMoreHint')"/>
       </div>
       <div id="hintlabel" v-if="hinted">{{ $tr("hintLabel") }}</div>
       <div id="hintsarea"></div>
@@ -122,7 +122,7 @@
       showScratch: 'Show scratchpad',
       notAvailable: 'The scratchpad is not available',
       loading: 'Loading',
-      hint: 'Get a hint',
+      hint: 'Use a hint ({hintsLeft, number} left)',
       hintLabel: 'Hint:',
       noMoreHint: 'No more hints',
     },
