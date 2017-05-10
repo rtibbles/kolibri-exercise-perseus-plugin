@@ -139,10 +139,6 @@
         type: Number,
         default: 0,
       },
-      problemNumber: {
-        type: Number,
-        default: 1,
-      },
       defaultFile: {
         type: Object,
         required: true,
@@ -307,7 +303,7 @@
           item: this.item,
           workAreaSelector: '#workarea',
           problemAreaSelector: '#problem-area',
-          problemNum: this.problemNumber,
+          problemNum: Math.floor(Math.random() * 1000),
           enabledFeatures: {
             highlight: true,
             toolTipFormats: true,
