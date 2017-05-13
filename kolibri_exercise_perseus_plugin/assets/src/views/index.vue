@@ -6,8 +6,8 @@
         <div id="workarea"></div>
       </div>
       <div v-if="anyHints">
-        <icon-button v-if="availableHints > 0" @click="takeHint" class="hint-btn" :text="$tr('hint')"></icon-button>
-        <icon-button v-else class="hint-btn" disabled :text="$tr('noMoreHint')"></icon-button>
+        <icon-button v-if="availableHints > 0" @click="takeHint" class="hint-btn" :text="$tr('hint', {hintsLeft: availableHints})"/>
+        <icon-button v-else class="hint-btn" disabled :text="$tr('noMoreHint')"/>
       </div>
       <div id="hintlabel" v-if="hinted">{{ $tr("hintLabel") }}</div>
       <div id="hintsarea"></div>
@@ -122,7 +122,7 @@
       showScratch: 'Show scratchpad',
       notAvailable: 'The scratchpad is not available',
       loading: 'Loading',
-      hint: 'Get a hint',
+      hint: 'Use a hint ({hintsLeft, number} left)',
       hintLabel: 'Hint:',
       noMoreHint: 'No more hints',
     },
@@ -138,10 +138,6 @@
       initialHintsVisible: {
         type: Number,
         default: 0,
-      },
-      problemNumber: {
-        type: Number,
-        default: 1,
       },
       defaultFile: {
         type: Object,
@@ -307,7 +303,7 @@
           item: this.item,
           workAreaSelector: '#workarea',
           problemAreaSelector: '#problem-area',
-          problemNum: this.problemNumber,
+          problemNum: Math.floor(Math.random() * 1000),
           enabledFeatures: {
             highlight: true,
             toolTipFormats: true,
@@ -357,8 +353,6 @@
     @import '../../../node_modules/perseus/lib/katex/katex.css'
     @import '../../../node_modules/perseus/build/perseus.css'
     require('css-loader?root=../../../node_modules/perseus/lib/mathquill!../../../node_modules/perseus/lib/mathquill/mathquill.css')
-
-  #perseus
     border-radius: $radius
     padding: 15px
     background-color: $core-bg-light
@@ -423,7 +417,6 @@
 
   // Use namespaced unscoped styling here to alter Perseus' original styling in order to fit kolibri
   #perseus
-
     img
       max-width: 100%
       padding: 10px
@@ -443,6 +436,12 @@
 
     fieldset > ul > li
       list-style-type: none
+
+    .graphie-container
+      position: absolute
+      height: 100%
+      width: 100%
+      top: 0
 
     .perseus-hint-renderer
       color: $core-text-annotation
