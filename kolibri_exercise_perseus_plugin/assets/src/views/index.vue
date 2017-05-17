@@ -352,7 +352,7 @@
     @import '../../../node_modules/perseus/stylesheets/local-only/khan-exercise.css'
     @import '../../../node_modules/perseus/lib/katex/katex.css'
     @import '../../../node_modules/perseus/build/perseus.css'
-    require('css-loader?root=../../../node_modules/perseus/lib/mathquill!../../../node_modules/perseus/lib/mathquill/mathquill.css')
+    @import '../../../node_modules/perseus/lib/mathquill/mathquill.css'
     border-radius: $radius
     padding: 15px
     background-color: $core-bg-light
