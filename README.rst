@@ -48,7 +48,7 @@ How can I install this plugin for development?
 
     ``pip install -e <KOLIBRI-PERSEUS-PLUGIN-LOCAL-PATH>``
 
-    ``kolibri plugin exercise_perseus_renderer enable``
+    ``kolibri plugin kolibri_exercise_perseus_plugin enable``
 
 4. Then run the commands to install frontend packages in Kolibri, this plugin will have its dependencies recursively installed:
 
