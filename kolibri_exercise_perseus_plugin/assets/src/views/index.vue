@@ -44,7 +44,7 @@
   scriptLoadHack.setAttribute('src', `/static/mathjax/2.1/MathJax.js?config=${configFileName}`);
   document.head.appendChild(scriptLoadHack);
 
-  const sorterWidgetRegex = /sorter [0-9]/;
+  const sorterWidgetRegex = /sorter [0-9]+/;
 
   module.exports = {
     beforeCreate() {
