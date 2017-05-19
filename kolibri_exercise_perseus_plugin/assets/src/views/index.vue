@@ -44,6 +44,8 @@
   scriptLoadHack.setAttribute('src', `/static/mathjax/2.1/MathJax.js?config=${configFileName}`);
   document.head.appendChild(scriptLoadHack);
 
+  const sorterWidgetRegex = /sorter [0-9]+/;
+
   module.exports = {
     beforeCreate() {
       // Load in jQuery, because apparently we still need that for a React app.
@@ -218,6 +220,44 @@
           logging.debug('Error during unmounting of item renderer', e);
         }
       },
+      /*
+       * Special method to extract the current state of a Perseus Sorter widget
+       * as it does not currently properly support getSerializedState
+       */
+      addSorterState(answerState) {
+        this.itemRenderer.getWidgetIds().forEach(id => {
+          if (sorterWidgetRegex.test(id)) {
+            if (answerState.question[id]) {
+              const sortableComponent = this.itemRenderer.questionRenderer.getWidgetInstance(
+                id).refs.sortable;
+              answerState.question[id].options = sortableComponent.getOptions();
+            }
+          }
+        });
+        return answerState;
+      },
+      getSerializedState() {
+        return this.addSorterState(this.itemRenderer.getSerializedState());
+      },
+      restoreSerializedState(answerState) {
+        this.itemRenderer.restoreSerializedState(this.answerState);
+        this.itemRenderer.getWidgetIds().forEach(id => {
+          if (sorterWidgetRegex.test(id)) {
+            if (answerState.question[id]) {
+              const sortableComponent = this.itemRenderer.questionRenderer.getWidgetInstance(
+                id).refs.sortable;
+              const newProps = Object.assign(
+                {},
+                sortableComponent.props,
+                {
+                  options: answerState.question[id].options,
+                }
+              );
+              sortableComponent.setState({ items: sortableComponent.itemsFromProps(newProps) });
+            }
+          }
+        });
+      },
       setAnswer() {
         // If a passed in answerState is an object with the right keys, restore.
         if (this.itemRenderer &&
@@ -225,7 +265,7 @@
           this.answerState.question &&
           this.answerState.hints &&
           !this.loading) {
-          this.itemRenderer.restoreSerializedState(this.answerState);
+          this.restoreSerializedState(this.answerState);
         } else if (this.itemRenderer && !this.loading) {
           // Not setting an answer state, but need to hide any hints.
           this.itemRenderer.setState({
@@ -240,7 +280,7 @@
           if (check.message && check.empty) {
             this.message = check.message;
           } else if (!check.empty) {
-            const answerState = this.itemRenderer.getSerializedState();
+            const answerState = this.getSerializedState();
             // We cannot reliably get simplified answers from Perseus, so don't try.
             const simpleAnswer = '';
             return {
@@ -256,7 +296,7 @@
         if (this.itemRenderer &&
           this.itemRenderer.state.hintsVisible < this.itemRenderer.getNumHints()) {
           this.itemRenderer.showHint();
-          this.$parent.$emit('hintTaken', { answerState: this.itemRenderer.getSerializedState() });
+          this.$parent.$emit('hintTaken', { answerState: this.getSerializedState() });
         }
       },
       interactionCallback() {
@@ -352,7 +392,7 @@
     @import '../../../node_modules/perseus/stylesheets/local-only/khan-exercise.css'
     @import '../../../node_modules/perseus/lib/katex/katex.css'
     @import '../../../node_modules/perseus/build/perseus.css'
-    require('css-loader?root=../../../node_modules/perseus/lib/mathquill!../../../node_modules/perseus/lib/mathquill/mathquill.css')
+    @import '../../../node_modules/perseus/lib/mathquill/mathquill.css'
     border-radius: $radius
     padding: 15px
     background-color: $core-bg-light
