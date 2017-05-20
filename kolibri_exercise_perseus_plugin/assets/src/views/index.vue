@@ -404,6 +404,11 @@
     margin-top: 6px
     overflow-x: visible
 
+  @font-face
+    font-family: Symbola
+    src: url(/static/fonts/Symbola.eot)
+    src: local('Symbola Regular'), local('Symbola'), url(/static/fonts/Symbola.woff) format('woff'), url(/static/fonts/Symbola.ttf) format('truetype'), url(/static/fonts/Symbola.otf) format('opentype'), url(/static/fonts/Symbola.svg#Symbola) format('svg')
+
   #answer-area-wrap
     position: relative
     @media screen and (max-width: $portrait-breakpoint)
