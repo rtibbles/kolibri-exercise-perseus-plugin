@@ -6,7 +6,6 @@
   "description": "Exercise/Perseus Render Plugin for Kolibri",
   "private": true,
   "dependencies": {
-    "babel-polyfill": "^6.23.0",
     "btoa": "1.1.2",
     "jquery": "2.2.4",
     "qtip2": "2.2.0",

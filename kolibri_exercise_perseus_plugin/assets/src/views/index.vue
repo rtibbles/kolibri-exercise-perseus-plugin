@@ -52,7 +52,7 @@
       global.$ = require('jquery');
       global.jQuery = global.$;
 
-      require('babel-polyfill');
+      require('perseus/lib/babel-polyfills.min');
 
       // Underscore as well! We use their bundled version for compatibility reasons.
       global._ = require('underscore');
