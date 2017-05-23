@@ -46,6 +46,8 @@
 
   const sorterWidgetRegex = /sorter [0-9]+/;
 
+  const responsiveWindow = require('kolibri.coreVue.mixins.responsiveWindow');
+
   module.exports = {
     beforeCreate() {
       // Load in jQuery, because apparently we still need that for a React app.
@@ -123,6 +125,9 @@
       delete global.ReactDOM;
       delete global.Exercises;
     },
+    mixins: [
+      responsiveWindow,
+    ],
     $trNameSpace: 'perseusRenderer',
     $trs: {
       showScratch: 'Show scratchpad',
@@ -338,6 +343,15 @@
       },
     },
     computed: {
+      isMobile() {
+        return this.windowSize.breakpoint < 3;
+      },
+      // this is a nasty hack. Will find a better way
+      usesTouch() {
+        // using mdn suggestion for most compatibility
+        const isMobileBrowser = new RegExp(/Mobi*/);
+        return isMobileBrowser.test(window.navigator.userAgent);
+      },
       itemRenderData() {
         return {
           // A property to return data formatted in the form expected by the Item Renderer
@@ -356,6 +370,8 @@
             // Here we dismiss answer error message on interaction and focus change.
             interactionCallback: this.interactionCallback,
             onFocusChange: this.dismissMessage,
+            isMobile: this.isMobile,
+            customKeypad: this.usesTouch,
           },
         };
       },
