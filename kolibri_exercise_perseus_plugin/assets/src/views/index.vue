@@ -119,7 +119,6 @@
       delete global.$;
       delete global.jQuery;
       delete global.i18n;
-      delete global.KAS;
       delete global.MathQuill;
       delete global.ReactDOM;
       delete global.Exercises;
@@ -321,7 +320,6 @@
             ).then((itemResponse) => {
               if (this.validateItemData(itemResponse.entity)) {
                 this.item = itemResponse.entity;
-                // init the availableHints;
                 if (this.$el) {
                   // Don't try to render if our component is not mounted yet.
                   this.renderItem();
