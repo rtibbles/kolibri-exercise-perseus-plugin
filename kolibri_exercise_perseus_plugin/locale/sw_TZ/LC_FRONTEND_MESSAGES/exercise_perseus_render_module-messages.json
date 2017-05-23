@@ -1,5 +1,5 @@
 {
-  "perseusRenderer.goal":"Jaribu Kupata {count, number, integer} {count, plural, one {check mark} other {check marks}} ili kuonesha",
+  "perseusRenderer.goal":"Jaribu Kupata {count, number, integer} {count, plural, one {alama ya uhakiki} other {alama za uhakiki}} ili kuonesha",
   "perseusRenderer.tryAgain":"Jaribu tena!",
   "perseus.showScratch":"Onyesha Pakuandikia",
   "perseus.notAvailable":"Hakuna pakuandika",

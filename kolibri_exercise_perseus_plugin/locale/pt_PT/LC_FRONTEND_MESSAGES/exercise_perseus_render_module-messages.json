@@ -1,5 +1,5 @@
 {
-  "perseusRenderer.goal":"Tente fazer com que {count, number, integer} {count, plural, one {check mark} other {check marks}} apareçam",
+  "perseusRenderer.goal":"Tente fazer com que {count, number, integer} {count, plural, one {sinal de visto} other {sinais de visto}} apareçam",
   "perseusRenderer.tryAgain":"Tente novamente!",
   "perseus.showScratch":"Mostrar bloco de notas",
   "perseus.notAvailable":"O bloco de notas não está disponível",
