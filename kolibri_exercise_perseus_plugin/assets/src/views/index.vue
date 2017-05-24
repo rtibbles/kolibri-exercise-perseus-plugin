@@ -351,7 +351,7 @@
       // this is a nasty hack. Will find a better way
       usesTouch() {
         // using mdn suggestion for most compatibility
-        const isMobileBrowser = new RegExp(/Mobi*/);
+        const isMobileBrowser = new RegExp(/Mobi*|Android/);
         return isMobileBrowser.test(window.navigator.userAgent);
       },
       itemRenderData() {
