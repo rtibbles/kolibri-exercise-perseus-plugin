@@ -1,33 +1,42 @@
 <template v-if="itemId">
 
-  <div>
-    <div ref="perseus" id="perseus">
-      <div id="problem-area">
-        <div id="workarea"></div>
+  <div class="bibliotron-exercise">
+    <div :class="{'framework-perseus':true, 'perseus-mobile': isMobile}">
+      <div ref="perseus" id="perseus">
+
+        <div id="problem-area">
+          <div id="workarea"></div>
+        </div>
+
+        <template v-if="anyHints">
+          <icon-button v-if="availableHints > 0" @click="takeHint" class="hint-btn" :text="$tr('hint', {hintsLeft: availableHints})"/>
+          <icon-button v-else class="hint-btn" disabled :text="$tr('noMoreHint')"/>
+        </template>
+
+        <div id="hintlabel" v-if="hinted">{{ $tr("hintLabel") }}</div>
+        <div id="hintsarea"></div>
+        <div style="clear: both;"></div>
+
       </div>
-      <div v-if="anyHints">
-        <icon-button v-if="availableHints > 0" @click="takeHint" class="hint-btn" :text="$tr('hint', {hintsLeft: availableHints})"/>
-        <icon-button v-else class="hint-btn" disabled :text="$tr('noMoreHint')"/>
-      </div>
-      <div id="hintlabel" v-if="hinted">{{ $tr("hintLabel") }}</div>
-      <div id="hintsarea"></div>
-      <div style="clear: both;"></div>
-    </div>
-    <transition name="expand">
-      <div id="message" v-show="message">{{ message }}</div>
-    </transition>
-    <div id="answer-area-wrap">
-      <div id="answer-area">
-        <div class="info-box">
-          <div id="solutionarea"></div>
+
+      <transition name="expand">
+        <div id="message" v-show="message">{{ message }}</div>
+      </transition>
+
+      <div id="answer-area-wrap">
+        <div id="answer-area">
+          <div class="info-box">
+            <div id="solutionarea"></div>
+          </div>
         </div>
       </div>
-    </div>
-    <div id="scratchpad-btn-container">
+
       <icon-button v-if="scratchpad" id="scratchpad-show" :text="$tr('showScratch')"></icon-button>
       <icon-button v-else disabled id="scratchpad-not-available" :text="$tr('notAvailable')"></icon-button>
+
+      <!-- No idea what this is here for -->
+      <div ref="perseusContainer" id="perseus-container"></div>
     </div>
-    <div ref="perseusContainer" id="perseus-container"></div>
   </div>
 
 </template>
@@ -418,127 +427,12 @@
     margin-top: 6px
     overflow-x: visible
 
+  .bibliotron-exercise
+    margin-bottom: 6px
+
   @font-face
     font-family: Symbola
     src: url(/static/fonts/Symbola.eot)
     src: local('Symbola Regular'), local('Symbola'), url(/static/fonts/Symbola.woff) format('woff'), url(/static/fonts/Symbola.ttf) format('truetype'), url(/static/fonts/Symbola.otf) format('opentype'), url(/static/fonts/Symbola.svg#Symbola) format('svg')
-
-  #answer-area-wrap
-    position: relative
-    @media screen and (max-width: $portrait-breakpoint)
-      top: -18px
-
-  #workarea
-    margin-left: 0
-
-  #message
-    background-color: $core-bg-warning
-    color: $core-text-default
-    border-radius: $radius
-    padding: 10px 15px
-    margin-top: 6px
-
-  .info-box
-    margin-bottom: 10
-    padding: 10
-    position: relative
-    z-index: 10
-    overflow: visible
-
-  #hintsarea
-    border-radius: $radius
-
-  #hintlabel
-    font-weight: bold
-    padding: 10px
-    border-top: 1px solid
-
-  .hint-btn
-    margin-bottom: 1em
-    margin-left: 1em
-
-  #solutionarea
-    min-height: 35px
-    padding: 10px
-    margin: 0 -10px
-    border-bottom: 0
-    overflow: visible
-
-  // message transition effect
-  .expand-enter-active
-    transition: all 1s ease
-
-  .expand-enter
-    position: absolute
-    opacity: 0
-
-</style>
-
-
-<style lang="stylus">
-
-  @require '~kolibri.styles.theme'
-
-  // Use namespaced unscoped styling here to alter Perseus' original styling in order to fit kolibri
-  #perseus
-    img
-      max-width: 100%
-      padding: 10px
-      vertical-align: middle
-
-    ul
-      border-bottom: 0
-      border-top: 0
-
-    fieldset
-      border: none
-
-    fieldset > ul
-      border: 1px solid #BABEC2
-      border-radius: $radius
-      padding: 0
-
-    fieldset > ul > li
-      list-style-type: none
-
-    .graphie-container
-      position: absolute
-      height: 100%
-      width: 100%
-      top: 0
-
-    .perseus-hint-renderer
-      color: $core-text-annotation
-      padding: 6px 10px
-      font-weight: normal
-
-    .perseus-hint-renderer
-      margin-left: 40px
-
-    .perseus-hint-label
-      color: $core-text-annotation
-      font-weight: 600
-      white-space: nowrap
-      right: 50px
-      position: relative
-      font-weight: bold
-
-    .perseus-hint-label:before
-      content: '('
-
-    .perseus-hint-label:after
-      content: ')'
-
-    .paragraph
-      padding: 4px
-
-    .fixed-to-responsive
-      display: inline-block
-
-    // Perseus will add padding-bottom: 100 to every svg-image, we don't want that.
-    // @stylint off
-    .svg-image *
-      padding-bottom: 0 !important
-    // @stylint on
 
 </style>
