@@ -247,20 +247,26 @@
        * Special method to extract the current state of a Perseus Sorter widget
        * as it does not currently properly support getSerializedState
        */
-      addSorterState(answerState) {
+      addSorterState(questionState) {
         this.itemRenderer.getWidgetIds().forEach(id => {
           if (sorterWidgetRegex.test(id)) {
-            if (answerState.question[id]) {
+            if (questionState[id]) {
               const sortableComponent = this.itemRenderer.questionRenderer.getWidgetInstance(
                 id).refs.sortable;
-              answerState.question[id].options = sortableComponent.getOptions();
+              questionState[id].options = sortableComponent.getOptions();
             }
           }
         });
-        return answerState;
+        return questionState;
       },
       getSerializedState() {
-        return this.addSorterState(this.itemRenderer.getSerializedState());
+        const hints = Object.keys(this.itemRenderer.hintsRenderer.refs).map(key =>
+            this.itemRenderer.hintsRenderer.refs[key].getSerializedState());
+        const question = this.addSorterState(this.itemRenderer.questionRenderer.getSerializedState());
+        return {
+          question,
+          hints,
+        };
       },
       restoreSerializedState(answerState) {
         this.itemRenderer.restoreSerializedState(this.answerState);
