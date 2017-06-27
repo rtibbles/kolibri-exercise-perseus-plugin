@@ -82,8 +82,8 @@
       global.React.__internalAddons = {
         CSSTransitionGroup: require('react-addons-css-transition-group'),
         PureRenderMixin: require('react-addons-pure-render-mixin'),
+        createFragment: require('react-addons-create-fragment'),
       };
-
 
       global.React.addons = global.React.__internalAddons;
       // Perseus also expects katex to be globally imported.
@@ -100,6 +100,9 @@
       // We should try to only use our interface text, so as to avoid interacting with this.
       /* eslint-disable import/no-webpack-loader-syntax */
       global.i18n = require('imports-loader?window=>{}!exports-loader?window.i18n!perseus/lib/i18n');
+      global.$_ = require('imports-loader?window=>{}!exports-loader?window.$_!perseus/lib/i18n');
+      global.$i18nDoNotTranslate = require(
+        'imports-loader?window=>{},React=react!exports-loader?window.$i18nDoNotTranslate!perseus/lib/i18n');
       /* eslint-enable import/no-webpack-loader-syntax */
 
       require('qtip2');
@@ -130,6 +133,8 @@
       delete global.$;
       delete global.jQuery;
       delete global.i18n;
+      delete global.$_;
+      delete global.$i18nDoNotTranslate;
       delete global.MathQuill;
       delete global.ReactDOM;
       delete global.Exercises;
