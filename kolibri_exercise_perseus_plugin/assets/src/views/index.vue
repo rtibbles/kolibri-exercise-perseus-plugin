@@ -133,6 +133,8 @@
       delete global.$;
       delete global.jQuery;
       delete global.i18n;
+      delete global.$_;
+      delete global.$i18nDoNotTranslate;
       delete global.MathQuill;
       delete global.ReactDOM;
       delete global.Exercises;
