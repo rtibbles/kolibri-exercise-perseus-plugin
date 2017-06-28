@@ -59,6 +59,44 @@
 
   module.exports = {
     beforeCreate() {
+      // Add special Khan global objects
+
+      // Infer the decimal separator for this locale
+      const decimal_separator = this.$formatNumber(1.1).replace( // eslint-disable-line camelcase
+        new RegExp(this.$formatNumber(1), 'g'));
+
+      // Attempt to infer grouping separator
+      const grouping_separator = this.$formatNumber(1000, { // eslint-disable-line camelcase
+        useGrouping: true
+      }).split().reduce(
+        (acc, item) => acc.replace(item, ''), this.$formatNumber(1000));
+
+      // Attempt to infer the minus symbol
+      const minus = this.$formatNumber(-1).replace(this.$formatNumber(1), '');
+
+      global.icu = {
+        getDecimalFormatSymbols() {
+          return {
+            decimal_separator,
+            grouping_separator,
+            minus,
+          };
+        },
+      };
+
+      global.KhanUtil = {
+        debugLog() {},
+      };
+
+      global.Exercises = {
+        useKatex: true,
+      };
+
+      global.Khan = {
+        Util: global.KhanUtil,
+        error() {},
+      };
+
       // Load in jQuery, because apparently we still need that for a React app.
       global.$ = require('jquery');
       global.jQuery = global.$;
@@ -129,6 +167,10 @@
 
     destroyed() {
       // Clean up the global namespace pollution that Perseus necessitates.
+      delete global.icu;
+      delete global.KhanUtil;
+      delete global.Exercises;
+      delete global.Khan;
       delete global.React;
       delete global.$;
       delete global.jQuery;
