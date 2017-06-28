@@ -59,6 +59,44 @@
 
   module.exports = {
     beforeCreate() {
+      // Add special Khan global objects
+
+      // Infer the decimal separator for this locale
+      const decimal_separator = this.$formatNumber(1.1).replace( // eslint-disable-line camelcase
+        new RegExp(this.$formatNumber(1), 'g'));
+
+      // Attempt to infer grouping separator
+      const grouping_separator = this.$formatNumber(1000, { // eslint-disable-line camelcase
+        useGrouping: true
+      }).split().reduce(
+        (acc, item) => acc.replace(item, ''), this.$formatNumber(1000));
+
+      // Attempt to infer the minus symbol
+      const minus = this.$formatNumber(-1).replace(this.$formatNumber(1), '');
+
+      global.icu = {
+        getDecimalFormatSymbols() {
+          return {
+            decimal_separator,
+            grouping_separator,
+            minus,
+          };
+        },
+      };
+
+      global.KhanUtil = {
+        debugLog() {},
+      };
+
+      global.Exercises = {
+        useKatex: true,
+      };
+
+      global.Khan = {
+        Util: global.KhanUtil,
+        error() {},
+      };
+
       // Load in jQuery, because apparently we still need that for a React app.
       global.$ = require('jquery');
       global.jQuery = global.$;
@@ -129,6 +167,10 @@
 
     destroyed() {
       // Clean up the global namespace pollution that Perseus necessitates.
+      delete global.icu;
+      delete global.KhanUtil;
+      delete global.Exercises;
+      delete global.Khan;
       delete global.React;
       delete global.$;
       delete global.jQuery;
@@ -247,20 +289,26 @@
        * Special method to extract the current state of a Perseus Sorter widget
        * as it does not currently properly support getSerializedState
        */
-      addSorterState(answerState) {
+      addSorterState(questionState) {
         this.itemRenderer.getWidgetIds().forEach(id => {
           if (sorterWidgetRegex.test(id)) {
-            if (answerState.question[id]) {
+            if (questionState[id]) {
               const sortableComponent = this.itemRenderer.questionRenderer.getWidgetInstance(
                 id).refs.sortable;
-              answerState.question[id].options = sortableComponent.getOptions();
+              questionState[id].options = sortableComponent.getOptions();
             }
           }
         });
-        return answerState;
+        return questionState;
       },
       getSerializedState() {
-        return this.addSorterState(this.itemRenderer.getSerializedState());
+        const hints = Object.keys(this.itemRenderer.hintsRenderer.refs).map(key =>
+            this.itemRenderer.hintsRenderer.refs[key].getSerializedState());
+        const question = this.addSorterState(this.itemRenderer.questionRenderer.getSerializedState());
+        return {
+          question,
+          hints,
+        };
       },
       restoreSerializedState(answerState) {
         this.itemRenderer.restoreSerializedState(this.answerState);
