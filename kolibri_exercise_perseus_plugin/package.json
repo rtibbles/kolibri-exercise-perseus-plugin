@@ -1,8 +1,8 @@
 {
   "scripts": {
-    // the extract messages command relies on a beta version of esprima, so have to build it after install
     "postinstall": "git submodule update --init --recursive && cd node_modules/perseus && yarn install && cd ../../node_modules/esprima && yarn",
-    "extract-messages": "node ./extractPerseusMessages.js"
+    "extract-messages": "node ./extractPerseusMessages.js",
+    "get-ka-translations": "node ./generateKATranslations.js"
   },
   "name": "kolibri-exercise-perseus-render-plugin",
   "description": "Exercise/Perseus Render Plugin for Kolibri",
@@ -32,7 +32,6 @@
   },
   "devDependencies": {
     "adm-zip": "^0.4.7",
-    "bufferjoiner": "^0.1.3",
     "esprima": "https://github.com/jquery/esprima.git",
     "pofile": "^1.0.8",
     "progress": "^2.0.0",

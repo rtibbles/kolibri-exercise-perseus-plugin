@@ -68,3 +68,6 @@ Icon
 #ignore added files with DS_Store
 .DS_Store
 /crowdin.yaml
+
+# secrets file for Crowdin
+crowdinSecrets.js
