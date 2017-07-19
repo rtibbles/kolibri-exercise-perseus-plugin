@@ -4,24 +4,25 @@
     <div :class="{'framework-perseus':true, 'perseus-mobile': isMobile}">
       <div ref="perseus" id="perseus">
 
-        <div id="problem-area">
+        <div :dir="dir" id="problem-area">
           <div id="workarea" :style="isMobile ? { marginLeft: '0px' } : {}"></div>
         </div>
 
         <k-button v-if="anyHints && availableHints > 0" :primary="false" :raised="false" @click="takeHint" class="hint-btn" :text="$tr('hint', {hintsLeft: availableHints})"/>
         <k-button v-else-if="anyHints" :primary="false" :raised="false" class="hint-btn" disabled :text="$tr('noMoreHint')"/>
 
-        <div id="hintlabel" v-if="hinted">{{ $tr("hintLabel") }}</div>
-        <div id="hintsarea" :style="isMobile ? { marginLeft: '0px' } : {}"></div>
+        <div :dir="dir" id="hintlabel" v-if="hinted">{{ $tr("hintLabel") }}</div>
+        <div :dir="dir" id="hintsarea" :style="isMobile ? { marginLeft: '0px' } : {}"></div>
+
         <div style="clear: both;"></div>
 
       </div>
 
       <transition name="expand">
-        <div id="message" v-show="message">{{ message }}</div>
+        <div :dir="dir" id="message" v-show="message">{{ message }}</div>
       </transition>
 
-      <div id="answer-area-wrap">
+      <div :dir="dir" id="answer-area-wrap">
         <div id="answer-area">
           <div class="info-box">
             <div id="solutionarea"></div>
@@ -32,8 +33,8 @@
       <k-button v-if="scratchpad" :primary="false" :raised="false" id="scratchpad-show" :text="$tr('showScratch')"/>
       <k-button v-else :primary="false" :raised="false" disabled id="scratchpad-not-available" :text="$tr('notAvailable')"/>
 
-      <!-- No idea what this is here for -->
-      <div ref="perseusContainer" id="perseus-container"></div>
+      <!-- Need a DOM mount point for reactDOM to attach to, but Perseus renders weirdly so doesn't use this -->
+      <div :dir="dir" ref="perseusContainer" id="perseus-container"></div>
     </div>
   </div>
 
@@ -47,6 +48,8 @@
   import reactDOM from 'react-dom';
   import responsiveWindow from 'kolibri.coreVue.mixins.responsiveWindow';
   import * as perseus from 'perseus/src/perseus';
+  import { getLangDir, isRtl } from 'kolibri.utils.i18n';
+  import kolibri from 'kolibri';
 
   // A handy convenience mapping to what is essentially a constructor for Item Renderer
   // components.
@@ -55,14 +58,13 @@
   const logging = require('kolibri.lib.logging').getLogger(__filename);
 
   // because MathJax isn't compatible with webpack, we are loading it this way.
-  const scriptLoadHack = document.createElement('script');
-  const configFileName = require('../constants').ConfigFileName;
+  const mathJaxConfigFileName = require('../constants').ConfigFileName;
   // the config is fragile, Khan may change it and we need to update the following hardcoded path.
-  scriptLoadHack.setAttribute('src', `/static/mathjax/2.1/MathJax.js?config=${configFileName}`);
-  document.head.appendChild(scriptLoadHack);
+  const mathJaxUrl = `/static/mathjax/2.1/MathJax.js?config=${mathJaxConfigFileName}`;
+
+  const mathJaxPromise = kolibri.scriptLoader(mathJaxUrl);
 
   const sorterWidgetRegex = /sorter [0-9]+/;
-
 
   export default {
     beforeCreate() {
@@ -88,10 +90,6 @@
     },
     name: 'exercisePerseusRenderer',
     props: {
-      scratchpad: {
-        type: Boolean,
-        default: false,
-      },
       initialHintsVisible: {
         type: Number,
         default: 0,
@@ -112,6 +110,10 @@
         type: Boolean,
         default: true,
       },
+      interactive: {
+        type: Boolean,
+        default: true,
+      },
     },
     data: () => ({
       // Is the perseus item renderer loading?
@@ -121,33 +123,44 @@
       // default item data
       item: {},
       itemRenderer: null,
+      scratchpad: false,
     }),
     methods: {
       validateItemData(obj) {
-        return [
-          // A somewhat protracted validator to ensure that our item data conforms
-          // to that expected by the Perseus ItemRenderer,
-          // c.f. https://github.com/Khan/perseus/blob/master/src/item-renderer.jsx#L35
-          'calculator',
-          'chi2Table',
-          'periodicTable',
-          'tTable',
-          'zTable',
-        ].reduce(
+        return (
+          [
+            // A somewhat protracted validator to ensure that our item data conforms
+            // to that expected by the Perseus ItemRenderer,
+            // c.f. https://github.com/Khan/perseus/blob/master/src/item-renderer.jsx#L35
+            'calculator',
+            'chi2Table',
+            'periodicTable',
+            'tTable',
+            'zTable',
+          ].reduce(
             /* eslint-disable no-mixed-operators */
             // Loop through all of the above properties and ensure that if the 'answerArea'
             // property of the item has them, then their values are set to Booleans.
-            (prev, key) => !(!prev ||
-              Object.prototype.hasOwnProperty.call(obj.answerArea, key) &&
-              typeof obj.answerArea[key] !== 'boolean'), true) &&
-            // Check that the 'hints' property is an Array.
+            (prev, key) =>
+              !(
+                !prev ||
+                (Object.prototype.hasOwnProperty.call(obj.answerArea, key) &&
+                  typeof obj.answerArea[key] !== 'boolean')
+              ),
+            true
+          ) &&
+          // Check that the 'hints' property is an Array.
           Array.isArray(obj.hints) &&
           obj.hints.reduce(
             // Check that each hint in the hints array is an object (and not null)
-            (prev, item) => item && typeof item === 'object', true) &&
+            (prev, item) => item && typeof item === 'object',
+            true
+          ) &&
           // Check that the question property is an object (and not null)
-          obj.question && typeof obj.question === 'object';
-          /* eslint-enable no-mixed-operators */
+          obj.question &&
+          typeof obj.question === 'object'
+        );
+        /* eslint-enable no-mixed-operators */
       },
       renderItem() {
         // Reset the state tracking variables.
@@ -155,11 +168,16 @@
 
         // Create react component with current item data.
         // If the component already existed, this will perform an update.
-        this.$set(this, 'itemRenderer', this.reactDOM.render(
-          this.itemRendererFactory(this.itemRenderData, null),
-          this.$refs.perseusContainer, () => {
-            this.loading = false;
-          })
+        this.$set(
+          this,
+          'itemRenderer',
+          reactDOM.render(
+            itemRendererFactory(this.itemRenderData, null),
+            this.$refs.perseusContainer,
+            () => {
+              this.loading = false;
+            }
+          )
         );
       },
       clearItemRenderer() {
@@ -169,7 +187,7 @@
         // to ensure clean up without worrying about whether React has already cleaned up this
         // component.
         try {
-          this.reactDOM.unmountComponentAtNode(this.$refs.perseusContainer);
+          reactDOM.unmountComponentAtNode(this.$refs.perseusContainer);
           this.$set(this, 'itemRenderer', null);
         } catch (e) {
           logging.debug('Error during unmounting of item renderer', e);
@@ -183,8 +201,8 @@
         this.itemRenderer.getWidgetIds().forEach(id => {
           if (sorterWidgetRegex.test(id)) {
             if (questionState[id]) {
-              const sortableComponent = this.itemRenderer.questionRenderer.getWidgetInstance(
-                id).refs.sortable;
+              const sortableComponent = this.itemRenderer.questionRenderer.getWidgetInstance(id).refs
+                .sortable;
               questionState[id].options = sortableComponent.getOptions();
             }
           }
@@ -193,7 +211,8 @@
       },
       getSerializedState() {
         const hints = Object.keys(this.itemRenderer.hintsRenderer.refs).map(key =>
-            this.itemRenderer.hintsRenderer.refs[key].getSerializedState());
+          this.itemRenderer.hintsRenderer.refs[key].getSerializedState()
+        );
         const question = this.addSorterState(this.itemRenderer.questionRenderer.getSerializedState());
         return {
           question,
@@ -205,15 +224,11 @@
         this.itemRenderer.getWidgetIds().forEach(id => {
           if (sorterWidgetRegex.test(id)) {
             if (answerState.question[id]) {
-              const sortableComponent = this.itemRenderer.questionRenderer.getWidgetInstance(
-                id).refs.sortable;
-              const newProps = Object.assign(
-                {},
-                sortableComponent.props,
-                {
-                  options: answerState.question[id].options,
-                }
-              );
+              const sortableComponent = this.itemRenderer.questionRenderer.getWidgetInstance(id).refs
+                .sortable;
+              const newProps = Object.assign({}, sortableComponent.props, {
+                options: answerState.question[id].options,
+              });
               sortableComponent.setState({ items: sortableComponent.itemsFromProps(newProps) });
             }
           }
@@ -221,11 +236,13 @@
       },
       setAnswer() {
         // If a passed in answerState is an object with the right keys, restore.
-        if (this.itemRenderer &&
+        if (
+          this.itemRenderer &&
           this.answerState &&
           this.answerState.question &&
           this.answerState.hints &&
-          !this.loading) {
+          !this.loading
+        ) {
           this.restoreSerializedState(this.answerState);
         } else if (this.itemRenderer && !this.loading) {
           // Not setting an answer state, but need to hide any hints.
@@ -254,8 +271,10 @@
         return null;
       },
       takeHint() {
-        if (this.itemRenderer &&
-          this.itemRenderer.state.hintsVisible < this.itemRenderer.getNumHints()) {
+        if (
+          this.itemRenderer &&
+          this.itemRenderer.state.hintsVisible < this.itemRenderer.getNumHints()
+        ) {
           this.itemRenderer.showHint();
           this.$parent.$emit('hintTaken', { answerState: this.getSerializedState() });
         }
@@ -272,9 +291,9 @@
         // Only try to do this if itemId is defined.
         if (this.itemId) {
           this.loading = true;
-          this.Kolibri.client(
-            `${this.defaultFile.storage_url}${this.itemId}.json`
-            ).then((itemResponse) => {
+          this.Kolibri
+            .client(`${this.defaultFile.storage_url}${this.itemId}.json`)
+            .then(itemResponse => {
               if (this.validateItemData(itemResponse.entity)) {
                 this.item = itemResponse.entity;
                 if (this.$el) {
@@ -286,7 +305,8 @@
               } else {
                 logging.warn('Loaded item was malformed', itemResponse.entity);
               }
-            }).catch(reason => {
+            })
+            .catch(reason => {
               logging.debug('There was an error loading the assessment item data: ', reason);
               this.clearItemRenderer();
               this.$emit('itemError', reason);
@@ -324,6 +344,7 @@
             onFocusChange: this.dismissMessage,
             isMobile: this.isMobile,
             customKeypad: this.usesTouch,
+            readOnly: !this.interactive,
           },
         };
       },
@@ -331,11 +352,18 @@
         return this.itemRenderer ? this.itemRenderer.state.hintsVisible > 0 : false;
       },
       availableHints() {
-        return this.itemRenderer ? this.itemRenderer.getNumHints() -
-        this.itemRenderer.state.hintsVisible : 0;
+        return this.itemRenderer
+          ? this.itemRenderer.getNumHints() - this.itemRenderer.state.hintsVisible
+          : 0;
       },
       anyHints() {
         return this.allowHints && (this.itemRenderer ? this.itemRenderer.getNumHints() : 0);
+      },
+      contentIsRtl() {
+        return isRtl(this.defaultFile.lang);
+      },
+      dir() {
+        return getLangDir(this.defaultFile.lang);
       },
     },
     watch: {
@@ -344,8 +372,15 @@
       answerState: 'setAnswer',
     },
     created() {
-      this.loadItemData();
-      this.$emit('startTracking');
+      const initPromise = mathJaxPromise.then(() =>
+        perseus.init({ skipMathJax: true, loadExtraWidgets: true })
+      );
+      // Try to load the appropriate directional CSS for the particular content
+      const cssPromise = this.$options.contentModule.loadDirectionalCSS(this.dir);
+      Promise.all([initPromise, cssPromise]).then(() => {
+        this.loadItemData();
+        this.$emit('startTracking');
+      });
     },
     mounted() {
       this.$emit('mounted');
