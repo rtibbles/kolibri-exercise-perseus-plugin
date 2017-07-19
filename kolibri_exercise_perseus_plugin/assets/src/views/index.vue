@@ -42,6 +42,16 @@
 
 <script>
 
+  import icu from '../KAGlobals/icu';
+  import react from 'react';
+  import reactDOM from 'react-dom';
+  import responsiveWindow from 'kolibri.coreVue.mixins.responsiveWindow';
+  import * as perseus from 'perseus/src/perseus';
+
+  // A handy convenience mapping to what is essentially a constructor for Item Renderer
+  // components.
+  const itemRendererFactory = react.createFactory(perseus.ItemRenderer);
+
   const logging = require('kolibri.lib.logging').getLogger(__filename);
 
   // because MathJax isn't compatible with webpack, we are loading it this way.
@@ -53,109 +63,10 @@
 
   const sorterWidgetRegex = /sorter [0-9]+/;
 
-  const responsiveWindow = require('kolibri.coreVue.mixins.responsiveWindow');
 
-  module.exports = {
+  export default {
     beforeCreate() {
-      // Add special Khan global objects
-
-      // Infer the decimal separator for this locale
-      const decimal_separator = this.$formatNumber(1.1).replace( // eslint-disable-line camelcase
-        new RegExp(this.$formatNumber(1), 'g'));
-
-      // Attempt to infer grouping separator
-      const grouping_separator = this.$formatNumber(1000, { // eslint-disable-line camelcase
-        useGrouping: true
-      }).split().reduce(
-        (acc, item) => acc.replace(item, ''), this.$formatNumber(1000));
-
-      // Attempt to infer the minus symbol
-      const minus = this.$formatNumber(-1).replace(this.$formatNumber(1), '');
-
-      global.icu = {
-        getDecimalFormatSymbols() {
-          return {
-            decimal_separator,
-            grouping_separator,
-            minus,
-          };
-        },
-      };
-
-      global.KhanUtil = {
-        debugLog() {},
-      };
-
-      global.Exercises = {
-        useKatex: true,
-      };
-
-      global.Khan = {
-        Util: global.KhanUtil,
-        error() {},
-      };
-
-      // Load in jQuery, because apparently we still need that for a React app.
-      global.$ = require('jquery');
-      global.jQuery = global.$;
-
-      require('perseus/lib/babel-polyfills.min');
-
-      // Underscore as well! We use their bundled version for compatibility reasons.
-      global._ = require('underscore');
-
-      // Perseus expects React to be available on the global object
-      this.react = require('react');
-      global.React = this.react;
-
-
-      // Perseus expects ReactDOM to be in a particular place on the React object.
-      global.React.__internalReactDOM = require('react-dom');
-      this.reactDOM = global.React.__internalReactDOM;
-      global.ReactDOM = this.reactDOM;
-
-      // Add in a couple of addons that Perseus needs.
-      global.React.__internalAddons = {
-        CSSTransitionGroup: require('react-addons-css-transition-group'),
-        PureRenderMixin: require('react-addons-pure-render-mixin'),
-        createFragment: require('react-addons-create-fragment'),
-      };
-
-      global.React.addons = global.React.__internalAddons;
-      // Perseus also expects katex to be globally imported.
-      global.katex = require('perseus/lib/katex/katex');
-
-      // Add in the Khan Academy parser object too, this automatically registers
-      // itself to the global object.
-      require('perseus/lib/kas');
-
-      // Load MathQuill
-      require('perseus/lib/mathquill/mathquill-basic');
-
-      // Perseus expects this i18n object, but hopefully we won't have to touch it
-      // We should try to only use our interface text, so as to avoid interacting with this.
-      /* eslint-disable import/no-webpack-loader-syntax */
-      global.i18n = require('imports-loader?window=>{}!exports-loader?window.i18n!perseus/lib/i18n');
-      global.$_ = require('imports-loader?window=>{}!exports-loader?window.$_!perseus/lib/i18n');
-      global.$i18nDoNotTranslate = require(
-        'imports-loader?window=>{},React=react!exports-loader?window.$i18nDoNotTranslate!perseus/lib/i18n');
-      /* eslint-enable import/no-webpack-loader-syntax */
-
-      require('qtip2');
-
-      // For reasons quite beyond my ken, some configuration is still delegated to this
-      // global Exercises object.
-      this.Exercises = {
-        useKatex: true,
-      };
-
-      global.Exercises = this.Exercises;
-
-      this.perseus = require('perseus/build/perseus');
-
-      // A handy convenience mapping to what is essentially a constructor for Item Renderer
-      // components.
-      this.itemRendererFactory = this.react.createFactory(this.perseus.ItemRenderer);
+      icu.setIcuSymbols();
     },
 
     beforeDestroy() {
@@ -163,26 +74,7 @@
       this.$emit('stopTracking');
     },
 
-    destroyed() {
-      // Clean up the global namespace pollution that Perseus necessitates.
-      delete global.icu;
-      delete global.KhanUtil;
-      delete global.Exercises;
-      delete global.Khan;
-      delete global.React;
-      delete global.$;
-      delete global.jQuery;
-      delete global.i18n;
-      delete global.$_;
-      delete global.$i18nDoNotTranslate;
-      delete global.MathQuill;
-      delete global.ReactDOM;
-      delete global.Exercises;
-    },
-    mixins: [
-      responsiveWindow,
-    ],
-    $trNameSpace: 'perseusRenderer',
+    mixins: [responsiveWindow],
     $trs: {
       showScratch: 'Show scratchpad',
       notAvailable: 'The scratchpad is not available',
@@ -194,7 +86,7 @@
     components: {
       'k-button': require('kolibri.coreVue.components.kButton'),
     },
-    name: 'exercise-perseus-renderer',
+    name: 'exercisePerseusRenderer',
     props: {
       scratchpad: {
         type: Boolean,
