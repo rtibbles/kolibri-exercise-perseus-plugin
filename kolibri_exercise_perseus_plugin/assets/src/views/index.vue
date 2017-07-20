@@ -8,10 +8,8 @@
           <div id="workarea"></div>
         </div>
 
-        <template v-if="anyHints">
-          <icon-button v-if="availableHints > 0" @click="takeHint" class="hint-btn" :text="$tr('hint', {hintsLeft: availableHints})"/>
-          <icon-button v-else class="hint-btn" disabled :text="$tr('noMoreHint')"/>
-        </template>
+        <icon-button v-if="anyHints && availableHints > 0" @click="takeHint" class="hint-btn" :text="$tr('hint', {hintsLeft: availableHints})"/>
+        <icon-button v-else-if="anyHints" class="hint-btn" disabled :text="$tr('noMoreHint')"/>
 
         <div id="hintlabel" v-if="hinted">{{ $tr("hintLabel") }}</div>
         <div id="hintsarea"></div>
