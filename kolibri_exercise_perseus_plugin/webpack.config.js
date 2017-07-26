@@ -17,7 +17,7 @@ module.exports = {
         enforce: 'pre',
         options: {
           search: '"url(/images/throbber.gif) no-repeat"',
-          replace: '"url(static/images/throbber.gif) no-repeat"'
+          replace: '"url(/static/images/throbber.gif) no-repeat"'
         }
       }
     ]
