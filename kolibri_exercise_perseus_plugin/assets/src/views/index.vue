@@ -9,8 +9,8 @@
         </div>
 
         <template v-if="anyHints">
-          <icon-button v-if="availableHints > 0" @click="takeHint" class="hint-btn" :text="$tr('hint', {hintsLeft: availableHints})"/>
-          <icon-button v-else class="hint-btn" disabled :text="$tr('noMoreHint')"/>
+          <k-button v-if="availableHints > 0" :primary="false" :raised="false" @click="takeHint" class="hint-btn" :text="$tr('hint', {hintsLeft: availableHints})"/>
+          <k-button v-else :primary="false" :raised="false" class="hint-btn" disabled :text="$tr('noMoreHint')"/>
         </template>
 
         <div id="hintlabel" v-if="hinted">{{ $tr("hintLabel") }}</div>
@@ -31,8 +31,8 @@
         </div>
       </div>
 
-      <icon-button v-if="scratchpad" id="scratchpad-show" :text="$tr('showScratch')"></icon-button>
-      <icon-button v-else disabled id="scratchpad-not-available" :text="$tr('notAvailable')"></icon-button>
+      <k-button v-if="scratchpad" :primary="false" :raised="false" id="scratchpad-show" :text="$tr('showScratch')"/>
+      <k-button v-else :primary="false" :raised="false" disabled id="scratchpad-not-available" :text="$tr('notAvailable')"/>
 
       <!-- No idea what this is here for -->
       <div ref="perseusContainer" id="perseus-container"></div>
@@ -194,7 +194,7 @@
       noMoreHint: 'No more hints',
     },
     components: {
-      'icon-button': require('kolibri.coreVue.components.iconButton'),
+      'k-button': require('kolibri.coreVue.components.kButton'),
     },
     name: 'exercise-perseus-renderer',
     props: {
