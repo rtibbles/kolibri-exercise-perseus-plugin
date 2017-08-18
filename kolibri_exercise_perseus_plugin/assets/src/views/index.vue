@@ -5,14 +5,14 @@
       <div ref="perseus" id="perseus">
 
         <div id="problem-area">
-          <div id="workarea"></div>
+          <div id="workarea" :style="isMobile ? { marginLeft: '0px' } : {}"></div>
         </div>
 
         <icon-button v-if="anyHints && availableHints > 0" @click="takeHint" class="hint-btn" :text="$tr('hint', {hintsLeft: availableHints})"/>
         <icon-button v-else-if="anyHints" class="hint-btn" disabled :text="$tr('noMoreHint')"/>
 
         <div id="hintlabel" v-if="hinted">{{ $tr("hintLabel") }}</div>
-        <div id="hintsarea"></div>
+        <div id="hintsarea" :style="isMobile ? { marginLeft: '0px' } : {}"></div>
         <div style="clear: both;"></div>
 
       </div>
