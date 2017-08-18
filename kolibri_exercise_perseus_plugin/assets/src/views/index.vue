@@ -1,33 +1,40 @@
 <template v-if="itemId">
 
-  <div>
-    <div ref="perseus" id="perseus">
-      <div id="problem-area">
-        <div id="workarea"></div>
+  <div class="bibliotron-exercise">
+    <div :class="{'framework-perseus':true, 'perseus-mobile': isMobile}">
+      <div ref="perseus" id="perseus">
+
+        <div id="problem-area">
+          <div id="workarea" :style="isMobile ? { marginLeft: '0px' } : {}"></div>
+        </div>
+
+        <icon-button v-if="anyHints && availableHints > 0" @click="takeHint" class="hint-btn" :text="$tr('hint', {hintsLeft: availableHints})"/>
+        <icon-button v-else-if="anyHints" class="hint-btn" disabled :text="$tr('noMoreHint')"/>
+
+        <div id="hintlabel" v-if="hinted">{{ $tr("hintLabel") }}</div>
+        <div id="hintsarea" :style="isMobile ? { marginLeft: '0px' } : {}"></div>
+        <div style="clear: both;"></div>
+
       </div>
-      <div v-if="anyHints">
-        <icon-button v-if="availableHints > 0" @click="takeHint" class="hint-btn" :text="$tr('hint', {hintsLeft: availableHints})"/>
-        <icon-button v-else class="hint-btn" disabled :text="$tr('noMoreHint')"/>
-      </div>
-      <div id="hintlabel" v-if="hinted">{{ $tr("hintLabel") }}</div>
-      <div id="hintsarea"></div>
-      <div style="clear: both;"></div>
-    </div>
-    <transition name="expand">
-      <div id="message" v-show="message">{{ message }}</div>
-    </transition>
-    <div id="answer-area-wrap">
-      <div id="answer-area">
-        <div class="info-box">
-          <div id="solutionarea"></div>
+
+      <transition name="expand">
+        <div id="message" v-show="message">{{ message }}</div>
+      </transition>
+
+      <div id="answer-area-wrap">
+        <div id="answer-area">
+          <div class="info-box">
+            <div id="solutionarea"></div>
+          </div>
         </div>
       </div>
-    </div>
-    <div id="scratchpad-btn-container">
+
       <icon-button v-if="scratchpad" id="scratchpad-show" :text="$tr('showScratch')"></icon-button>
       <icon-button v-else disabled id="scratchpad-not-available" :text="$tr('notAvailable')"></icon-button>
+
+      <!-- No idea what this is here for -->
+      <div ref="perseusContainer" id="perseus-container"></div>
     </div>
-    <div ref="perseusContainer" id="perseus-container"></div>
   </div>
 
 </template>
@@ -50,6 +57,44 @@
 
   module.exports = {
     beforeCreate() {
+      // Add special Khan global objects
+
+      // Infer the decimal separator for this locale
+      const decimal_separator = this.$formatNumber(1.1).replace( // eslint-disable-line camelcase
+        new RegExp(this.$formatNumber(1), 'g'));
+
+      // Attempt to infer grouping separator
+      const grouping_separator = this.$formatNumber(1000, { // eslint-disable-line camelcase
+        useGrouping: true
+      }).split().reduce(
+        (acc, item) => acc.replace(item, ''), this.$formatNumber(1000));
+
+      // Attempt to infer the minus symbol
+      const minus = this.$formatNumber(-1).replace(this.$formatNumber(1), '');
+
+      global.icu = {
+        getDecimalFormatSymbols() {
+          return {
+            decimal_separator,
+            grouping_separator,
+            minus,
+          };
+        },
+      };
+
+      global.KhanUtil = {
+        debugLog() {},
+      };
+
+      global.Exercises = {
+        useKatex: true,
+      };
+
+      global.Khan = {
+        Util: global.KhanUtil,
+        error() {},
+      };
+
       // Load in jQuery, because apparently we still need that for a React app.
       global.$ = require('jquery');
       global.jQuery = global.$;
@@ -73,8 +118,8 @@
       global.React.__internalAddons = {
         CSSTransitionGroup: require('react-addons-css-transition-group'),
         PureRenderMixin: require('react-addons-pure-render-mixin'),
+        createFragment: require('react-addons-create-fragment'),
       };
-
 
       global.React.addons = global.React.__internalAddons;
       // Perseus also expects katex to be globally imported.
@@ -91,6 +136,9 @@
       // We should try to only use our interface text, so as to avoid interacting with this.
       /* eslint-disable import/no-webpack-loader-syntax */
       global.i18n = require('imports-loader?window=>{}!exports-loader?window.i18n!perseus/lib/i18n');
+      global.$_ = require('imports-loader?window=>{}!exports-loader?window.$_!perseus/lib/i18n');
+      global.$i18nDoNotTranslate = require(
+        'imports-loader?window=>{},React=react!exports-loader?window.$i18nDoNotTranslate!perseus/lib/i18n');
       /* eslint-enable import/no-webpack-loader-syntax */
 
       require('qtip2');
@@ -117,11 +165,16 @@
 
     destroyed() {
       // Clean up the global namespace pollution that Perseus necessitates.
+      delete global.icu;
+      delete global.KhanUtil;
+      delete global.Exercises;
+      delete global.Khan;
       delete global.React;
       delete global.$;
       delete global.jQuery;
       delete global.i18n;
-      delete global.KAS;
+      delete global.$_;
+      delete global.$i18nDoNotTranslate;
       delete global.MathQuill;
       delete global.ReactDOM;
       delete global.Exercises;
@@ -234,20 +287,26 @@
        * Special method to extract the current state of a Perseus Sorter widget
        * as it does not currently properly support getSerializedState
        */
-      addSorterState(answerState) {
+      addSorterState(questionState) {
         this.itemRenderer.getWidgetIds().forEach(id => {
           if (sorterWidgetRegex.test(id)) {
-            if (answerState.question[id]) {
+            if (questionState[id]) {
               const sortableComponent = this.itemRenderer.questionRenderer.getWidgetInstance(
                 id).refs.sortable;
-              answerState.question[id].options = sortableComponent.getOptions();
+              questionState[id].options = sortableComponent.getOptions();
             }
           }
         });
-        return answerState;
+        return questionState;
       },
       getSerializedState() {
-        return this.addSorterState(this.itemRenderer.getSerializedState());
+        const hints = Object.keys(this.itemRenderer.hintsRenderer.refs).map(key =>
+            this.itemRenderer.hintsRenderer.refs[key].getSerializedState());
+        const question = this.addSorterState(this.itemRenderer.questionRenderer.getSerializedState());
+        return {
+          question,
+          hints,
+        };
       },
       restoreSerializedState(answerState) {
         this.itemRenderer.restoreSerializedState(this.answerState);
@@ -326,7 +385,6 @@
             ).then((itemResponse) => {
               if (this.validateItemData(itemResponse.entity)) {
                 this.item = itemResponse.entity;
-                // init the availableHints;
                 if (this.$el) {
                   // Don't try to render if our component is not mounted yet.
                   this.renderItem();
@@ -351,7 +409,7 @@
       // this is a nasty hack. Will find a better way
       usesTouch() {
         // using mdn suggestion for most compatibility
-        const isMobileBrowser = new RegExp(/Mobi*/);
+        const isMobileBrowser = new RegExp(/Mobi*|Android/);
         return isMobileBrowser.test(window.navigator.userAgent);
       },
       itemRenderData() {
@@ -420,127 +478,12 @@
     margin-top: 6px
     overflow-x: visible
 
+  .bibliotron-exercise
+    margin-bottom: 6px
+
   @font-face
     font-family: Symbola
     src: url(/static/fonts/Symbola.eot)
     src: local('Symbola Regular'), local('Symbola'), url(/static/fonts/Symbola.woff) format('woff'), url(/static/fonts/Symbola.ttf) format('truetype'), url(/static/fonts/Symbola.otf) format('opentype'), url(/static/fonts/Symbola.svg#Symbola) format('svg')
-
-  #answer-area-wrap
-    position: relative
-    @media screen and (max-width: $portrait-breakpoint)
-      top: -18px
-
-  #workarea
-    margin-left: 0
-
-  #message
-    background-color: $core-bg-warning
-    color: $core-text-default
-    border-radius: $radius
-    padding: 10px 15px
-    margin-top: 6px
-
-  .info-box
-    margin-bottom: 10
-    padding: 10
-    position: relative
-    z-index: 10
-    overflow: visible
-
-  #hintsarea
-    border-radius: $radius
-
-  #hintlabel
-    font-weight: bold
-    padding: 10px
-    border-top: 1px solid
-
-  .hint-btn
-    margin-bottom: 1em
-    margin-left: 1em
-
-  #solutionarea
-    min-height: 35px
-    padding: 10px
-    margin: 0 -10px
-    border-bottom: 0
-    overflow: visible
-
-  // message transition effect
-  .expand-enter-active
-    transition: all 1s ease
-
-  .expand-enter
-    position: absolute
-    opacity: 0
-
-</style>
-
-
-<style lang="stylus">
-
-  @require '~kolibri.styles.theme'
-
-  // Use namespaced unscoped styling here to alter Perseus' original styling in order to fit kolibri
-  #perseus
-    img
-      max-width: 100%
-      padding: 10px
-      vertical-align: middle
-
-    ul
-      border-bottom: 0
-      border-top: 0
-
-    fieldset
-      border: none
-
-    fieldset > ul
-      border: 1px solid #BABEC2
-      border-radius: $radius
-      padding: 0
-
-    fieldset > ul > li
-      list-style-type: none
-
-    .graphie-container
-      position: absolute
-      height: 100%
-      width: 100%
-      top: 0
-
-    .perseus-hint-renderer
-      color: $core-text-annotation
-      padding: 6px 10px
-      font-weight: normal
-
-    .perseus-hint-renderer
-      margin-left: 40px
-
-    .perseus-hint-label
-      color: $core-text-annotation
-      font-weight: 600
-      white-space: nowrap
-      right: 50px
-      position: relative
-      font-weight: bold
-
-    .perseus-hint-label:before
-      content: '('
-
-    .perseus-hint-label:after
-      content: ')'
-
-    .paragraph
-      padding: 4px
-
-    .fixed-to-responsive
-      display: inline-block
-
-    // Perseus will add padding-bottom: 100 to every svg-image, we don't want that.
-    // @stylint off
-    .svg-image *
-      padding-bottom: 0 !important
-    // @stylint on
 
 </style>
