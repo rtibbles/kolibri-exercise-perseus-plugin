@@ -5,16 +5,14 @@
       <div ref="perseus" id="perseus">
 
         <div id="problem-area">
-          <div id="workarea"></div>
+          <div id="workarea" :style="isMobile ? { marginLeft: '0px' } : {}"></div>
         </div>
 
-        <template v-if="anyHints">
-          <k-button v-if="availableHints > 0" :primary="false" :raised="false" @click="takeHint" class="hint-btn" :text="$tr('hint', {hintsLeft: availableHints})"/>
-          <k-button v-else :primary="false" :raised="false" class="hint-btn" disabled :text="$tr('noMoreHint')"/>
-        </template>
+        <k-button v-if="anyHints && availableHints > 0" :primary="false" :raised="false" @click="takeHint" class="hint-btn" :text="$tr('hint', {hintsLeft: availableHints})"/>
+        <k-button v-else-if="anyHints" :primary="false" :raised="false" class="hint-btn" disabled :text="$tr('noMoreHint')"/>
 
         <div id="hintlabel" v-if="hinted">{{ $tr("hintLabel") }}</div>
-        <div id="hintsarea"></div>
+        <div id="hintsarea" :style="isMobile ? { marginLeft: '0px' } : {}"></div>
         <div style="clear: both;"></div>
 
       </div>
