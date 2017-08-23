@@ -1,6 +1,6 @@
 <template v-if="itemId">
 
-  <div class="bibliotron-exercise">
+  <div class="perseus-root bibliotron-exercise">
     <div :class="{'framework-perseus':true, 'perseus-mobile': isMobile}">
       <div ref="perseus" id="perseus">
 
@@ -48,7 +48,7 @@
   import reactDOM from 'react-dom';
   import responsiveWindow from 'kolibri.coreVue.mixins.responsiveWindow';
   import * as perseus from 'perseus/src/perseus';
-  import { getLangDir, isRtl } from 'kolibri.utils.i18n';
+  import { getContentLangDir, defaultLanguage, languageValidator } from 'kolibri.utils.i18n';
   import kolibri from 'kolibri';
 
   // A handy convenience mapping to what is essentially a constructor for Item Renderer
@@ -113,6 +113,11 @@
       interactive: {
         type: Boolean,
         default: true,
+      },
+      lang: {
+        type: Object,
+        default: () => defaultLanguage,
+        validator: languageValidator,
       },
     },
     data: () => ({
@@ -359,11 +364,8 @@
       anyHints() {
         return this.allowHints && (this.itemRenderer ? this.itemRenderer.getNumHints() : 0);
       },
-      contentIsRtl() {
-        return isRtl(this.defaultFile.lang);
-      },
       dir() {
-        return getLangDir(this.defaultFile.lang);
+        return getContentLangDir(this.lang);
       },
     },
     watch: {
@@ -412,5 +414,50 @@
     font-family: Symbola
     src: url(/static/fonts/Symbola.eot)
     src: local('Symbola Regular'), local('Symbola'), url(/static/fonts/Symbola.woff) format('woff'), url(/static/fonts/Symbola.ttf) format('truetype'), url(/static/fonts/Symbola.otf) format('opentype'), url(/static/fonts/Symbola.svg#Symbola) format('svg')
+
+</style>
+
+
+<style lang="stylus">
+
+  // Reset global styles so that we don't interfere with perseus styling
+
+  .perseus-root
+    div, span, applet, object, iframe,
+    h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+    a, abbr, acronym, address, big, cite, code,
+    del, dfn, em, img, ins, kbd, q, s, samp,
+    small, strike, strong, sub, sup, tt, var,
+    b, u, i, center,
+    dl, dt, dd, ol, ul, li,
+    fieldset, form, label, legend,
+    table, caption, tbody, tfoot, thead, tr, th, td,
+    article, aside, canvas, details, embed,
+    figure, figcaption, footer, header, hgroup,
+    menu, nav, output, ruby, section, summary,
+    time, mark, audio, video
+      margin: 0
+      padding: 0
+      border: none
+      vertical-align: baseline
+    /* HTML5 display-role reset for older browsers */
+    article, aside, details, figcaption, figure,
+    footer, header, hgroup, menu, nav, section
+      display: block
+
+    ol, ul
+      list-style: none
+
+    blockquote, q
+      quotes: none
+
+    blockquote:before, blockquote:after,
+    q:before, q:after
+      content: ''
+      content: none
+
+    table
+      border-collapse: collapse
+      border-spacing: 0
 
 </style>
