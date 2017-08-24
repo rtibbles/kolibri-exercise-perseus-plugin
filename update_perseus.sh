@@ -12,3 +12,7 @@ config_file_name="$(basename kolibri_exercise_perseus_plugin/static/mathjax/2.1/
 file_content="const ConfigFileName = '${config_file_name}';
 module.exports = { ConfigFileName };"
 echo "${file_content}" >> kolibri_exercise_perseus_plugin/assets/src/constants.js
+
+cd kolibri_exercise_perseus_plugin
+yarn run extract-messages
+cd ..
