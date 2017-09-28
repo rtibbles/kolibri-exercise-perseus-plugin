@@ -10,15 +10,20 @@
  * Utility functions for generating the paths for locale files, both locally and on crowdin
  */
 const localeFile = (lang, locale) => {
-  if (locale) {
-    if (locale.length <= 2) {
-      locale = locale.toUpperCase();
-    } else {
-      locale = locale[0].toUpperCase() + locale.slice(1);
+  let langCode;
+  if (lang) {
+    if (locale) {
+      if (locale.length <= 2) {
+        locale = locale.toUpperCase();
+      } else {
+        locale = locale[0].toUpperCase() + locale.slice(1);
+      }
     }
+    langCode = lang + (locale ? '_' + locale : '') + '/';
+  } else {
+    langCode = '';
   }
-  const langCode = lang + (locale ? '_' + locale : '');
-  return `${langCode}/LC_FRONTEND_MESSAGES/exercise_perseus_render_module-messages.json`;
+  return `${langCode}LC_FRONTEND_MESSAGES/exercise_perseus_render_module-messages.json`;
 };
 
 // Format the language code how crowdin expects it
@@ -36,7 +41,7 @@ const kolibriReleaseBranch = 'release-v0.6.x';
 
 // Generate path for Kolibri crowdin translation upload
 const remoteLocaleFile = () => {
-  return `${kolibriReleaseBranch}/` + localeFile('en');
+  return `${kolibriReleaseBranch}/` + localeFile();
 }
 
 // Load upthe current English translations file, to give us basis for mapping

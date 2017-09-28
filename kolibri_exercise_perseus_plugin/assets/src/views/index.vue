@@ -46,6 +46,7 @@
   import icu from '../KAGlobals/icu';
   import react from 'react';
   import reactDOM from 'react-dom';
+  import client from 'kolibri.client';
   import responsiveWindow from 'kolibri.coreVue.mixins.responsiveWindow';
   import * as perseus from 'perseus/src/perseus';
   import { getContentLangDir, defaultLanguage, languageValidator } from 'kolibri.utils.i18n';
@@ -296,8 +297,7 @@
         // Only try to do this if itemId is defined.
         if (this.itemId) {
           this.loading = true;
-          this.Kolibri
-            .client(`${this.defaultFile.storage_url}${this.itemId}.json`)
+          client(`${this.defaultFile.storage_url}${this.itemId}.json`)
             .then(itemResponse => {
               if (this.validateItemData(itemResponse.entity)) {
                 this.item = itemResponse.entity;
