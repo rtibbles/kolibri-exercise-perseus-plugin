@@ -1,2 +1,2 @@
-const ConfigFileName = 'KAthJax-e76365d62c31e1cbafe939bf94aa8497.js';
+const ConfigFileName = 'KAthJax-730d56e87e9c926b91584f6030314815.js';
 module.exports = { ConfigFileName };
