@@ -59,6 +59,13 @@ module.exports = {
               replace: '',
               flags: 'g'
             },
+            // Remove an attempt to reference katex from the window object, so that
+            // it can be properly imported by the provide plugin
+            {
+              search: /window\.katex/,
+              replace: 'katex',
+              flags: 'g'
+            },
           ]
         }
       },
