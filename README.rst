@@ -58,6 +58,13 @@ How can I install this plugin for development?
 
     ``./update_perseus.sh``
 
+Updating translation strings
+----------------------------
+
+To download the latest translation strings for this plugin, make a `crowdinSecrets.js` file from the template in the repo root, and put your kolibri project API key in there. The KA API key can be set to null. Then execute the following commands:
+    ``cd kolibri_exercise_perseus_plugin``
+    ``yarn run download-translations``
+
 Known issues
 ------------
 

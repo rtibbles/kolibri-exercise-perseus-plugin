@@ -2,7 +2,8 @@
   "scripts": {
     "postinstall": "git submodule update --init --recursive && cd node_modules/perseus && yarn install && cd ../../node_modules/esprima && yarn",
     "extract-messages": "node ./extractPerseusMessages.js",
-    "get-ka-translations": "node ./generateKATranslations.js"
+    "get-ka-translations": "node ./generateKATranslations.js",
+    "download-translations": "node ./downloadTranslations.js"
   },
   "name": "kolibri-exercise-perseus-render-plugin",
   "description": "Exercise/Perseus Render Plugin for Kolibri",
