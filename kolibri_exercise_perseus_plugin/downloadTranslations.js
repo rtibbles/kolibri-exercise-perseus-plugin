@@ -28,14 +28,20 @@ const downloadTranslation = (language) => {
     pofileDownloadPromise.then(zip => {
 
       console.log(`Finding translations from Kolibri translation files for ${language}`);
-      let translationFile;
-      zip.getEntries().forEach(file => {
+
+      let translationFile = zip.getEntries().find(file => {
         // Check if this is our message file
-        if (file.entryName === remoteLocaleFile(lang, locale)) {
-          // If so, get the text from the file
-          translationFile = file.getData().toString('utf8');
-        }
+        return file.entryName === remoteLocaleFile(lang, locale)
       });
+
+      if (translationFile) {
+        // If found, get the text from the file
+        translationFile = translationFile.getData().toString('utf8');
+      } else {
+        console.log(`No perseus renderer message file found for $[language}`);
+        reject();
+        return;
+      }
 
       console.log(`Finished extracting translations for ${language}`);
 
