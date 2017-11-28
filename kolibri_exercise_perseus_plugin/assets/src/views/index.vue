@@ -405,7 +405,7 @@
     padding: 15px
     background-color: $core-bg-light
     margin-top: 6px
-    overflow-x: visible
+    overflow-x: auto
 
   .bibliotron-exercise
     margin-bottom: 6px
