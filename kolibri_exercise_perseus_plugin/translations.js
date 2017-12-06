@@ -39,6 +39,23 @@ const languages = {
     crowdinLocale: 'tz',
     kaLocale: null,
   },
+  'ar': {
+    lang: 'ar',
+    locale: null,
+    crowdinLocale: null,
+    crowdinDownloadLocale: 'sa',
+  },
+  'fa': {
+    lang: 'fa',
+    locale: null,
+    crowdinLocale: null,
+    crowdinDownloadLocale: 'ir',
+  },
+  'ur-pk': {
+    lang: 'ur',
+    locale: 'pk',
+    crowdinLocale: 'pk',
+  },
 };
 
 /*

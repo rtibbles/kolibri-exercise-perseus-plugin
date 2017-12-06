@@ -11,6 +11,8 @@ const {
   kolibriApiKey,
 } = require('../crowdinSecrets');
 const fs = require('fs');
+const mkdirp = require('mkdirp');
+const path = require('path');
 
 const downloadTranslation = (language) => {
   // Use the language object above to get relevant codes for the language
@@ -20,6 +22,8 @@ const downloadTranslation = (language) => {
   const locale = languages[language].locale;
 
   const crowdinLocale = languages[language].crowdinLocale;
+
+  const crowdinDownloadLocale = languages[language].crowdinDownloadLocale;
 
   return new Promise((resolve, reject) => {
     // Download the po file first
@@ -31,14 +35,14 @@ const downloadTranslation = (language) => {
 
       let translationFile = zip.getEntries().find(file => {
         // Check if this is our message file
-        return file.entryName === remoteLocaleFile(lang, locale)
+        return file.entryName === remoteLocaleFile(lang, crowdinDownloadLocale || locale)
       });
 
       if (translationFile) {
         // If found, get the text from the file
         translationFile = translationFile.getData().toString('utf8');
       } else {
-        console.log(`No perseus renderer message file found for $[language}`);
+        console.log(`No perseus renderer message file found for ${language}`);
         reject();
         return;
       }
@@ -46,7 +50,7 @@ const downloadTranslation = (language) => {
       console.log(`Finished extracting translations for ${language}`);
 
       // Write out the translated messages to the appropriate JSON file.
-
+      mkdirp.sync(path.dirname(localLocaleFile(lang, locale)));
       fs.writeFileSync(localLocaleFile(lang, locale), translationFile, { encoding: 'utf-8' });
       resolve();
     }).catch(err => {
@@ -60,6 +64,6 @@ const downloadTranslation = (language) => {
 Object.keys(languages).reduce((prevPromise, nextLang) => {
   return prevPromise.then(() => downloadTranslation(nextLang)).catch((err) => {
     console.log(err);
-    return downloadTranslation(nextLang);
+    return err;
   });
 }, Promise.resolve());
