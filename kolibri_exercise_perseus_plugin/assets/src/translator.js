@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { createTranslator } from 'kolibri.utils.i18n';
 
 const translator = createTranslator('perseusInternalMessages', {
