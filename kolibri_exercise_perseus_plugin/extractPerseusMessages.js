@@ -15,7 +15,9 @@ const getMessages = require('./getMessages');
 // Auto generate a module that creates the translator so that it can
 // be imported into our special i18n code for Perseus.
 
-const template = `import { createTranslator } from 'kolibri.utils.i18n';
+const template = `/* eslint-disable */
+
+import { createTranslator } from 'kolibri.utils.i18n';
 
 const translator = createTranslator('perseusInternalMessages', {
 <% _.each(messages, function(value, key) { %>  "<%= key %>": "<%= value %>",\n<% }); %>});

@@ -48,7 +48,7 @@ module.exports = {
             // Remove an attempt to import MathQuill from the window object, so that
             // it can be properly imported by the provide plugin
             {
-              search: /var MathQuill \= window\.MathQuill;/,
+              search: /const MathQuill \= window\.MathQuill;/,
               replace: '',
               flags: 'g'
             },

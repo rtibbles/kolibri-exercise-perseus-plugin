@@ -12,7 +12,7 @@ import translator from './translator';
 // specific strings as they are generated from simpler ngettext strings
 const getVarOptions = message => {
   const options = {};
-  const reg = /(?:\{([^\}]+)\})/g;
+  const reg = /(?:\{([^}]+)\})/g;
   let match;
   while ((match = reg.exec(message))) {
     options[match[1]] = match[0];
@@ -25,7 +25,7 @@ const getVarOptions = message => {
 // need to in fill here
 const getTexCurlyBraceOptions = message => {
   // This regex does not catch escaped $ signs, so could fail.
-  const reg = /\$([^\$]+)\$/g;
+  const reg = /\$([^$]+)\$/g;
   let match;
   const options = {};
   while ((match = reg.exec(message))) {
@@ -99,11 +99,11 @@ export const $_ = (options, str) => {
 };
 
 /**
-    * Simple i18n method with ICU-like { name } replacement
-    * To be used like so:
-    *   i18n._("Some string")
-    *   i18n._("Hello { name }", {name: "John"})
-    */
+ * Simple i18n method with ICU-like { name } replacement
+ * To be used like so:
+ *   i18n._("Some string")
+ *   i18n._("Hello { name }", {name: "John"})
+ */
 export const _ = (str, options = {}) => {
   // Sometimes we're given an argument that's meant for ngettext().  This
   // happens if the same string is used in both i18n._() and i18n.ngettext()

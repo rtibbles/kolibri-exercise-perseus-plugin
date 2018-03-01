@@ -8,8 +8,22 @@
           <div id="workarea" :style="isMobile ? { marginLeft: '0px' } : {}"></div>
         </div>
 
-        <k-button v-if="anyHints && availableHints > 0" :primary="false" :raised="false" @click="takeHint" class="hint-btn" :text="$tr('hint', {hintsLeft: availableHints})"/>
-        <k-button v-else-if="anyHints" :primary="false" :raised="false" class="hint-btn" disabled :text="$tr('noMoreHint')"/>
+        <k-button
+          v-if="anyHints && availableHints > 0"
+          :primary="false"
+          :raised="false"
+          @click="takeHint"
+          class="hint-btn"
+          :text="$tr('hint', {hintsLeft: availableHints})"
+        />
+        <k-button
+          v-else-if="anyHints"
+          :primary="false"
+          :raised="false"
+          class="hint-btn"
+          disabled
+          :text="$tr('noMoreHint')"
+        />
 
         <div :dir="dir" id="hintlabel" v-if="hinted">{{ $tr("hintLabel") }}</div>
         <div :dir="dir" id="hintsarea" :style="isMobile ? { marginLeft: '0px' } : {}"></div>
@@ -30,10 +44,24 @@
         </div>
       </div>
 
-      <k-button v-if="scratchpad" :primary="false" :raised="false" id="scratchpad-show" :text="$tr('showScratch')"/>
-      <k-button v-else :primary="false" :raised="false" disabled id="scratchpad-not-available" :text="$tr('notAvailable')"/>
+      <k-button
+        v-if="scratchpad"
+        :primary="false"
+        :raised="false"
+        id="scratchpad-show"
+        :text="$tr('showScratch')"
+      />
+      <k-button
+        v-else
+        :primary="false"
+        :raised="false"
+        disabled
+        id="scratchpad-not-available"
+        :text="$tr('notAvailable')"
+      />
 
-      <!-- Need a DOM mount point for reactDOM to attach to, but Perseus renders weirdly so doesn't use this -->
+      <!-- Need a DOM mount point for reactDOM to attach to,
+        but Perseus renders weirdly so doesn't use this -->
       <div :dir="dir" ref="perseusContainer" id="perseus-container"></div>
     </div>
   </div>
@@ -68,28 +96,11 @@
   const sorterWidgetRegex = /sorter [0-9]+/;
 
   export default {
-    beforeCreate() {
-      icu.setIcuSymbols();
-    },
-
-    beforeDestroy() {
-      this.clearItemRenderer();
-      this.$emit('stopTracking');
-    },
-
-    mixins: [responsiveWindow],
-    $trs: {
-      showScratch: 'Show scratchpad',
-      notAvailable: 'The scratchpad is not available',
-      loading: 'Loading',
-      hint: 'Use a hint ({hintsLeft, number} left)',
-      hintLabel: 'Hint:',
-      noMoreHint: 'No more hints',
-    },
+    name: 'exercisePerseusRenderer',
     components: {
       'k-button': require('kolibri.coreVue.components.kButton'),
     },
-    name: 'exercisePerseusRenderer',
+    mixins: [responsiveWindow],
     props: {
       initialHintsVisible: {
         type: Number,
@@ -105,7 +116,7 @@
       },
       answerState: {
         type: Object,
-        default: {},
+        default: () => ({}),
       },
       allowHints: {
         type: Boolean,
@@ -131,6 +142,91 @@
       itemRenderer: null,
       scratchpad: false,
     }),
+    computed: {
+      isMobile() {
+        return this.windowSize.breakpoint < 3;
+      },
+      // this is a nasty hack. Will find a better way
+      usesTouch() {
+        // using mdn suggestion for most compatibility
+        const isMobileBrowser = new RegExp(/Mobi*|Android/);
+        return isMobileBrowser.test(window.navigator.userAgent);
+      },
+      itemRenderData() {
+        return {
+          // A property to return data formatted in the form expected by the Item Renderer
+          // constructor function.
+          initialHintsVisible: 0,
+          item: this.item,
+          workAreaSelector: '#workarea',
+          problemAreaSelector: '#problem-area',
+          problemNum: Math.floor(Math.random() * 1000),
+          enabledFeatures: {
+            highlight: true,
+            toolTipFormats: true,
+          },
+          apiOptions: {
+            // Pass in callbacks for widget interaction and focus change.
+            // Here we dismiss answer error message on interaction and focus change.
+            interactionCallback: this.interactionCallback,
+            onFocusChange: this.dismissMessage,
+            isMobile: this.isMobile,
+            customKeypad: this.usesTouch,
+            readOnly: !this.interactive,
+          },
+        };
+      },
+      hinted() {
+        return this.itemRenderer ? this.itemRenderer.state.hintsVisible > 0 : false;
+      },
+      availableHints() {
+        return this.itemRenderer
+          ? this.itemRenderer.getNumHints() - this.itemRenderer.state.hintsVisible
+          : 0;
+      },
+      anyHints() {
+        return this.allowHints && (this.itemRenderer ? this.itemRenderer.getNumHints() : 0);
+      },
+      dir() {
+        return getContentLangDir(this.lang);
+      },
+    },
+    watch: {
+      itemId: 'loadItemData',
+      loading: 'setAnswer',
+      answerState: 'setAnswer',
+    },
+    beforeCreate() {
+      icu.setIcuSymbols();
+    },
+
+    beforeDestroy() {
+      this.clearItemRenderer();
+      this.$emit('stopTracking');
+    },
+
+    $trs: {
+      showScratch: 'Show scratchpad',
+      notAvailable: 'The scratchpad is not available',
+      loading: 'Loading',
+      hint: 'Use a hint ({hintsLeft, number} left)',
+      hintLabel: 'Hint:',
+      noMoreHint: 'No more hints',
+    },
+    created() {
+      const initPromise = mathJaxPromise.then(() =>
+        perseus.init({ skipMathJax: true, loadExtraWidgets: true })
+      );
+      // Try to load the appropriate directional CSS for the particular content
+      const cssPromise = this.$options.contentModule.loadDirectionalCSS(this.dir);
+      Promise.all([initPromise, cssPromise]).then(() => {
+        this.loadItemData();
+        this.$emit('startTracking');
+      });
+    },
+    mounted() {
+      this.$emit('mounted');
+    },
     methods: {
       validateItemData(obj) {
         return (
@@ -207,8 +303,8 @@
         this.itemRenderer.getWidgetIds().forEach(id => {
           if (sorterWidgetRegex.test(id)) {
             if (questionState[id]) {
-              const sortableComponent = this.itemRenderer.questionRenderer.getWidgetInstance(id).refs
-                .sortable;
+              const sortableComponent = this.itemRenderer.questionRenderer.getWidgetInstance(id)
+                .refs.sortable;
               questionState[id].options = sortableComponent.getOptions();
             }
           }
@@ -219,7 +315,9 @@
         const hints = Object.keys(this.itemRenderer.hintsRenderer.refs).map(key =>
           this.itemRenderer.hintsRenderer.refs[key].getSerializedState()
         );
-        const question = this.addSorterState(this.itemRenderer.questionRenderer.getSerializedState());
+        const question = this.addSorterState(
+          this.itemRenderer.questionRenderer.getSerializedState()
+        );
         return {
           question,
           hints,
@@ -230,8 +328,8 @@
         this.itemRenderer.getWidgetIds().forEach(id => {
           if (sorterWidgetRegex.test(id)) {
             if (answerState.question[id]) {
-              const sortableComponent = this.itemRenderer.questionRenderer.getWidgetInstance(id).refs
-                .sortable;
+              const sortableComponent = this.itemRenderer.questionRenderer.getWidgetInstance(id)
+                .refs.sortable;
               const newProps = Object.assign({}, sortableComponent.props, {
                 options: answerState.question[id].options,
               });
@@ -319,74 +417,6 @@
         }
       },
     },
-    computed: {
-      isMobile() {
-        return this.windowSize.breakpoint < 3;
-      },
-      // this is a nasty hack. Will find a better way
-      usesTouch() {
-        // using mdn suggestion for most compatibility
-        const isMobileBrowser = new RegExp(/Mobi*|Android/);
-        return isMobileBrowser.test(window.navigator.userAgent);
-      },
-      itemRenderData() {
-        return {
-          // A property to return data formatted in the form expected by the Item Renderer
-          // constructor function.
-          initialHintsVisible: 0,
-          item: this.item,
-          workAreaSelector: '#workarea',
-          problemAreaSelector: '#problem-area',
-          problemNum: Math.floor(Math.random() * 1000),
-          enabledFeatures: {
-            highlight: true,
-            toolTipFormats: true,
-          },
-          apiOptions: {
-            // Pass in callbacks for widget interaction and focus change.
-            // Here we dismiss answer error message on interaction and focus change.
-            interactionCallback: this.interactionCallback,
-            onFocusChange: this.dismissMessage,
-            isMobile: this.isMobile,
-            customKeypad: this.usesTouch,
-            readOnly: !this.interactive,
-          },
-        };
-      },
-      hinted() {
-        return this.itemRenderer ? this.itemRenderer.state.hintsVisible > 0 : false;
-      },
-      availableHints() {
-        return this.itemRenderer
-          ? this.itemRenderer.getNumHints() - this.itemRenderer.state.hintsVisible
-          : 0;
-      },
-      anyHints() {
-        return this.allowHints && (this.itemRenderer ? this.itemRenderer.getNumHints() : 0);
-      },
-      dir() {
-        return getContentLangDir(this.lang);
-      },
-    },
-    watch: {
-      itemId: 'loadItemData',
-      loading: 'setAnswer',
-      answerState: 'setAnswer',
-    },
-    created() {
-      const initPromise = mathJaxPromise.then(() =>
-        perseus.init({ skipMathJax: true, loadExtraWidgets: true })
-      );
-      // Try to load the appropriate directional CSS for the particular content
-      const cssPromise = this.$options.contentModule.loadDirectionalCSS(this.dir);
-      Promise.all([initPromise, cssPromise]).then(() => {
-        this.loadItemData();
-        this.$emit('startTracking');
-      });
-    },
-    mounted() {
-      this.$emit('mounted');
-    },
   };
 
 </script>
@@ -413,7 +443,12 @@
   @font-face
     font-family: Symbola
     src: url(/static/fonts/Symbola.eot)
-    src: local('Symbola Regular'), local('Symbola'), url(/static/fonts/Symbola.woff) format('woff'), url(/static/fonts/Symbola.ttf) format('truetype'), url(/static/fonts/Symbola.otf) format('opentype'), url(/static/fonts/Symbola.svg#Symbola) format('svg')
+    src: local('Symbola Regular'),
+  local('Symbola'),
+  url(/static/fonts/Symbola.woff) format('woff'),
+  url(/static/fonts/Symbola.ttf) format('truetype'),
+  url(/static/fonts/Symbola.otf) format('opentype'),
+  url(/static/fonts/Symbola.svg#Symbola) format('svg')
 
   .hint-btn
     margin-top: 32px
