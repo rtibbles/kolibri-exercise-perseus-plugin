@@ -76,6 +76,16 @@ module.exports = {
         test: /(perseus\/(src|math\-input)\/[\w\/\-\_]*\.jsx?$)|(\.jsx$)/,
         loader: path.join(__dirname, "./node_modules/perseus/node/jsx-loader.js"),
       },
+      {
+        test: /perseus\/lib\/kas\.js$/,
+        loader: 'string-replace-loader',
+        enforce: 'pre',
+        options: {
+          search: /\)\(KAS\)/,
+          replace: ')(window.KAS)',
+          flags: 'g'
+        },
+      },
     ]
   },
   resolve: {
