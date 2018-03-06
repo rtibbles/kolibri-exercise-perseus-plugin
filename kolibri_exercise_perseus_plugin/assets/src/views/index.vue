@@ -3,8 +3,14 @@
   <div class="perseus-root bibliotron-exercise">
     <div :class="{'framework-perseus':true, 'perseus-mobile': isMobile}">
       <div ref="perseus" id="perseus">
-
-        <div :dir="dir" id="problem-area">
+        <div class="loader-container">
+          <ui-progress-linear v-show="loading" />
+        </div>
+        <div
+          v-show="!loading"
+          :dir="dir"
+          id="problem-area"
+        >
           <div id="workarea" :style="isMobile ? { marginLeft: '0px' } : {}"></div>
         </div>
 
@@ -79,6 +85,7 @@
   import * as perseus from 'perseus/src/perseus';
   import { getContentLangDir, defaultLanguage, languageValidator } from 'kolibri.utils.i18n';
   import kolibri from 'kolibri';
+  import uiProgressLinear from 'keen-ui/src/UiProgressLinear';
 
   // A handy convenience mapping to what is essentially a constructor for Item Renderer
   // components.
@@ -99,6 +106,7 @@
     name: 'exercisePerseusRenderer',
     components: {
       'k-button': require('kolibri.coreVue.components.kButton'),
+      uiProgressLinear,
     },
     mixins: [responsiveWindow],
     props: {
@@ -452,6 +460,10 @@
 
   .hint-btn
     margin-top: 32px
+
+  .loader-container
+    width: 100%
+    height: 4px
 
 </style>
 
