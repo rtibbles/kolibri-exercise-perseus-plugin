@@ -510,4 +510,7 @@
       border-collapse: collapse
       border-spacing: 0
 
+  .keypad-container
+    direction: ltr
+
 </style>
