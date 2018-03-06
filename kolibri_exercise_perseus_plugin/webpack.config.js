@@ -20,10 +20,10 @@ module.exports = {
         enforce: 'pre',
         options: {
           multiple: [
-            // Replace url reference to throbber.gif to be in a findable location
+            // Replace url reference to spinner.gif to be in a findable location
             {
-              search: '"url(/images/throbber.gif) no-repeat"',
-              replace: '"url(/static/images/throbber.gif) no-repeat"'
+              search: '"url(/images/spinner.gif) no-repeat"',
+              replace: '"url(/static/images/spinner.gif) no-repeat"'
             },
             // Replace ngettext style messages with ICU syntax
             {
