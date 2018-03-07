@@ -111,6 +111,7 @@ module.exports = {
       Khan: 'KAGlobals/Khan',
       i18n: 'KAGlobals/i18n',
       $_: 'KAGlobals/$_',
+      React: 'react',
     }),
   ],
   // Parse the path of the perseus node_modules directory into our build machinery,
