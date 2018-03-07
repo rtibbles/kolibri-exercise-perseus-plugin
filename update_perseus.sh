@@ -3,7 +3,7 @@ rm -r kolibri_exercise_perseus_plugin/static
 mkdir kolibri_exercise_perseus_plugin/static
 cp -r kolibri_exercise_perseus_plugin/node_modules/perseus/lib/mathjax kolibri_exercise_perseus_plugin/static/
 mkdir kolibri_exercise_perseus_plugin/static/images
-cp kolibri_exercise_perseus_plugin/node_modules/perseus/images/throbber.gif kolibri_exercise_perseus_plugin/static/images
+cp kolibri_exercise_perseus_plugin/node_modules/perseus/images/spinner.gif kolibri_exercise_perseus_plugin/static/images
 cp -r kolibri_exercise_perseus_plugin/node_modules/perseus/lib/mathquill/fonts kolibri_exercise_perseus_plugin/static/
 
 # update the constants.js to store the mathjax config file name.

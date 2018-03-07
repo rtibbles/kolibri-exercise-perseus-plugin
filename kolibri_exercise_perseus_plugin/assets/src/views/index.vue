@@ -433,20 +433,20 @@
 <style lang="stylus" scoped>
 
   @require '~kolibri.styles.theme'
+  @import '../../../node_modules/perseus/stylesheets/local-only/khan-exercise.css'
+  @import '../../../node_modules/perseus/lib/katex/katex.css'
+  @import '../../../node_modules/perseus/build/perseus.css'
+  @import '../../../node_modules/perseus/lib/mathquill/mathquill.css'
 
   #perseus
-    @import '../../../node_modules/perseus/stylesheets/local-only/khan-exercise.css'
-    @import '../../../node_modules/perseus/lib/katex/katex.css'
-    @import '../../../node_modules/perseus/build/perseus.css'
-    @import '../../../node_modules/perseus/lib/mathquill/mathquill.css'
-    border-radius: $radius
-    padding: 15px
+    border-radius: 8px
+    padding: 16px
     background-color: $core-bg-light
-    margin-top: 6px
+    margin-top: 8px
     overflow-x: auto
 
   .bibliotron-exercise
-    margin-bottom: 6px
+    margin-bottom: 8px
 
   @font-face
     font-family: Symbola
