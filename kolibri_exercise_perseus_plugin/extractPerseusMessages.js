@@ -11,7 +11,7 @@ const gettextToICU = require('./gettextToICU');
 const underscore = require('underscore');
 
 const getMessages = require('./getMessages');
-
+const translationUtils = require('./translationUtils');
 // Auto generate a module that creates the translator so that it can
 // be imported into our special i18n code for Perseus.
 
@@ -20,14 +20,14 @@ const template = `/* eslint-disable */
 import { createTranslator } from 'kolibri.utils.i18n';
 
 const translator = createTranslator('perseusInternalMessages', {
-<% _.each(messages, function(value, key) { %>  "<%= key %>": "<%= value %>",\n<% }); %>});
+<% _.each(transformedMessages, function(value, key) { %>  <%= key %>: <%= value %>,\n<% }); %>});
 
-export default translator;`
+export default translator;`;
 
 getMessages(gettextToICU).then(messages => {
-
+  const transformedMessages = translationUtils.removeBackslashesFromKeys(messages);
   // Use underscore template to fill in the above 'messages' into the template
-  const outputCode = underscore.template(template)({ messages });
+  const outputCode = underscore.template(template)({ transformedMessages });
 
   // Write out the module to src files
 

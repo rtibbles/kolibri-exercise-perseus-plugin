@@ -4,9 +4,9 @@ const path = require('path');
 const fs = require('fs');
 
 const perseusSourcePath = './node_modules/perseus';
+const translationUtils = require('./translationUtils.js');
 
-const getMessages = (converter) => {
-
+const getMessages = converter => {
   return new Promise((resolve, reject) => {
     const messages = {};
 
@@ -19,7 +19,8 @@ const getMessages = (converter) => {
         // Found a message called with '$_'
         message = node.arguments[1].raw;
       }
-      if (node.type === esprima.Syntax.CallExpression &&
+      if (
+        node.type === esprima.Syntax.CallExpression &&
         node.callee.type === esprima.Syntax.MemberExpression &&
         node.callee.object.name === 'i18n' &&
         node.callee.property.name === '_'
@@ -28,16 +29,14 @@ const getMessages = (converter) => {
         message = node.arguments[0].raw;
       }
       if (message) {
-        // Messages are in string raw format
-        // Convert to a value by parsing with JSON
-        // However, this breaks if the raw format has uses \' for the string delimiters so we substitute it for "
-        message = JSON.parse(message.replace(/(^\'|\'$)/g, '"'));
+        message = message.toString();
         if (converter) {
           message = converter(message);
         }
         // and set it on the global messages object.
         // No good way to autogenerate a meaningful message id, so just fallback
         // to using the message as the id. Sadness.
+        message = translationUtils.escapeBackslashesInString(message);
         messages[message] = message;
       }
       for (var key in node) {
@@ -46,7 +45,7 @@ const getMessages = (converter) => {
           if (typeof child === 'object' && child !== null) {
             if (Array.isArray(child)) {
               child.forEach(function(childNode) {
-                traverseTree(childNode)
+                traverseTree(childNode);
               });
             } else {
               traverseTree(child);
@@ -58,20 +57,13 @@ const getMessages = (converter) => {
 
     const walker = walk.walk(perseusSourcePath);
 
-    const blacklist = [
-      'editor',
-      '__tests__',
-      'perseus/node_modules',
-      'build',
-      'docs',
-      'example',
-    ]
+    const blacklist = ['editor', '__tests__', 'perseus/node_modules', 'docs', 'example'];
 
-    walker.on("file", (root, fileStats, next) => {
-      if (/\.jsx?$/.test(fileStats.name) && !blacklist.some(ban => fileStats.name.includes(ban) || root.includes(ban))) {
+    walker.on('file', (root, fileStats, next) => {
+      if  (/\.jsx?$/.test(fileStats.name) && !blacklist.some(ban => fileStats.name.includes(ban) || root.includes(ban))) {
         const source = fs.readFileSync(path.join(root, fileStats.name), { encoding: 'utf-8' });
         try {
-          const ast = esprima.parse(source, { jsx: true });
+          const ast = esprima.parse(source, { jsx: true, tolerant: true });
           // Traverse the tree to find all the messages in the perseus built code
           traverseTree(ast);
         } catch (e) {
@@ -81,11 +73,11 @@ const getMessages = (converter) => {
       next();
     });
 
-    walker.on("errors", (root, nodeStatsArray, next) => {
+    walker.on('errors', (root, nodeStatsArray, next) => {
       next();
     });
 
-    walker.on("end", () => {
+    walker.on('end', () => {
       resolve(messages);
     });
   });
