@@ -15,6 +15,7 @@
     "draft-js": "^0.10.1",
     "immutable": "^3.8.1",
     "jquery": "2.2.4",
+    "keen-ui": "https://github.com/learningequality/Keen-UI/",
     "kmath": "^0.0.1",
     "performance-now": "^2.1.0",
     "qtip2": "2.2.0",
