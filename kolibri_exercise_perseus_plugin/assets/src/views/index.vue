@@ -7,7 +7,6 @@
           <ui-progress-linear v-show="loading" />
         </div>
         <div
-          v-show="!loading"
           :dir="dir"
           id="problem-area"
         >
