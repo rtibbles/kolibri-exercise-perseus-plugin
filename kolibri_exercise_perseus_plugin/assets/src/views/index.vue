@@ -85,6 +85,7 @@
   import { getContentLangDir, defaultLanguage, languageValidator } from 'kolibri.utils.i18n';
   import kolibri from 'kolibri';
   import uiProgressLinear from 'keen-ui/src/UiProgressLinear';
+  import widgetSolver from '../widgetSolver';
 
   // A handy convenience mapping to what is essentially a constructor for Item Renderer
   // components.
@@ -285,6 +286,7 @@
             this.$refs.perseusContainer,
             () => {
               this.loading = false;
+              window.ex = this;
             }
           )
         );
@@ -331,7 +333,7 @@
         };
       },
       restoreSerializedState(answerState) {
-        this.itemRenderer.restoreSerializedState(this.answerState);
+        this.itemRenderer.restoreSerializedState(answerState);
         this.itemRenderer.getWidgetIds().forEach(id => {
           if (sorterWidgetRegex.test(id)) {
             if (answerState.question[id]) {
@@ -422,6 +424,24 @@
               this.$emit('itemError', reason);
             });
         }
+      },
+      setCorrectAnswer() {
+        const questionRenderer = this.itemRenderer.questionRenderer;
+        const widgetProps = questionRenderer.state.widgetInfo;
+
+        const gradedWidgetIds = questionRenderer.widgetIds.filter(id => {
+          return widgetProps[id].graded == null || widgetProps[id].graded;
+        });
+
+        gradedWidgetIds.forEach(id => {
+          const props = widgetProps[id];
+          const widget = questionRenderer.getWidgetInstance(id);
+          if (!widget) {
+            // This can occur if the widget has not yet been rendered
+            return;
+          }
+          widgetSolver(widget, props.type, props.options);
+        });
       },
     },
   };
