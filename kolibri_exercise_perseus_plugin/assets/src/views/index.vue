@@ -81,8 +81,9 @@
   import reactDOM from 'react-dom';
   import client from 'kolibri.client';
   import responsiveWindow from 'kolibri.coreVue.mixins.responsiveWindow';
+  import contentRendererMixin from 'kolibri.coreVue.mixins.contentRenderer';
   import * as perseus from 'perseus/src/perseus';
-  import { getContentLangDir, defaultLanguage, languageValidator } from 'kolibri.utils.i18n';
+  import { getContentLangDir } from 'kolibri.utils.i18n';
   import kolibri from 'kolibri';
   import uiProgressLinear from 'keen-ui/src/UiProgressLinear';
   import widgetSolver from '../widgetSolver';
@@ -108,38 +109,7 @@
       'k-button': require('kolibri.coreVue.components.kButton'),
       uiProgressLinear,
     },
-    mixins: [responsiveWindow],
-    props: {
-      initialHintsVisible: {
-        type: Number,
-        default: 0,
-      },
-      defaultFile: {
-        type: Object,
-        required: true,
-      },
-      itemId: {
-        type: String,
-        required: true,
-      },
-      answerState: {
-        type: Object,
-        default: () => ({}),
-      },
-      allowHints: {
-        type: Boolean,
-        default: true,
-      },
-      interactive: {
-        type: Boolean,
-        default: true,
-      },
-      lang: {
-        type: Object,
-        default: () => defaultLanguage,
-        validator: languageValidator,
-      },
-    },
+    mixins: [responsiveWindow, contentRendererMixin],
     data: () => ({
       // Is the perseus item renderer loading?
       loading: true,
@@ -357,10 +327,12 @@
           !this.loading
         ) {
           this.restoreSerializedState(this.answerState);
+        } else if (this.showCorrectAnswer && !this.loading) {
+          this.setCorrectAnswer();
         } else if (this.itemRenderer && !this.loading) {
           // Not setting an answer state, but need to hide any hints.
           this.itemRenderer.setState({
-            hintsVisible: this.initialHintsVisible,
+            hintsVisible: 0,
           });
         }
       },
@@ -433,15 +405,19 @@
           return widgetProps[id].graded == null || widgetProps[id].graded;
         });
 
-        gradedWidgetIds.forEach(id => {
-          const props = widgetProps[id];
-          const widget = questionRenderer.getWidgetInstance(id);
-          if (!widget) {
-            // This can occur if the widget has not yet been rendered
-            return;
-          }
-          widgetSolver(widget, props.type, props.options);
-        });
+        try {
+          gradedWidgetIds.forEach(id => {
+            const props = widgetProps[id];
+            const widget = questionRenderer.getWidgetInstance(id);
+            if (!widget) {
+              // This can occur if the widget has not yet been rendered
+              return;
+            }
+            widgetSolver(widget, props.type, props.options);
+          });
+        } catch (e) {
+          this.$emit('answerUnavailable');
+        }
       },
     },
   };

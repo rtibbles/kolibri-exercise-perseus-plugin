@@ -1,6 +1,6 @@
-export default (widget, rubric) => {
+export default widget => {
   const cells = widget.props.cells.map(row => {
-    return row.map(cell => {
+    return row.map(() => {
       return true;
     });
   });

@@ -1,4 +1,4 @@
-export default (widget, rubric) => {
+export default widget => {
   const newStates = widget.props.choices.map(choice => ({
     correctnessShown: false,
     rationaleShown: false,

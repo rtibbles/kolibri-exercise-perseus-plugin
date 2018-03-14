@@ -5,22 +5,21 @@ export default (widget, rubric) => {
   if (rubric.rel) {
     newProps.rel = rubric.rel;
   }
+
   if (rubric.correctX) {
     const correctX = rubric.correctX;
     const rangeMin = rubric.range[0];
     const rangeMax = rubric.range[1];
 
-    const numDivisions = new Fraction((correctX - rangeMin) / (rangeMax - rangeMin)).denominator;
+    const numDivisions = new Fraction(correctX - rangeMin, rangeMax - rangeMin).denominator;
 
-    newProps.numberLinePosition = correctX;
-    newProps.numDivisions = numDivisions;
+    newProps.numLinePosition = correctX;
+    newProps.numDivisions = Math.min(numDivisions, widget.props.divisionRange[1]);
   }
 
   widget.props.onChange(
     newProps,
-    () => {
-      widget._renderGraphie();
-    }, // cb
+    widget._renderGraphie, // cb
     false // silent
   );
 };

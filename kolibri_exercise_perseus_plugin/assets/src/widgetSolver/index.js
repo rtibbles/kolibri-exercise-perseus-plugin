@@ -7,6 +7,7 @@ import interactiveGraph from './interactiveGraph';
 import lightsPuzzle from './lightsPuzzle';
 import matcher from './matcher';
 import matrix from './matrix';
+import noop from './noop';
 import numberLine from './numberLine';
 import numericInput from './numericInput';
 import orderer from './orderer';
@@ -20,16 +21,20 @@ import unit from './unit';
 const widgetSolvers = {
   categorizer,
   dropdown,
+  explanation: noop,
   expression,
   grapher,
+  image: noop,
   'input-number': inputNumber,
   'interactive-graph': interactiveGraph,
   'lights-puzzle': lightsPuzzle,
   matcher,
   matrix,
+  measurer: noop,
   'number-line': numberLine,
   'numeric-input': numericInput,
   orderer,
+  passage: noop,
   plotter,
   radio,
   sorter,
@@ -42,5 +47,9 @@ export default (widget, type, rubric) => {
   if (!widgetSolvers[type]) {
     throw new ReferenceError(`No solver available for widget type: ${type}`);
   }
-  widgetSolvers[type](widget, rubric);
+  try {
+    widgetSolvers[type](widget, rubric);
+  } catch (e) {
+    console.log(e);
+  }
 };

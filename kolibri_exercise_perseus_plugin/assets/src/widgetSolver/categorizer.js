@@ -1,3 +1,11 @@
 export default (widget, rubric) => {
-  widget.state.values = widget.state.values.map((value, i) => rubric.values[i]);
+  const values = rubric.values;
+
+  widget.props.onChange(
+    {
+      values,
+    },
+    null, // cb
+    false // silent
+  );
 };
