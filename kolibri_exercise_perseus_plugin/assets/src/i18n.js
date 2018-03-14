@@ -4,6 +4,7 @@
 
 import createFragment from 'react-addons-create-fragment';
 import translator from './translator';
+import { removeBackslashesInString } from '../../translationUtils';
 
 // We sometimes need to translate messages without filling in their values
 // Use this to generate the options for a translation that leaves the ICU format
@@ -52,6 +53,7 @@ const interpolationMarker = /{ *([\w_]+) *}/g;
  */
 const interpolateStringToFragment = (str, options = {}) => {
   // Translate string, but without any values to preserve placeholders.
+  str = removeBackslashesInString(str);
   str = translator.$tr(str, getVarOptions(str));
 
   // Split the string into its language fragments and substitutions
@@ -117,5 +119,6 @@ export const _ = (str, options = {}) => {
 
   Object.assign(options, getTexCurlyBraceOptions(str));
 
+  str = removeBackslashesInString(str);
   return translator.$tr(str, options);
 };
