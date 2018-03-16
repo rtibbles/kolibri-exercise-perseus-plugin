@@ -17,6 +17,9 @@ import sorter from './sorter';
 import table from './table';
 import transformer from './transformer';
 import unit from './unit';
+import logger from 'kolibri.lib.logging';
+
+const logging = logger.getLogger(__filename);
 
 const widgetSolvers = {
   categorizer,
@@ -50,6 +53,6 @@ export default (widget, type, rubric) => {
   try {
     widgetSolvers[type](widget, rubric);
   } catch (e) {
-    console.log(e);
+    logging.debug('An error occurred while solving a problem', e);
   }
 };

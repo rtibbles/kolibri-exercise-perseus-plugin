@@ -60,7 +60,10 @@ const getMessages = converter => {
     const blacklist = ['editor', '__tests__', 'perseus/node_modules', 'docs', 'example'];
 
     walker.on('file', (root, fileStats, next) => {
-      if  (/\.jsx?$/.test(fileStats.name) && !blacklist.some(ban => fileStats.name.includes(ban) || root.includes(ban))) {
+      if (
+        /\.jsx?$/.test(fileStats.name) &&
+        !blacklist.some(ban => fileStats.name.includes(ban) || root.includes(ban))
+      ) {
         const source = fs.readFileSync(path.join(root, fileStats.name), { encoding: 'utf-8' });
         try {
           const ast = esprima.parse(source, { jsx: true, tolerant: true });
