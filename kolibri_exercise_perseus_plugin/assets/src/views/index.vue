@@ -173,6 +173,13 @@
       itemId: 'loadItemData',
       loading: 'setAnswer',
       answerState: 'setAnswer',
+      showCorrectAnswer(val) {
+        if (!val) {
+          this.clearItemRenderer();
+          this.loadItemData();
+        }
+        this.setAnswer();
+      },
     },
     beforeCreate() {
       icu.setIcuSymbols();
