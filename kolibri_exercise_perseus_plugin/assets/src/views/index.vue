@@ -172,14 +172,8 @@
     watch: {
       itemId: 'loadItemData',
       loading: 'setAnswer',
-      answerState: 'setAnswer',
-      showCorrectAnswer(val) {
-        if (!val) {
-          this.clearItemRenderer();
-          this.loadItemData();
-        }
-        this.setAnswer();
-      },
+      answerState: 'resetState',
+      showCorrectAnswer: 'resetState',
     },
     beforeCreate() {
       icu.setIcuSymbols();
@@ -267,6 +261,13 @@
             }
           )
         );
+      },
+      resetState(val) {
+        if (!val) {
+          this.clearItemRenderer();
+          this.loadItemData();
+        }
+        this.setAnswer();
       },
       clearItemRenderer() {
         // Clean up any existing itemRenderer to avoid leak memory
