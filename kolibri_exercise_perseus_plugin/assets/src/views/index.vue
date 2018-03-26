@@ -119,6 +119,8 @@
       item: {},
       itemRenderer: null,
       scratchpad: false,
+      // Store a copy of the blank state of a question to clear set answers later
+      blankState: null,
     }),
     computed: {
       isMobile() {
@@ -246,6 +248,8 @@
       renderItem() {
         // Reset the state tracking variables.
         this.loading = true;
+        // Don't store blank state for another item.
+        this.blankState = null;
 
         // Create react component with current item data.
         // If the component already existed, this will perform an update.
@@ -257,15 +261,13 @@
             this.$refs.perseusContainer,
             () => {
               this.loading = false;
-              window.ex = this;
             }
           )
         );
       },
       resetState(val) {
         if (!val) {
-          this.clearItemRenderer();
-          this.loadItemData();
+          this.restoreSerializedState(this.blankState);
         }
         this.setAnswer();
       },
@@ -326,6 +328,7 @@
         });
       },
       setAnswer() {
+        this.blankState = this.getSerializedState();
         // If a passed in answerState is an object with the right keys, restore.
         if (
           this.itemRenderer &&
