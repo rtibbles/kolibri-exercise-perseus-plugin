@@ -41,12 +41,13 @@ assets:
 	cd kolibri_exercise_perseus_plugin && yarn run extract-messages
 
 check-build:
-	[ -e kolibri_exercise_perseus_plugin/static/images/spinner.gif ] || ( echo "Please run: make build" && exit 1 )
+	[ -e kolibri_exercise_perseus_plugin/static/images/spinner.gif ] || ( echo "Please run: make assets" && exit 1 )
 
 dist: clean check-build
 	python setup.py bdist_wheel --universal
 
 release:
+	@git diff-files --quiet || (echo "Dirty files in git tree - aborting" && exit 1)
 	@ls -l dist/ || (echo "Nothing built, no dist/ so nothing to release" && exit 1)
 	@echo "Documentation: See README.rst"
 	@echo ""
