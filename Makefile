@@ -44,10 +44,26 @@ check-build:
 	[ -e kolibri_exercise_perseus_plugin/static/images/spinner.gif ] || ( echo "Please run: make build" && exit 1 )
 
 dist: clean check-build
-	python setup.py sdist
 	python setup.py bdist_wheel --universal
 
-release: dist
-	echo "Ensure that you have built the frontend files using Kolibri"
-	echo "Uploading dist/* to PyPi, using twine"
+release:
+	@ls -l dist/ || (echo "Nothing built, no dist/ so nothing to release" && exit 1)
+	@echo "Documentation: See README.rst"
+	@echo ""
+	@echo ""
+	@echo "Quick check list:"
+	@echo ""
+	@echo "1. Pushed CrowdIn translations to repo?"
+	@echo "2. Downloaded CrowdIn translations"
+	@echo "3. Ensure that you have built the frontend files using Kolibri"
+	@echo "4. Ran 'make assets' to build everything"
+	@echo "5. Version info bumped in setup.py"
+	@echo "6. Running 'make dist' (that's actually the final step)"
+	@echo "7. Possibly, verify that you .whl release works"
+	@echo "8. Merged release branch with develop and master?"
+	@echo ""
+	@echo "Do you want to upload everything in dist/*?"
+	@echo ""
+	@echo "CTRL+C to exit. ENTER to continue."
+	@read __
 	twine upload -s dist/*
