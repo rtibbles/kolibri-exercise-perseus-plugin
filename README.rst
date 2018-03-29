@@ -49,11 +49,11 @@ you can install it like this:
 Development guide
 -----------------
 
-1. Download this repo.
+1. Clone this repo.
 
 2. Open terminal in your Kolibri repo.
 
-3. run the following commands, with your Kolibri development virtual env
+3. Run the following commands, with your Kolibri development virtual env
    enabled::
 
     pip install -e <KOLIBRI-PERSEUS-PLUGIN-LOCAL-PATH>
@@ -65,8 +65,8 @@ Development guide
 
     yarn install
 
-Make sure that this message **DOES NOT** appear in your logging output of
-``yarn install``, it means that you are not using the development version::
+   Make sure that this message **DOES NOT** appear in your logging output of
+   ``yarn install``, it means that you are not using the development version::
 
     WARNING  assets/src/module.js not found for plugin exercise_perseus_render_module.
 
@@ -120,7 +120,7 @@ How to publish to PyPi?
 
 1. Follow the instructions above to installing the plugin for development.
 2. From the Kolibri directory run the frontend build command.
-3. update `setup.py` to a newer version.
+3. Update `setup.py` to a newer version.
 4. Terminal move to the root level of repo dir and run the following command to publish to PyPi::
 
     make release
