@@ -1,4 +1,4 @@
-
+=====================================
 Perseus Exercise Renderer for Kolibri
 =====================================
 
@@ -25,8 +25,9 @@ What is this plugin?
 
 A Perseus renderer wrapper for Kolibri that can track learning progress and save to the database.
 
-How can I install this plugin?
-------------------------------
+
+Installation
+------------
 
 1. Inside your Kolibri virtual environment:
     ``pip install kolibri-perseus-exercise-plugin``
@@ -37,53 +38,83 @@ How can I install this plugin?
 
 3. Restart Kolibri.
 
-How can I install this plugin for development?
-------------------------------
+
+Development guide
+-----------------
 
 1. Download this repo.
 
 2. Open terminal in your Kolibri repo.
 
-3. run the following commands:
+3. run the following commands, with your Kolibri development virtual env
+   enabled::
 
-    ``pip install -e <KOLIBRI-PERSEUS-PLUGIN-LOCAL-PATH>``
+    pip install -e <KOLIBRI-PERSEUS-PLUGIN-LOCAL-PATH>
 
-    ``kolibri plugin kolibri_exercise_perseus_plugin enable``
+    kolibri plugin kolibri_exercise_perseus_plugin enable
 
-4. Then run the commands to install frontend packages in Kolibri, this plugin will have its dependencies recursively installed:
+4. Then run the commands to install frontend packages in Kolibri, this plugin will have its dependencies recursively installed::
 
-    ``yarn install``
+    yarn install
 
-5. Finally, to copy over Mathjax into the static folder, run the following command (you will need to do this if you update the version of Perseus in the repo also):
+Make sure that this message **DOES NOT** appear in your logging output of
+``yarn install``, it means that you are not using the development version::
 
-    ``./update_perseus.sh``
+    WARNING  assets/src/module.js not found for plugin exercise_perseus_render_module.
+
 
 Updating translation strings
-----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To download the latest translation strings for this plugin, make a `crowdinSecrets.js` file from the template in the repo root, and put your kolibri project API key in there. The KA API key can be set to null. Then execute the following commands:
-    ``cd kolibri_exercise_perseus_plugin``
-    ``yarn run download-translations``
+**This is currently broken, download files manually from CrowdIn**
+
+To download the latest translation strings for this plugin, make a ``crowdinSecrets.js`` file from the template in the repo root, and put your kolibri project API key in there. The KA API key can be set to null. Then execute the following commands::
+
+    cd kolibri_exercise_perseus_plugin
+    yarn run download-translations
+
+
+Updating Perseus
+~~~~~~~~~~~~~~~~
+
+In case you update Perseus (bundled in this repo), please run this command afterwards::
+
+    make perseus-upgrade
+
+
+Release plan and version scheme
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The versioning of this plugin does not follow Kolibri's release plan. We plan to
+make it possible to upgrade and distribute this plugin independently from
+Kolibri, as with all other plugins.
+
+That means that the versioning and releasing of
+``kolibri_exercise_perseus_plugin`` is unrelated to both Kolibri and Perseus.
+
 
 Known issues
-------------
+~~~~~~~~~~~~
 
-If you ran `make dist` or `make pex` on Kolibri with `kolibri-exercise-perseus-plugin==x.x.x` present in `kolibri/requirements/base.txt`, Kolibri will generate a exercise_perseus_renderer instance inside its `dist` folder and use it afterwards. That means manually installing exercise_perseus_renderer for development won't take any effects. One way to fix this issue is to restore the `dist` folder.
+**Development installation version not active**
+
+If you ran ``make dist`` or ``make pex`` on Kolibri with ``kolibri-exercise-perseus-plugin==x.x.x`` present in ``kolibri/requirements/base.txt``, Kolibri will generate an ``exercise_perseus_renderer`` instance inside its ``kolibri/dist`` folder and bundle it for further distribution. That means manually installing ``exercise_perseus_renderer`` for development won't take any effects. One way to fix this issue is to run ``make clean`` on Kolibri.
+
 
 How to publish to PyPi?
-------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~
 
 1. Follow the instructions above to installing the plugin for development.
 2. From the Kolibri directory run the frontend build command.
 3. update `setup.py` to a newer version.
-4. Terminal move to the root level of repo dir and run the following command to publish to PyPi:
+4. Terminal move to the root level of repo dir and run the following command to publish to PyPi::
 
-    ``make release``
+    make release
 
 
 How can I contribute?
----------------------
+~~~~~~~~~~~~~~~~~~~~~
 
- * `Documentation <http://kolibri.readthedocs.org/en/latest/>`_ is available online, and in the ``docs/`` directory.
- * Mailing list: `Google groups <https://groups.google.com/a/learningequality.org/forum/#!forum/dev>`_.
- * IRC: #kolibri on Freenode
+* `Documentation <http://kolibri.readthedocs.org/en/latest/>`_ is available online, and in the ``docs/`` directory.
+* Mailing list: `Google groups <https://groups.google.com/a/learningequality.org/forum/#!forum/dev>`_.
+* IRC: #kolibri on Freenode
