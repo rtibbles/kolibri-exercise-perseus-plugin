@@ -22,7 +22,7 @@ clean-pyc:
 	find . -name '*.pyo' -exec rm -f {} +
 	find . -name '*~' -exec rm -f {} +
 
-perseus-upgrade:
+assets:
 	# move mathjax to static folder for our hacky loading.
 	rm -r kolibri_exercise_perseus_plugin/static
 	mkdir kolibri_exercise_perseus_plugin/static
@@ -35,18 +35,15 @@ perseus-upgrade:
 	# Ben: This seems like it doesn't detect the file name?
 	> kolibri_exercise_perseus_plugin/assets/src/constants.js
 	config_file_name="$(basename kolibri_exercise_perseus_plugin/static/mathjax/2.1/config/*)"
-	file_content="const ConfigFileName = '${config_file_name}';
-	module.exports = { ConfigFileName };"
+	file_content="const ConfigFileName = '${config_file_name}'; module.exports = { ConfigFileName };"
 	echo "${file_content}" >> kolibri_exercise_perseus_plugin/assets/src/constants.js
 
-	cd kolibri_exercise_perseus_plugin
-	yarn run extract-messages
-	cd ..
+	cd kolibri_exercise_perseus_plugin && yarn run extract-messages
 
 check-build:
-	[ -e kolibri_exercise_perseus_plugin/static/images/spinner.gif ] || ( echo "Run make perseus-upgrade" && exit 1 )
+	[ -e kolibri_exercise_perseus_plugin/static/images/spinner.gif ] || ( echo "Please run: make build" && exit 1 )
 
-dist: clean
+dist: clean check-build
 	python setup.py sdist
 	python setup.py bdist_wheel --universal
 

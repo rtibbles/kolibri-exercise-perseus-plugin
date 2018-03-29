@@ -11,7 +11,8 @@ network, without an internet connection. Kolibri installations can be linked to 
 content can be shared. Users can create content for Kolibri and share it when there is network access to another
 Kolibri installation or the internet.
 
-See https://learningequality.org/kolibri/ for more info.
+See `learningequality.org <https://learningequality.org/kolibri/>`__ for more info.
+
 
 What is Perseus?
 ----------------
@@ -19,6 +20,7 @@ What is Perseus?
 Khan Academy's exercise question editor and renderer.
 
 See https://github.com/Khan/perseus for more info.
+
 
 What is this plugin?
 --------------------
@@ -29,12 +31,17 @@ A Perseus renderer wrapper for Kolibri that can track learning progress and save
 Installation
 ------------
 
-1. Inside your Kolibri virtual environment:
-    ``pip install kolibri-perseus-exercise-plugin``
+**This plugin is bundled with Kolibri**. If you are running a custom version,
+you can install it like this:
 
-2. Activate the plugin:
 
-    ``kolibri plugin exercise_perseus_renderer enable``
+1. Inside your Kolibri virtual environment::
+
+    pip install kolibri-perseus-exercise-plugin
+
+2. Activate the plugin::
+
+    kolibri plugin exercise_perseus_renderer enable
 
 3. Restart Kolibri.
 
@@ -53,7 +60,8 @@ Development guide
 
     kolibri plugin kolibri_exercise_perseus_plugin enable
 
-4. Then run the commands to install frontend packages in Kolibri, this plugin will have its dependencies recursively installed::
+4. Then run the commands to install frontend packages in Kolibri, this plugin
+   will have its dependencies recursively installed::
 
     yarn install
 
@@ -61,6 +69,11 @@ Make sure that this message **DOES NOT** appear in your logging output of
 ``yarn install``, it means that you are not using the development version::
 
     WARNING  assets/src/module.js not found for plugin exercise_perseus_render_module.
+
+5. After cloning for the first time, or if you made any changes to the project,
+   you need to rebuild it::
+     
+     make assets
 
 
 Updating translation strings
@@ -77,9 +90,10 @@ To download the latest translation strings for this plugin, make a ``crowdinSecr
 Updating Perseus
 ~~~~~~~~~~~~~~~~
 
-In case you update Perseus (bundled in this repo), please run this command afterwards::
+In case you update Perseus (bundled in this repo), please run this command
+afterwards::
 
-    make perseus-upgrade
+    make assets
 
 
 Release plan and version scheme
