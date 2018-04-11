@@ -4,9 +4,10 @@
     <div :class="{'framework-perseus':true, 'perseus-mobile': isMobile}">
       <div ref="perseus" id="perseus">
         <div class="loader-container">
-          <k-indeterminate-linear-indicator
+          <k-linear-loader
             v-show="loading"
             :delay="false"
+            type="indeterminate"
           />
         </div>
         <div
@@ -88,7 +89,7 @@
   import { getContentLangDir } from 'kolibri.utils.i18n';
   import kolibri from 'kolibri';
   import kButton from 'kolibri.coreVue.components.kButton';
-  import kIndeterminateLinearIndicator from 'kolibri.coreVue.components.kIndeterminateLinearIndicator';
+  import kLinearLoader from 'kolibri.coreVue.components.kLinearLoader';
   import icu from '../KAGlobals/icu';
   import widgetSolver from '../widgetSolver';
 
@@ -111,7 +112,7 @@
     name: 'exercisePerseusRenderer',
     components: {
       kButton,
-      kIndeterminateLinearIndicator,
+      kLinearLoader,
     },
     mixins: [responsiveWindow, contentRendererMixin],
     data: () => ({
