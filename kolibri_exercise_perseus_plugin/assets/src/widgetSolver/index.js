@@ -1,3 +1,4 @@
+import logger from 'kolibri.lib.logging';
 import categorizer from './categorizer';
 import dropdown from './dropdown';
 import expression from './expression';
@@ -17,7 +18,6 @@ import sorter from './sorter';
 import table from './table';
 import transformer from './transformer';
 import unit from './unit';
-import logger from 'kolibri.lib.logging';
 
 const logging = logger.getLogger(__filename);
 

@@ -4,7 +4,11 @@
     <div :class="{'framework-perseus':true, 'perseus-mobile': isMobile}">
       <div ref="perseus" id="perseus">
         <div class="loader-container">
-          <ui-progress-linear v-show="loading" />
+          <k-linear-loader
+            v-show="loading"
+            :delay="false"
+            type="indeterminate"
+          />
         </div>
         <div
           :dir="dir"
@@ -76,7 +80,6 @@
 
 <script>
 
-  import icu from '../KAGlobals/icu';
   import react from 'react';
   import reactDOM from 'react-dom';
   import client from 'kolibri.client';
@@ -85,7 +88,9 @@
   import * as perseus from 'perseus/src/perseus';
   import { getContentLangDir } from 'kolibri.utils.i18n';
   import kolibri from 'kolibri';
-  import uiProgressLinear from 'keen-ui/src/UiProgressLinear';
+  import kButton from 'kolibri.coreVue.components.kButton';
+  import kLinearLoader from 'kolibri.coreVue.components.kLinearLoader';
+  import icu from '../KAGlobals/icu';
   import widgetSolver from '../widgetSolver';
 
   // A handy convenience mapping to what is essentially a constructor for Item Renderer
@@ -106,8 +111,8 @@
   export default {
     name: 'exercisePerseusRenderer',
     components: {
-      'k-button': require('kolibri.coreVue.components.kButton'),
-      uiProgressLinear,
+      kButton,
+      kLinearLoader,
     },
     mixins: [responsiveWindow, contentRendererMixin],
     data: () => ({
