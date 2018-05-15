@@ -17,9 +17,12 @@
           <div id="workarea" :style="isMobile ? { marginLeft: '0px' } : {}"></div>
         </div>
 
-        <div class="hint-btn-container">
+        <div
+          v-if="anyHints"
+          class="hint-btn-container"
+        >
           <k-button
-            v-if="anyHints && availableHints > 0"
+            v-if=" availableHints > 0"
             class="hint-btn"
             appearance="basic-link"
             :text="$tr('hint', {hintsLeft: availableHints})"
@@ -27,7 +30,7 @@
             @click="takeHint"
           />
           <k-button
-            v-else-if="anyHints"
+            v-else
             class="hint-btn"
             appearance="basic-link"
             :text="$tr('noMoreHint')"
