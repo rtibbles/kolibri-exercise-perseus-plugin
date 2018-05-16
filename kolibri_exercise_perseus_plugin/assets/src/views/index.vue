@@ -17,22 +17,34 @@
           <div id="workarea" :style="isMobile ? { marginLeft: '0px' } : {}"></div>
         </div>
 
-        <k-button
-          v-if="anyHints && availableHints > 0"
-          :primary="false"
-          :raised="false"
-          @click="takeHint"
-          class="hint-btn"
-          :text="$tr('hint', {hintsLeft: availableHints})"
-        />
-        <k-button
-          v-else-if="anyHints"
-          :primary="false"
-          :raised="false"
-          class="hint-btn"
-          disabled
-          :text="$tr('noMoreHint')"
-        />
+        <div
+          v-if="anyHints"
+          class="hint-btn-container"
+        >
+          <k-button
+            v-if=" availableHints > 0"
+            class="hint-btn"
+            appearance="basic-link"
+            :text="$tr('hint', {hintsLeft: availableHints})"
+            :primary="false"
+            @click="takeHint"
+          />
+          <k-button
+            v-else
+            class="hint-btn"
+            appearance="basic-link"
+            :text="$tr('noMoreHint')"
+            :primary="false"
+            :disabled="true"
+          />
+          <core-info-icon
+            class="info-icon"
+            tooltipPosition="bottom right"
+            :iconAriaLabel="$tr('hintExplanation')"
+            :tooltipText="$tr('hintExplanation')"
+          />
+        </div>
+
 
         <div :dir="dir" id="hintlabel" v-if="hinted">{{ $tr("hintLabel") }}</div>
         <div :dir="dir" id="hintsarea" :style="isMobile ? { marginLeft: '0px' } : {}"></div>
@@ -90,6 +102,7 @@
   import kolibri from 'kolibri';
   import kButton from 'kolibri.coreVue.components.kButton';
   import kLinearLoader from 'kolibri.coreVue.components.kLinearLoader';
+  import CoreInfoIcon from 'kolibri.coreVue.components.CoreInfoIcon';
   import icu from '../KAGlobals/icu';
   import widgetSolver from '../widgetSolver';
 
@@ -113,6 +126,7 @@
     components: {
       kButton,
       kLinearLoader,
+      CoreInfoIcon,
     },
     mixins: [responsiveWindow, contentRendererMixin],
     data: () => ({
@@ -196,6 +210,7 @@
       notAvailable: 'The scratchpad is not available',
       loading: 'Loading',
       hint: 'Use a hint ({hintsLeft, number} left)',
+      hintExplanation: 'If you use a hint, this question will not be added to your progress',
       hintLabel: 'Hint:',
       noMoreHint: 'No more hints',
     },
@@ -469,8 +484,15 @@
   url(/static/fonts/Symbola.otf) format('opentype'),
   url(/static/fonts/Symbola.svg#Symbola) format('svg')
 
-  .hint-btn
+  .hint-btn-container
     margin-top: 32px
+    text-align: right
+
+  .hint-btn
+    vertical-align: text-bottom
+
+  .info-icon
+    margin-left: 8px
 
   .loader-container
     width: 100%
