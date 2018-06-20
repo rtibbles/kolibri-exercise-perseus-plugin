@@ -3,6 +3,7 @@
     "exercisePerseusRenderer.notAvailable": "স্ক্র্যাচপ্যাড নেই",
     "exercisePerseusRenderer.loading": "লোড হচ্ছে",
     "exercisePerseusRenderer.hint": "একটি ইঙ্গিত ব্যবহার করুন ({hintsLeft, number}টি বাকি আছে)",
+    "exercisePerseusRenderer.hintExplanation": "আপনি কোনও ইংগিত ব্যবহার করলে এই প্রশ্নটি আপনার অগ্রগতিতে যোগ করা হবে না",
     "exercisePerseusRenderer.hintLabel": "ইঙ্গিত:",
     "exercisePerseusRenderer.noMoreHint": "সবগুলো ইংগিত দেখে ফেলেছন",
     "perseusInternalMessages.Hint #{ pos }": "ইঙ্গিত #{ pos }",

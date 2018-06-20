@@ -3,6 +3,7 @@
     "exercisePerseusRenderer.notAvailable": "Hakuna pakuandikia",
     "exercisePerseusRenderer.loading": "Inapakia",
     "exercisePerseusRenderer.hint": "Tumia dokezo ({hintsLeft, number} left)",
+    "exercisePerseusRenderer.hintExplanation": "Ikiwa unatumia kidokezo, swali hili halitaongezwa kwa maendeleo yako",
     "exercisePerseusRenderer.hintLabel": "Dokezo:",
     "exercisePerseusRenderer.noMoreHint": "Hakuna dokezo la ziada",
     "perseusInternalMessages.Hint #{ pos }": "Kidokezo #{ pos }",

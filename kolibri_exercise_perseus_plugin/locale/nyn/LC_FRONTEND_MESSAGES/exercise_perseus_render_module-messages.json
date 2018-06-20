@@ -3,6 +3,7 @@
     "exercisePerseusRenderer.notAvailable": "Poti mulembe sipakupezeka",
     "exercisePerseusRenderer.loading": "Ikutsegula",
     "exercisePerseusRenderer.hint": "Gwiritsani ntchito zokukumbutsani  ({hintsLeft, number} left)",
+    "exercisePerseusRenderer.hintExplanation": "Ngati mungagwiritse ntchito zokuthandizani, ndiye kuti funsoli siliphatikizidwa pa zimene mwakhoza",
     "exercisePerseusRenderer.hintLabel": "Zokukumbutsani:",
     "exercisePerseusRenderer.noMoreHint": "Palibe zokukumbutsani",
     "perseusInternalMessages.Hint #{ pos }": "Zokukumbutsani #{ pos }",

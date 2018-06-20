@@ -3,6 +3,7 @@
     "exercisePerseusRenderer.notAvailable": "स्क्रॅचपॅड उपलब्ध नाही",
     "exercisePerseusRenderer.loading": "लोड होत आहे",
     "exercisePerseusRenderer.hint": "इशारा वापरा ({hintsLeft, number} उरले)",
+    "exercisePerseusRenderer.hintExplanation": "तुम्ही इशारा वापरल्यास, हा प्रश्न तुमच्या प्रगतीमध्ये समाविष्ट केला जाणार नाही",
     "exercisePerseusRenderer.hintLabel": "इशारा:",
     "exercisePerseusRenderer.noMoreHint": "आणखी इशारे उपलब्ध नाहीत",
     "perseusInternalMessages.Hint #{ pos }": "इशारा#{ pos }",
