@@ -3,6 +3,7 @@
     "exercisePerseusRenderer.notAvailable": "எழுது பக்கங்கள் கிடைக்கவில்லை",
     "exercisePerseusRenderer.loading": "ஏற்றுகிறது",
     "exercisePerseusRenderer.hint": "உதவி குறிப்பை பயன்படுத்தவும் ({hintsLeft, number} பாக்கி)",
+    "exercisePerseusRenderer.hintExplanation": "ஒரு குறிப்பை நீங்கள் பயன்படுத்தினால், இந்த கேள்வி உங்கள் முன்னேற்றத்தில் சேர்க்கப்படாது",
     "exercisePerseusRenderer.hintLabel": "உதவிக்குறிப்பு:",
     "exercisePerseusRenderer.noMoreHint": "உதவி குறிப்பி எதுவும் பாக்கி இல்லை",
     "perseusInternalMessages.Hint #{ pos }": "உதவி குறிப்பி #{ pos }",

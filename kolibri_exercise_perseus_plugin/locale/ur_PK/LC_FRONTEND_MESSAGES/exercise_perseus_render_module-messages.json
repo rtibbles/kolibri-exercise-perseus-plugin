@@ -3,6 +3,7 @@
     "exercisePerseusRenderer.notAvailable": "سکریچ پیٹ موجود نہیں",
     "exercisePerseusRenderer.loading": "لوڈ جاری ہے",
     "exercisePerseusRenderer.hint": "کنایہ استعمال کریں ({hintsLeft, number} باقی)",
+    "exercisePerseusRenderer.hintExplanation": "اگر آپ ایک اشارہ استعمال کرتے ہیں، تو یہ سوال آپ کی ترقی میں شامل نہیں ہوگا",
     "exercisePerseusRenderer.hintLabel": "کنایہ:",
     "exercisePerseusRenderer.noMoreHint": "کوئی مزید کنایتہّ نہیں",
     "perseusInternalMessages.Hint #{ pos }": "کنایہ #{ pos }",
