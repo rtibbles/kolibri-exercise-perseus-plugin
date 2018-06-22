@@ -3,7 +3,7 @@
  * It will be bundled into the webpack configuration at build time.
  */
 var path = require('path');
-var webpack = require('perseus/node_modules/webpack');
+var webpack = require('webpack');
 
 module.exports = {
   resolve: {
