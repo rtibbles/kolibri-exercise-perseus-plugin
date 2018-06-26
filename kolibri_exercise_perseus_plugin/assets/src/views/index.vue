@@ -468,7 +468,6 @@
     border-radius: 8px
     padding: 16px
     background-color: $core-bg-light
-    margin-top: 8px
     overflow-x: auto
 
   .bibliotron-exercise
@@ -497,6 +496,9 @@
   .loader-container
     width: 100%
     height: 4px
+
+  .framework-perseus.perseus-mobile
+    margin-top: 0
 
 </style>
 
