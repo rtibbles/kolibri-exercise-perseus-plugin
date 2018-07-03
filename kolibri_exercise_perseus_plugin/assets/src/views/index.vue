@@ -458,7 +458,8 @@
 
 <style lang="stylus" scoped>
 
-  @require '~kolibri.styles.theme'
+  @require '~kolibri.styles.definitions'
+
   @import '../../../node_modules/perseus/stylesheets/local-only/khan-exercise.css'
   @import '../../../node_modules/perseus/lib/katex/katex.css'
   @import '../../../node_modules/perseus/build/perseus.css'
@@ -469,6 +470,12 @@
     padding: 16px
     background-color: $core-bg-light
     overflow-x: auto
+
+  #solutionarea
+    border: none
+
+  #answer-area-wrap
+    background-color: $core-bg-light
 
   .bibliotron-exercise
     margin-bottom: 8px
