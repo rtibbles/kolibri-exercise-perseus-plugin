@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import { createTranslator } from 'kolibri.utils.i18n';
 
 const translator = createTranslator('perseusInternalMessages', {
@@ -151,56 +149,8 @@ const translator = createTranslator('perseusInternalMessages', {
     'Use the interactive graph to define a correct transformation.',
   "'None of the above' may not be selected when other answers are selected.":
     "'None of the above' may not be selected when other answers are selected.",
-  'Keep trying': 'Keep trying',
   'Math input box': 'Math input box',
   'Add highlight': 'Add highlight',
-  Plus: 'Plus',
-  Minus: 'Minus',
-  Negative: 'Negative',
-  Multiply: 'Multiply',
-  Divide: 'Divide',
-  Decimal: 'Decimal',
-  Percent: 'Percent',
-  'Equals sign': 'Equals sign',
-  'Not-equals sign': 'Not-equals sign',
-  'Greater than sign': 'Greater than sign',
-  'Less than sign': 'Less than sign',
-  'Greater than or equal to sign': 'Greater than or equal to sign',
-  'Less than or equal to sign': 'Less than or equal to sign',
-  'Fraction, with current expression in numerator':
-    'Fraction, with current expression in numerator',
-  'Fraction, excluding the current expression': 'Fraction, excluding the current expression',
-  'Custom exponent': 'Custom exponent',
-  Square: 'Square',
-  Cube: 'Cube',
-  'Square root': 'Square root',
-  'Cube root': 'Cube root',
-  'Radical with custom root': 'Radical with custom root',
-  'Left parenthesis': 'Left parenthesis',
-  'Right parenthesis': 'Right parenthesis',
-  'Natural logarithm': 'Natural logarithm',
-  'Logarithm with base 10': 'Logarithm with base 10',
-  'Logarithm with custom base': 'Logarithm with custom base',
-  Sine: 'Sine',
-  Cosine: 'Cosine',
-  Tangent: 'Tangent',
-  Pi: 'Pi',
-  Theta: 'Theta',
-  'Up arrow': 'Up arrow',
-  'Right arrow': 'Right arrow',
-  'Down arrow': 'Down arrow',
-  'Left arrow': 'Left arrow',
-  'Navigate right out of a set of parentheses': 'Navigate right out of a set of parentheses',
-  'Navigate right out of an exponent': 'Navigate right out of an exponent',
-  'Navigate right out of a base': 'Navigate right out of a base',
-  'Navigate right into the numerator of a fraction':
-    'Navigate right into the numerator of a fraction',
-  'Navigate right out of the numerator and into the denominator':
-    'Navigate right out of the numerator and into the denominator',
-  'Navigate right out of the denominator of a fraction':
-    'Navigate right out of the denominator of a fraction',
-  Delete: 'Delete',
-  Dismiss: 'Dismiss',
   '(Choice { letter }, Checked, Correct)': '(Choice { letter }, Checked, Correct)',
   '(Choice { letter }, Checked, Incorrect)': '(Choice { letter }, Checked, Incorrect)',
   '(Choice { letter }, Checked)': '(Choice { letter }, Checked)',
