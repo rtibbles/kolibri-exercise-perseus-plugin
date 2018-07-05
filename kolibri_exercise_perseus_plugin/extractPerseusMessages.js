@@ -15,7 +15,7 @@ const translationUtils = require('./translationUtils');
 // Auto generate a module that creates the translator so that it can
 // be imported into our special i18n code for Perseus.
 
-const template = `/* eslint-disable */
+const template = `
 
 import { createTranslator } from 'kolibri.utils.i18n';
 

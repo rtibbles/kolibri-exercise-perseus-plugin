@@ -37,7 +37,11 @@ const getMessages = converter => {
         // No good way to autogenerate a meaningful message id, so just fallback
         // to using the message as the id. Sadness.
         message = translationUtils.escapeBackslashesInString(message);
-        messages[message] = message;
+        // Prevent creation of duplicate keys
+        const quoteLessMessage = message.substring(1, message.length - 1);
+        if (!messages[`"${quoteLessMessage}"`] && !messages[`'${quoteLessMessage}'`]) {
+          messages[message] = message;
+        }
       }
       for (var key in node) {
         if (node.hasOwnProperty(key)) {
