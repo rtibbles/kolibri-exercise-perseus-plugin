@@ -143,7 +143,7 @@
     }),
     computed: {
       isMobile() {
-        return this.windowSize.breakpoint < 3;
+        return this.windowBreakpoint < 3;
       },
       // this is a nasty hack. Will find a better way
       usesTouch() {
