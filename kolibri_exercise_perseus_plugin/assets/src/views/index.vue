@@ -456,65 +456,74 @@
 </script>
 
 
-<style lang="stylus" scoped>
+<style lang="scss" scoped>
 
-  @require '~kolibri.styles.definitions'
+  @import '~kolibri.styles.definitions';
+  @import '../../../node_modules/perseus/stylesheets/local-only/khan-exercise.css';
+  @import '../../../node_modules/perseus/lib/katex/katex.css';
+  @import '../../../node_modules/perseus/build/perseus.css';
+  @import '../../../node_modules/perseus/lib/mathquill/mathquill.css';
 
-  @import '../../../node_modules/perseus/stylesheets/local-only/khan-exercise.css'
-  @import '../../../node_modules/perseus/lib/katex/katex.css'
-  @import '../../../node_modules/perseus/build/perseus.css'
-  @import '../../../node_modules/perseus/lib/mathquill/mathquill.css'
+  #perseus {
+    border-radius: 8px;
+    padding: 16px;
+    background-color: $core-bg-light;
+    overflow-x: auto;
+  }
 
-  #perseus
-    border-radius: 8px
-    padding: 16px
-    background-color: $core-bg-light
-    overflow-x: auto
+  #solutionarea {
+    border: none;
+  }
 
-  #solutionarea
-    border: none
+  #answer-area-wrap {
+    background-color: $core-bg-light;
+  }
 
-  #answer-area-wrap
-    background-color: $core-bg-light
+  .bibliotron-exercise {
+    margin-bottom: 8px;
+  }
 
-  .bibliotron-exercise
-    margin-bottom: 8px
-
-  @font-face
-    font-family: Symbola
-    src: url(/static/fonts/Symbola.eot)
+  @font-face {
+    font-family: Symbola;
+    src: url(/static/fonts/Symbola.eot);
     src: local('Symbola Regular'),
-  local('Symbola'),
-  url(/static/fonts/Symbola.woff) format('woff'),
-  url(/static/fonts/Symbola.ttf) format('truetype'),
-  url(/static/fonts/Symbola.otf) format('opentype'),
-  url(/static/fonts/Symbola.svg#Symbola) format('svg')
+         local('Symbola'),
+         url(/static/fonts/Symbola.woff) format('woff'),
+         url(/static/fonts/Symbola.ttf) format('truetype'),
+         url(/static/fonts/Symbola.otf) format('opentype'),
+         url(/static/fonts/Symbola.svg#Symbola) format('svg');
+  }
 
-  .hint-btn-container
-    margin-top: 32px
-    text-align: right
+  .hint-btn-container {
+    margin-top: 32px;
+    text-align: right;
+  }
 
-  .hint-btn
-    vertical-align: text-bottom
+  .hint-btn {
+    vertical-align: text-bottom;
+  }
 
-  .info-icon
-    margin-left: 8px
+  .info-icon {
+    margin-left: 8px;
+  }
 
-  .loader-container
-    width: 100%
-    height: 4px
+  .loader-container{
+    width: 100%;
+    height: 4px;
+  }
 
-  .framework-perseus.perseus-mobile
-    margin-top: 0
+  .framework-perseus.perseus-mobile {
+    margin-top: 0;
+  }
 
 </style>
 
 
-<style lang="stylus">
+<style lang="scss">
 
   // Reset global styles so that we don't interfere with perseus styling
 
-  .perseus-root
+  .perseus-root {
     div, span, applet, object, iframe,
     h1, h2, h3, h4, h5, h6, p, blockquote, pre,
     a, abbr, acronym, address, big, cite, code,
@@ -527,32 +536,42 @@
     article, aside, canvas, details, embed,
     figure, figcaption, footer, header, hgroup,
     menu, nav, output, ruby, section, summary,
-    time, mark, audio, video
-      margin: 0
-      padding: 0
-      border: none
-      vertical-align: baseline
+    time, mark, audio, video {
+      margin: 0;
+      padding: 0;
+      border: none;
+      vertical-align: baseline;
+    }
+
     /* HTML5 display-role reset for older browsers */
     article, aside, details, figcaption, figure,
-    footer, header, hgroup, menu, nav, section
-      display: block
+    footer, header, hgroup, menu, nav, section {
+      display: block;
+    }
 
-    ol, ul
-      list-style: none
+    ol, ul {
+      list-style: none;
+    }
 
-    blockquote, q
-      quotes: none
+    blockquote, q {
+      quotes: none;
+    }
 
     blockquote:before, blockquote:after,
-    q:before, q:after
-      content: ''
-      content: none
+    q:before, q:after {
+      content: '';
+      content: none;
+    }
 
-    table
-      border-collapse: collapse
-      border-spacing: 0
+    table {
+      border-collapse: collapse;
+      border-spacing: 0;
+    }
 
-  .keypad-container
-    direction: ltr
+  }
+
+  .keypad-container {
+    direction: ltr;
+  }
 
 </style>
