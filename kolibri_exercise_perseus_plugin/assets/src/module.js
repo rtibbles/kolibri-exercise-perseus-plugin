@@ -1,4 +1,4 @@
-import ExerciseComponent from './views/index';
+import ExerciseComponent from './views/PerseusRendererIndex';
 import ContentRendererModule from 'content_renderer_module'; // eslint-disable-line import/extensions
 
 // Add window.btoa polyfill

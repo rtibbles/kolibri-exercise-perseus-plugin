@@ -4,7 +4,7 @@
     <div :class="{'framework-perseus':true, 'perseus-mobile': isMobile}">
       <div ref="perseus" id="perseus">
         <div class="loader-container">
-          <k-linear-loader
+          <KLinearLoader
             v-show="loading"
             :delay="false"
             type="indeterminate"
@@ -21,7 +21,7 @@
           v-if="anyHints"
           class="hint-btn-container"
         >
-          <k-button
+          <KButton
             v-if=" availableHints > 0"
             class="hint-btn"
             appearance="basic-link"
@@ -29,7 +29,7 @@
             :primary="false"
             @click="takeHint"
           />
-          <k-button
+          <KButton
             v-else
             class="hint-btn"
             appearance="basic-link"
@@ -37,7 +37,7 @@
             :primary="false"
             :disabled="true"
           />
-          <core-info-icon
+          <CoreInfoIcon
             class="info-icon"
             tooltipPosition="bottom right"
             :iconAriaLabel="$tr('hintExplanation')"
@@ -65,14 +65,14 @@
         </div>
       </div>
 
-      <k-button
+      <KButton
         v-if="scratchpad"
         :primary="false"
         :raised="false"
         id="scratchpad-show"
         :text="$tr('showScratch')"
       />
-      <k-button
+      <KButton
         v-else
         :primary="false"
         :raised="false"
@@ -96,12 +96,12 @@
   import reactDOM from 'react-dom';
   import client from 'kolibri.client';
   import responsiveWindow from 'kolibri.coreVue.mixins.responsiveWindow';
-  import contentRendererMixin from 'kolibri.coreVue.mixins.contentRenderer';
+  import contentRendererMixin from 'kolibri.coreVue.mixins.contentRendererMixin';
   import * as perseus from 'perseus/src/perseus';
   import { getContentLangDir } from 'kolibri.utils.i18n';
   import kolibri from 'kolibri';
-  import kButton from 'kolibri.coreVue.components.kButton';
-  import kLinearLoader from 'kolibri.coreVue.components.kLinearLoader';
+  import KButton from 'kolibri.coreVue.components.KButton';
+  import KLinearLoader from 'kolibri.coreVue.components.KLinearLoader';
   import CoreInfoIcon from 'kolibri.coreVue.components.CoreInfoIcon';
   import icu from '../KAGlobals/icu';
   import widgetSolver from '../widgetSolver';
@@ -122,10 +122,10 @@
   const sorterWidgetRegex = /sorter [0-9]+/;
 
   export default {
-    name: 'exercisePerseusRenderer',
+    name: 'PerseusRendererIndex',
     components: {
-      kButton,
-      kLinearLoader,
+      KButton,
+      KLinearLoader,
       CoreInfoIcon,
     },
     mixins: [responsiveWindow, contentRendererMixin],
@@ -486,12 +486,10 @@
   @font-face {
     font-family: Symbola;
     src: url(/static/fonts/Symbola.eot);
-    src: local('Symbola Regular'),
-         local('Symbola'),
-         url(/static/fonts/Symbola.woff) format('woff'),
-         url(/static/fonts/Symbola.ttf) format('truetype'),
-         url(/static/fonts/Symbola.otf) format('opentype'),
-         url(/static/fonts/Symbola.svg#Symbola) format('svg');
+    src: local('Symbola Regular'), local('Symbola'), url(/static/fonts/Symbola.woff) format('woff'),
+      url(/static/fonts/Symbola.ttf) format('truetype'),
+      url(/static/fonts/Symbola.otf) format('opentype'),
+      url(/static/fonts/Symbola.svg#Symbola) format('svg');
   }
 
   .hint-btn-container {
@@ -507,7 +505,7 @@
     margin-left: 8px;
   }
 
-  .loader-container{
+  .loader-container {
     width: 100%;
     height: 4px;
   }
@@ -524,19 +522,85 @@
   // Reset global styles so that we don't interfere with perseus styling
 
   .perseus-root {
-    div, span, applet, object, iframe,
-    h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-    a, abbr, acronym, address, big, cite, code,
-    del, dfn, em, img, ins, kbd, q, s, samp,
-    small, strike, strong, sub, sup, tt, var,
-    b, u, i, center,
-    dl, dt, dd, ol, ul, li,
-    fieldset, form, label, legend,
-    table, caption, tbody, tfoot, thead, tr, th, td,
-    article, aside, canvas, details, embed,
-    figure, figcaption, footer, header, hgroup,
-    menu, nav, output, ruby, section, summary,
-    time, mark, audio, video {
+    div,
+    span,
+    applet,
+    object,
+    iframe,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    blockquote,
+    pre,
+    a,
+    abbr,
+    acronym,
+    address,
+    big,
+    cite,
+    code,
+    del,
+    dfn,
+    em,
+    img,
+    ins,
+    kbd,
+    q,
+    s,
+    samp,
+    small,
+    strike,
+    strong,
+    sub,
+    sup,
+    tt,
+    var,
+    b,
+    u,
+    i,
+    center,
+    dl,
+    dt,
+    dd,
+    ol,
+    ul,
+    li,
+    fieldset,
+    form,
+    label,
+    legend,
+    table,
+    caption,
+    tbody,
+    tfoot,
+    thead,
+    tr,
+    th,
+    td,
+    article,
+    aside,
+    canvas,
+    details,
+    embed,
+    figure,
+    figcaption,
+    footer,
+    header,
+    hgroup,
+    menu,
+    nav,
+    output,
+    ruby,
+    section,
+    summary,
+    time,
+    mark,
+    audio,
+    video {
       margin: 0;
       padding: 0;
       border: none;
@@ -544,21 +608,34 @@
     }
 
     /* HTML5 display-role reset for older browsers */
-    article, aside, details, figcaption, figure,
-    footer, header, hgroup, menu, nav, section {
+    article,
+    aside,
+    details,
+    figcaption,
+    figure,
+    footer,
+    header,
+    hgroup,
+    menu,
+    nav,
+    section {
       display: block;
     }
 
-    ol, ul {
+    ol,
+    ul {
       list-style: none;
     }
 
-    blockquote, q {
+    blockquote,
+    q {
       quotes: none;
     }
 
-    blockquote:before, blockquote:after,
-    q:before, q:after {
+    blockquote:before,
+    blockquote:after,
+    q:before,
+    q:after {
       content: '';
       content: none;
     }
@@ -567,7 +644,6 @@
       border-collapse: collapse;
       border-spacing: 0;
     }
-
   }
 
   .keypad-container {

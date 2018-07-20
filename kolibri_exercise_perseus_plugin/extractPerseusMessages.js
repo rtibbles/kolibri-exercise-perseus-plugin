@@ -19,7 +19,7 @@ const template = `
 
 import { createTranslator } from 'kolibri.utils.i18n';
 
-const translator = createTranslator('perseusInternalMessages', {
+const translator = createTranslator('PerseusInternalMessages', {
 <% _.each(transformedMessages, function(value, key) { %>  <%= key %>: <%= value %>,\n<% }); %>});
 
 export default translator;`;
