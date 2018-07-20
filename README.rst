@@ -41,7 +41,7 @@ you can install it like this:
 
 2. Activate the plugin::
 
-    kolibri plugin exercise_perseus_renderer enable
+    kolibri plugin kolibri_exercise_perseus_plugin enable
 
 3. Restart Kolibri.
 
@@ -72,7 +72,7 @@ Development guide
 
 5. After cloning for the first time, or if you made any changes to the project,
    you need to rebuild it::
-     
+
      make assets
 
 
@@ -112,16 +112,23 @@ Known issues
 
 **Development installation version not active**
 
-If you ran ``make dist`` or ``make pex`` on Kolibri with ``kolibri-exercise-perseus-plugin==x.x.x`` present in ``kolibri/requirements/base.txt``, Kolibri will generate an ``exercise_perseus_renderer`` instance inside its ``kolibri/dist`` folder and bundle it for further distribution. That means manually installing ``exercise_perseus_renderer`` for development won't take any effects. One way to fix this issue is to run ``make clean`` on Kolibri.
+If you ran ``make dist`` or ``make pex`` on Kolibri with ``kolibri-exercise-perseus-plugin==x.x.x`` present in ``kolibri/requirements/base.txt``, Kolibri will generate an ``kolibri_exercise_perseus_plugin`` instance inside its ``kolibri/dist`` folder and bundle it for further distribution. That means manually installing ``kolibri_exercise_perseus_plugin`` for development won't take any effects. One way to fix this issue is to run ``make clean`` on Kolibri.
 
 
 How to publish to PyPi?
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 1. Follow the instructions above to installing the plugin for development.
-2. From the Kolibri directory run the frontend build command.
+2. From the Kolibri directory run the frontend build command::
+
+    yarn run build
+
 3. Update `setup.py` to a newer version.
-4. Terminal move to the root level of repo dir and run the following command to publish to PyPi::
+4. Move to the root level of repo dir and run the following command to build the .whl file::
+
+    make dist
+
+5. Run the following command to publish to PyPi::
 
     make release
 
