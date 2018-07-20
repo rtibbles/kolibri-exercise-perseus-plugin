@@ -1,6 +1,6 @@
 import { createTranslator } from 'kolibri.utils.i18n';
 
-const translator = createTranslator('perseusInternalMessages', {
+const translator = createTranslator('PerseusInternalMessages', {
   'Hint #{ pos }': 'Hint #{ pos }',
   'Show the last step': 'Show the last step',
   'Show the next step': 'Show the next step',
