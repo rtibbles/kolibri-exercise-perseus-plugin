@@ -530,7 +530,6 @@
     time, mark, audio, video
       margin: 0
       padding: 0
-      border: none
       vertical-align: baseline
     /* HTML5 display-role reset for older browsers */
     article, aside, details, figcaption, figure,
