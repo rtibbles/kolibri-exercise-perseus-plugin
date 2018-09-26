@@ -603,7 +603,6 @@
     video {
       margin: 0;
       padding: 0;
-      border: none;
       vertical-align: baseline;
     }
 
