@@ -3,6 +3,7 @@
     "exercisePerseusRenderer.notAvailable": "چرک‌نویس در دسترس نمی‌باشد",
     "exercisePerseusRenderer.loading": "در حال بارگزاری",
     "exercisePerseusRenderer.hint": "استفاده از راهنما ({hintsLeft, number} باقیمانده)",
+    "exercisePerseusRenderer.hintExplanation": "اگر از یک راهنما برای پاسخ به این سوال استفاده کنید، این سوال به پیشرفت‌تان اضافه نخواهد شد",
     "exercisePerseusRenderer.hintLabel": "راهنما:",
     "exercisePerseusRenderer.noMoreHint": "راهنمای دیگری وجود ندارد",
     "perseusInternalMessages.Hint #{ pos }": "راهنما #{ pos }",

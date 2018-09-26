@@ -44,7 +44,7 @@ def enable_log_to_stdout(logname):
 
 setup(
     name=dist_name,
-    version="0.9.0",
+    version="1.0.6",
     description=description,
     long_description="{readme}".format(
         readme=readme,

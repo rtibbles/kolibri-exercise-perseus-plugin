@@ -3,8 +3,8 @@
  */
 
 import createFragment from 'react-addons-create-fragment';
-import translator from './translator';
 import { removeBackslashesInString } from '../../translationUtils';
+import translator from './translator';
 
 // We sometimes need to translate messages without filling in their values
 // Use this to generate the options for a translation that leaves the ICU format

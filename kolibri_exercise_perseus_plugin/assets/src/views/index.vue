@@ -4,7 +4,11 @@
     <div :class="{'framework-perseus':true, 'perseus-mobile': isMobile}">
       <div ref="perseus" id="perseus">
         <div class="loader-container">
-          <ui-progress-linear v-show="loading" />
+          <k-linear-loader
+            v-show="loading"
+            :delay="false"
+            type="indeterminate"
+          />
         </div>
         <div
           :dir="dir"
@@ -13,22 +17,34 @@
           <div id="workarea" :style="isMobile ? { marginLeft: '0px' } : {}"></div>
         </div>
 
-        <k-button
-          v-if="anyHints && availableHints > 0"
-          :primary="false"
-          :raised="false"
-          @click="takeHint"
-          class="hint-btn"
-          :text="$tr('hint', {hintsLeft: availableHints})"
-        />
-        <k-button
-          v-else-if="anyHints"
-          :primary="false"
-          :raised="false"
-          class="hint-btn"
-          disabled
-          :text="$tr('noMoreHint')"
-        />
+        <div
+          v-if="anyHints"
+          class="hint-btn-container"
+        >
+          <k-button
+            v-if=" availableHints > 0"
+            class="hint-btn"
+            appearance="basic-link"
+            :text="$tr('hint', {hintsLeft: availableHints})"
+            :primary="false"
+            @click="takeHint"
+          />
+          <k-button
+            v-else
+            class="hint-btn"
+            appearance="basic-link"
+            :text="$tr('noMoreHint')"
+            :primary="false"
+            :disabled="true"
+          />
+          <core-info-icon
+            class="info-icon"
+            tooltipPosition="bottom right"
+            :iconAriaLabel="$tr('hintExplanation')"
+            :tooltipText="$tr('hintExplanation')"
+          />
+        </div>
+
 
         <div :dir="dir" id="hintlabel" v-if="hinted">{{ $tr("hintLabel") }}</div>
         <div :dir="dir" id="hintsarea" :style="isMobile ? { marginLeft: '0px' } : {}"></div>
@@ -76,7 +92,6 @@
 
 <script>
 
-  import icu from '../KAGlobals/icu';
   import react from 'react';
   import reactDOM from 'react-dom';
   import client from 'kolibri.client';
@@ -85,7 +100,10 @@
   import * as perseus from 'perseus/src/perseus';
   import { getContentLangDir } from 'kolibri.utils.i18n';
   import kolibri from 'kolibri';
-  import uiProgressLinear from 'keen-ui/src/UiProgressLinear';
+  import kButton from 'kolibri.coreVue.components.kButton';
+  import kLinearLoader from 'kolibri.coreVue.components.kLinearLoader';
+  import CoreInfoIcon from 'kolibri.coreVue.components.CoreInfoIcon';
+  import icu from '../KAGlobals/icu';
   import widgetSolver from '../widgetSolver';
 
   // A handy convenience mapping to what is essentially a constructor for Item Renderer
@@ -106,8 +124,9 @@
   export default {
     name: 'exercisePerseusRenderer',
     components: {
-      'k-button': require('kolibri.coreVue.components.kButton'),
-      uiProgressLinear,
+      kButton,
+      kLinearLoader,
+      CoreInfoIcon,
     },
     mixins: [responsiveWindow, contentRendererMixin],
     data: () => ({
@@ -191,6 +210,7 @@
       notAvailable: 'The scratchpad is not available',
       loading: 'Loading',
       hint: 'Use a hint ({hintsLeft, number} left)',
+      hintExplanation: 'If you use a hint, this question will not be added to your progress',
       hintLabel: 'Hint:',
       noMoreHint: 'No more hints',
     },
@@ -438,7 +458,8 @@
 
 <style lang="stylus" scoped>
 
-  @require '~kolibri.styles.theme'
+  @require '~kolibri.styles.definitions'
+
   @import '../../../node_modules/perseus/stylesheets/local-only/khan-exercise.css'
   @import '../../../node_modules/perseus/lib/katex/katex.css'
   @import '../../../node_modules/perseus/build/perseus.css'
@@ -448,8 +469,13 @@
     border-radius: 8px
     padding: 16px
     background-color: $core-bg-light
-    margin-top: 8px
     overflow-x: auto
+
+  #solutionarea
+    border: none
+
+  #answer-area-wrap
+    background-color: $core-bg-light
 
   .bibliotron-exercise
     margin-bottom: 8px
@@ -464,12 +490,22 @@
   url(/static/fonts/Symbola.otf) format('opentype'),
   url(/static/fonts/Symbola.svg#Symbola) format('svg')
 
-  .hint-btn
+  .hint-btn-container
     margin-top: 32px
+    text-align: right
+
+  .hint-btn
+    vertical-align: text-bottom
+
+  .info-icon
+    margin-left: 8px
 
   .loader-container
     width: 100%
     height: 4px
+
+  .framework-perseus.perseus-mobile
+    margin-top: 0
 
 </style>
 
@@ -494,7 +530,6 @@
     time, mark, audio, video
       margin: 0
       padding: 0
-      border: none
       vertical-align: baseline
     /* HTML5 display-role reset for older browsers */
     article, aside, details, figcaption, figure,
