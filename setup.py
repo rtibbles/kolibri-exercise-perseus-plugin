@@ -7,6 +7,8 @@ import sys
 
 from setuptools import setup
 
+import kolibri_exercise_perseus_plugin
+
 
 def read_file(fname):
     """
@@ -44,7 +46,7 @@ def enable_log_to_stdout(logname):
 
 setup(
     name=dist_name,
-    version="1.1.0a2",
+    version=kolibri_exercise_perseus_plugin.__version__,
     description=description,
     long_description="{readme}".format(
         readme=readme,
