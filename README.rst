@@ -82,19 +82,20 @@ Next, follow these steps carefully:
 1. Follow the instructions above to installing the plugin for development.
 2. Run ``pip install twine``.
 3. Update the version number in ``kolibri_exercise_perseus_plugin/__init__.py``. Commit it to the perseus release branch. Tag a new release using `github's web UI <https://github.com/learningequality/kolibri-exercise-perseus-plugin/releases>`__.
-4. From the Kolibri repo (**NOT THE PERSEUS REPO**) run the frontend build command::
+4. Check out the tagged commit and ensure that you have no local changes.
+5. From the Kolibri repo (**NOT THE PERSEUS REPO**) run the frontend build command::
 
     make assets
 
-5. Change directory to the perseus repo. Build the .whl file by running::
+6. Change directory to the perseus repo. Build the .whl file by running::
 
     make dist
 
-6. Check that there are CSS, JS, and JSON files when searching the wheel file for ``kolibri_exercise_perseus_plugin``::
+7. Check that there are CSS, JS, and JSON files when searching the wheel file for ``kolibri_exercise_perseus_plugin``::
 
     unzip -vl dist/kolibri_exercise_perseus_plugin-1.1.0-py2.py3-none-any.whl | grep exercise_perseus_render_module
 
-7. Sign and publish to PyPi::
+8. Sign and publish to PyPi::
 
     make release
 
