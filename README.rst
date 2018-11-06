@@ -93,7 +93,7 @@ Next, follow these steps carefully:
 
 7. Check that there are CSS, JS, and JSON files when searching the wheel file for ``kolibri_exercise_perseus_plugin``::
 
-    unzip -vl dist/kolibri_exercise_perseus_plugin-1.1.0-py2.py3-none-any.whl | grep exercise_perseus_render_module
+    unzip -vl dist/[GENERATED WHEEL FILE NAME] | grep exercise_perseus_render_module
 
 8. Sign and publish to PyPi::
 
