@@ -77,6 +77,8 @@ When publishing, you'll need a GPG key to sign the package and associate it with
 * https://www.gnupg.org/
 * https://gpgtools.org/
 
+You'll also need an account on PyPi with access to the `kolibri-exercise-perseus-plugin package <https://pypi.org/project/kolibri-exercise-perseus-plugin/>`__
+
 Next, follow these steps carefully:
 
 1. Follow the instructions above to installing the plugin for development.
