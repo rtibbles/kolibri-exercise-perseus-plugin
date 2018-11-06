@@ -77,6 +77,7 @@ When publishing, you'll need a GPG key to sign the package and associate it with
 * https://www.gnupg.org/
 * https://gpgtools.org/
 
+Next, follow these steps carefully:
 
 1. Follow the instructions above to installing the plugin for development.
 2. Run ``pip install twine``.
