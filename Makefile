@@ -47,21 +47,18 @@ dist: clean check-build
 	python setup.py bdist_wheel --universal
 
 release:
-	@git diff-files --quiet || (echo "Dirty files in git tree - aborting" && exit 1)
 	@ls -l dist/ || (echo "Nothing built, no dist/ so nothing to release" && exit 1)
 	@echo "Documentation: See README.rst"
 	@echo ""
 	@echo ""
 	@echo "Quick check list:"
 	@echo ""
-	@echo "1. Pushed CrowdIn translations to repo?"
-	@echo "2. Downloaded CrowdIn translations"
+	@echo "1. Committed CrowdIn translations to repo?"
+	@echo "2. Your git repo has no local changes?"
 	@echo "3. Ensure that you have built the frontend files using Kolibri"
-	@echo "4. Ran 'make assets' to build everything"
-	@echo "5. Version info bumped in setup.py"
-	@echo "6. Running 'make dist' (that's actually the final step)"
-	@echo "7. Possibly, verify that you .whl release works"
-	@echo "8. Merged release branch with develop and master?"
+	@echo "4. Version info bumped in __init__.py"
+	@echo "5. Ran 'make assets' to build everything"
+	@echo "6. Running 'make dist' to generate a wheel file"
 	@echo ""
 	@echo "Do you want to upload everything in dist/*?"
 	@echo ""

@@ -121,7 +121,7 @@ How to publish to PyPi?
 1. Follow the instructions above to installing the plugin for development.
 2. From the Kolibri directory run the frontend build command::
 
-    yarn run build
+    make assets
 
 3. Update `setup.py` to a newer version.
 4. Move to the root level of repo dir and run the following command to build the .whl file::
