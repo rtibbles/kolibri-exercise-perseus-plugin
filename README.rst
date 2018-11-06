@@ -1,38 +1,21 @@
-=====================================
+
 Perseus Exercise Renderer for Kolibri
 =====================================
 
-What is Kolibri?
-----------------
+What is this?
+-------------
 
-Kolibri is a Learning Management System / Learning App designed to run on low-power devices, targeting the needs of
-learners and teachers in contexts with limited infrastructure. A user can install Kolibri and serve the app on a local
-network, without an internet connection. Kolibri installations can be linked to one another, so that user data and
-content can be shared. Users can create content for Kolibri and share it when there is network access to another
-Kolibri installation or the internet.
+Kolibri is a Learning Management System / Learning App designed to run on low-power devices, targeting the needs of learners and teachers in contexts with limited infrastructure. See `learningequality.org/kolibri <https://learningequality.org/kolibri/>`__ for more info.
 
-See `learningequality.org <https://learningequality.org/kolibri/>`__ for more info.
+Perseus is Khan Academy's exercise question editor and renderer. See `github.com/Khan/perseus <https://github.com/Khan/perseus>`__ for more info.
 
-
-What is Perseus?
-----------------
-
-Khan Academy's exercise question editor and renderer.
-
-See https://github.com/Khan/perseus for more info.
-
-
-What is this plugin?
---------------------
-
-A Perseus renderer wrapper for Kolibri that can track learning progress and save to the database.
+This package is a wrapper around Perseus which allows it to be embedded and used within Kolibri.
 
 
 Installation
 ------------
 
-**This plugin is bundled with Kolibri**. If you are running a custom version,
-you can install it like this:
+**This plugin is bundled with Kolibri - it is unlikely that you need to install it.**. If you are running a custom version, you can install it like this:
 
 
 1. Inside your Kolibri virtual environment::
@@ -46,8 +29,8 @@ you can install it like this:
 3. Restart Kolibri.
 
 
-Development guide
------------------
+Getting started with development
+--------------------------------
 
 1. Clone this repo.
 
@@ -56,17 +39,13 @@ Development guide
 3. Run the following commands, with your Kolibri development virtual env
    enabled::
 
+    make clean
+    pip install -e .
     pip install -e <KOLIBRI-PERSEUS-PLUGIN-LOCAL-PATH>
-
     kolibri plugin kolibri_exercise_perseus_plugin enable
-
-4. Then run the commands to install frontend packages in Kolibri, this plugin
-   will have its dependencies recursively installed::
-
     yarn install
 
-   Make sure that this message **DOES NOT** appear in your logging output of
-   ``yarn install``, it means that you are not using the development version::
+4. Make sure that this message **DID NOT** appear in your logging output of ``yarn install``::
 
     WARNING  assets/src/module.js not found for plugin exercise_perseus_render_module.
 
@@ -77,65 +56,61 @@ Development guide
 
 
 Updating translation strings
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------
 
-**This is currently broken, download files manually from CrowdIn**
-
-To download the latest translation strings for this plugin, make a ``crowdinSecrets.js`` file from the template in the repo root, and put your kolibri project API key in there. The KA API key can be set to null. Then execute the following commands::
-
-    cd kolibri_exercise_perseus_plugin
-    yarn run download-translations
+Follow the directions in our `Kolibri i18n docs <https://kolibri-dev.readthedocs.io/en/develop/references/i18n.html>`__.
 
 
-Updating Perseus
-~~~~~~~~~~~~~~~~
+Release process and versioning
+------------------------------
 
-In case you update Perseus (bundled in this repo), please run this command
-afterwards::
+The versioning and releasing of this ``kolibri_exercise_perseus_plugin`` plugin is independent of both Kolibri and Perseus. We use semantic versioning, and create release branches for each minor release.
+
+
+How to publish to PyPi?
+-----------------------
+
+When publishing, you'll need a GPG key to sign the package and associate it with your identity. You'll need to have ``gpg`` on your path. Some resources that might be helpful:
+
+* https://help.github.com/articles/generating-a-new-gpg-key/
+* https://keybase.io/
+* https://www.gnupg.org/
+* https://gpgtools.org/
+
+You'll also need an account on PyPi with access to the `kolibri-exercise-perseus-plugin package <https://pypi.org/project/kolibri-exercise-perseus-plugin/>`__
+
+Next, follow these steps carefully:
+
+1. Follow the instructions above to installing the plugin for development.
+2. Run ``pip install twine``.
+3. Update the version number in ``kolibri_exercise_perseus_plugin/__init__.py``. Commit it to the perseus release branch. Tag a new release using `github's web UI <https://github.com/learningequality/kolibri-exercise-perseus-plugin/releases>`__.
+4. Check out the tagged commit and ensure that you have no local changes.
+5. From the Kolibri repo (**NOT THE PERSEUS REPO**) run the frontend build command::
 
     make assets
 
+6. Change directory to the perseus repo. Build the .whl file by running::
 
-Release plan and version scheme
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    make dist
 
-The versioning of this plugin does not follow Kolibri's release plan. We plan to
-make it possible to upgrade and distribute this plugin independently from
-Kolibri, as with all other plugins.
+7. Check that there are CSS, JS, and JSON files when searching the wheel file for ``kolibri_exercise_perseus_plugin``::
 
-That means that the versioning and releasing of
-``kolibri_exercise_perseus_plugin`` is unrelated to both Kolibri and Perseus.
+    unzip -vl dist/[GENERATED WHEEL FILE NAME] | grep exercise_perseus_render_module
+
+8. Sign and publish to PyPi::
+
+    make release
 
 
 Known issues
-~~~~~~~~~~~~
+------------
 
 **Development installation version not active**
 
 If you ran ``make dist`` or ``make pex`` on Kolibri with ``kolibri-exercise-perseus-plugin==x.x.x`` present in ``kolibri/requirements/base.txt``, Kolibri will generate an ``kolibri_exercise_perseus_plugin`` instance inside its ``kolibri/dist`` folder and bundle it for further distribution. That means manually installing ``kolibri_exercise_perseus_plugin`` for development won't take any effects. One way to fix this issue is to run ``make clean`` on Kolibri.
 
 
-How to publish to PyPi?
-~~~~~~~~~~~~~~~~~~~~~~~
-
-1. Follow the instructions above to installing the plugin for development.
-2. From the Kolibri directory run the frontend build command::
-
-    make assets
-
-3. Update `setup.py` to a newer version.
-4. Move to the root level of repo dir and run the following command to build the .whl file::
-
-    make dist
-
-5. Run the following command to publish to PyPi::
-
-    make release
-
-
 How can I contribute?
 ~~~~~~~~~~~~~~~~~~~~~
 
-* `Documentation <http://kolibri.readthedocs.org/en/latest/>`_ is available online, and in the ``docs/`` directory.
-* Mailing list: `Google groups <https://groups.google.com/a/learningequality.org/forum/#!forum/dev>`_.
-* IRC: #kolibri on Freenode
+Thanks for your interest! Please see the `contributing section <http://kolibri-dev.readthedocs.io/en/develop/start/contributing/index.html>`__ of our `online developer documentation <http://kolibri-dev.readthedocs.io/>`__.
