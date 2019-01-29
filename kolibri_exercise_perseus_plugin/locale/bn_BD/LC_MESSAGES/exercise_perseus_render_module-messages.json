@@ -1,6 +1,6 @@
 {
   "PerseusInternalMessages. The symbol { sentenceSymbol } indicates that the following sentence is referenced in a question.": " এই { sentenceSymbol } চিহ্নটি ইংগিত দেয় যে এর পরের বাক্যটি থেকে একটি প্রশ্ন করা হয়েছে।",
-  "PerseusInternalMessages.'None of the above' may not be selected when other answers are selected.": "অন্য কোনও উত্তর নির্বাচন করা হলে 'উপরের কোনটিই নয়' নির্বাচন করা যাবে না।",
+  "PerseusInternalMessages.'None of the above' may not be selected when other answers are selected.": "অন্য কোনও উত্তর নির্বাচন করা হলে 'উপরের কোনোটিই নয়' নির্বাচন করা যাবে না।",
   "PerseusInternalMessages.(Choice { letter })": "(পছন্দ { letter })",
   "PerseusInternalMessages.(Choice { letter }, Checked)": "(পছন্দ { letter }, পরীক্ষিত)",
   "PerseusInternalMessages.(Choice { letter }, Checked, Correct)": "(পছন্দ { letter }, পরীক্ষিত, সঠিক)",
