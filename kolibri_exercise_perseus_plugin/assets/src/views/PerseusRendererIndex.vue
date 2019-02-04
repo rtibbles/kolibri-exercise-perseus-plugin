@@ -2,7 +2,7 @@
 
   <div class="perseus-root bibliotron-exercise">
     <div :class="{'framework-perseus':true, 'perseus-mobile': isMobile}">
-      <div id="perseus" ref="perseus">
+      <div id="perseus" ref="perseus" :style="background">
         <div class="loader-container">
           <KLinearLoader
             v-show="loading"
@@ -57,7 +57,7 @@
         <div v-show="message" id="message" :dir="dir">{{ message }}</div>
       </transition>
 
-      <div id="answer-area-wrap" :dir="dir">
+      <div id="answer-area-wrap" :dir="dir" :style="background">
         <div id="answer-area">
           <div class="info-box">
             <div id="solutionarea"></div>
@@ -92,6 +92,7 @@
 
 <script>
 
+  import { mapGetters } from 'vuex';
   import react from 'react';
   import reactDOM from 'react-dom';
   import client from 'kolibri.client';
@@ -142,6 +143,12 @@
       blankState: null,
     }),
     computed: {
+      ...mapGetters(['$coreBgLight']),
+      background() {
+        return {
+          backgroundColor: this.$coreBgLight,
+        };
+      },
       isMobile() {
         return this.windowBreakpoint < 3;
       },
@@ -458,7 +465,6 @@
 
 <style lang="scss" scoped>
 
-  @import '~kolibri.styles.definitions';
   @import '../../../node_modules/perseus/stylesheets/local-only/khan-exercise.css';
   @import '../../../node_modules/perseus/lib/katex/katex.css';
   @import '../../../node_modules/perseus/build/perseus.css';
@@ -467,16 +473,11 @@
   #perseus {
     border-radius: 8px;
     padding: 16px;
-    background-color: $core-bg-light;
     overflow-x: auto;
   }
 
   #solutionarea {
     border: none;
-  }
-
-  #answer-area-wrap {
-    background-color: $core-bg-light;
   }
 
   .bibliotron-exercise {
