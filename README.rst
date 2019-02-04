@@ -43,16 +43,15 @@ Getting started with development
     pip install -e .
     pip install -e <KOLIBRI-PERSEUS-PLUGIN-LOCAL-PATH>
     kolibri plugin kolibri_exercise_perseus_plugin enable
+
+4. Within the perseus plugin repo directory, run the following command, again using your kolibri dev virtualenv::
+
+    make dist
+
+5. Install the front-end perseus plugin repo dependencies 
+
+    cd kolibri_exercise_perseus_plugin/
     yarn install
-
-4. Make sure that this message **DID NOT** appear in your logging output of ``yarn install``::
-
-    WARNING  assets/src/module.js not found for plugin exercise_perseus_render_module.
-
-5. After cloning for the first time, or if you made any changes to the project,
-   you need to rebuild it::
-
-     make assets
 
 
 Updating translation strings
@@ -85,19 +84,16 @@ Next, follow these steps carefully:
 2. Run ``pip install twine``.
 3. Update the version number in ``kolibri_exercise_perseus_plugin/__init__.py``. Commit it to the perseus release branch. Tag a new release using `github's web UI <https://github.com/learningequality/kolibri-exercise-perseus-plugin/releases>`__.
 4. Check out the tagged commit and ensure that you have no local changes.
-5. From the Kolibri repo (**NOT THE PERSEUS REPO**) run the frontend build command::
 
-    make assets
-
-6. Change directory to the perseus repo. Build the .whl file by running::
+5. Build the frontend assets and .whl file by running::
 
     make dist
 
-7. Check that there are CSS, JS, and JSON files when searching the wheel file for ``kolibri_exercise_perseus_plugin``::
+6. Check that there are CSS, JS, and JSON files when searching the wheel file for ``kolibri_exercise_perseus_plugin``::
 
     unzip -vl dist/[GENERATED WHEEL FILE NAME] | grep exercise_perseus_render_module
 
-8. Sign and publish to PyPi::
+7. Sign and publish to PyPi::
 
     make release
 
