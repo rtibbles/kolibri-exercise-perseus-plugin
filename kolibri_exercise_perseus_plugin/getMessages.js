@@ -1,4 +1,4 @@
-const esprima = require('esprima');
+const esprima = require('espree');
 const walk = require('walk');
 const path = require('path');
 const fs = require('fs');

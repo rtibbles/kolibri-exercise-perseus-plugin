@@ -2,7 +2,7 @@
 
   <div class="perseus-root bibliotron-exercise">
     <div :class="{'framework-perseus':true, 'perseus-mobile': isMobile}">
-      <div ref="perseus" id="perseus">
+      <div id="perseus" ref="perseus">
         <div class="loader-container">
           <KLinearLoader
             v-show="loading"
@@ -11,8 +11,8 @@
           />
         </div>
         <div
-          :dir="dir"
           id="problem-area"
+          :dir="dir"
         >
           <div id="workarea" :style="isMobile ? { marginLeft: '0px' } : {}"></div>
         </div>
@@ -46,18 +46,18 @@
         </div>
 
 
-        <div :dir="dir" id="hintlabel" v-if="hinted">{{ $tr("hintLabel") }}</div>
-        <div :dir="dir" id="hintsarea" :style="isMobile ? { marginLeft: '0px' } : {}"></div>
+        <div v-if="hinted" id="hintlabel" :dir="dir">{{ $tr("hintLabel") }}</div>
+        <div id="hintsarea" :dir="dir" :style="isMobile ? { marginLeft: '0px' } : {}"></div>
 
         <div style="clear: both;"></div>
 
       </div>
 
       <transition name="expand">
-        <div :dir="dir" id="message" v-show="message">{{ message }}</div>
+        <div v-show="message" id="message" :dir="dir">{{ message }}</div>
       </transition>
 
-      <div :dir="dir" id="answer-area-wrap">
+      <div id="answer-area-wrap" :dir="dir">
         <div id="answer-area">
           <div class="info-box">
             <div id="solutionarea"></div>
@@ -67,23 +67,23 @@
 
       <KButton
         v-if="scratchpad"
+        id="scratchpad-show"
         :primary="false"
         :raised="false"
-        id="scratchpad-show"
         :text="$tr('showScratch')"
       />
       <KButton
         v-else
+        id="scratchpad-not-available"
         :primary="false"
         :raised="false"
         disabled
-        id="scratchpad-not-available"
         :text="$tr('notAvailable')"
       />
 
       <!-- Need a DOM mount point for reactDOM to attach to,
         but Perseus renders weirdly so doesn't use this -->
-      <div :dir="dir" ref="perseusContainer" id="perseus-container"></div>
+      <div id="perseus-container" ref="perseusContainer" :dir="dir"></div>
     </div>
   </div>
 
