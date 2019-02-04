@@ -44,9 +44,14 @@ Getting started with development
     pip install -e <KOLIBRI-PERSEUS-PLUGIN-LOCAL-PATH>
     kolibri plugin kolibri_exercise_perseus_plugin enable
 
-4. Within this repo, run the following command, again using your kolibri dev virtualenv::
+4. Within the perseus plugin repo directory, run the following command, again using your kolibri dev virtualenv::
 
-    make dev
+    make dist
+
+5. Install the front-end perseus plugin repo dependencies 
+
+    cd kolibri_exercise_perseus_plugin/
+    yarn install
 
 
 Updating translation strings
