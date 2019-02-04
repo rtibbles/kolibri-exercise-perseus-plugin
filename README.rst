@@ -46,12 +46,10 @@ Getting started with development
 
 4. Within the perseus plugin repo directory, run the following command, again using your kolibri dev virtualenv::
 
-    make dist
-
-5. Install the front-end perseus plugin repo dependencies 
-
-    cd kolibri_exercise_perseus_plugin/
+    cd kolibri_exercise_perseus_plugin
     yarn install
+    cd ..
+    make dist
 
 
 Updating translation strings
