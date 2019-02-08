@@ -5,6 +5,10 @@
 var path = require('path');
 var webpack = require('webpack');
 
+var delimiter = process.platform === 'win32' ? ';' : ':';
+process.env.NODE_PATH = process.env.NODE_PATH + delimiter + path.resolve(path.join(__dirname, 'node_modules', 'perseus', 'node_modules'));
+require('module').Module._initPaths();
+
 module.exports = {
   resolve: {
     modules: [path.resolve(__dirname, 'node_modules/perseus/node_modules')]
@@ -126,7 +130,4 @@ module.exports = {
       React: 'react',
     }),
   ],
-  // Parse the path of the perseus node_modules directory into our build machinery,
-  // in order to allow babel to resolve the presets that are in this particular dir
-  nodePaths: [path.resolve(path.join(__dirname, 'node_modules', 'perseus', 'node_modules'))],
 };
