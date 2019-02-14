@@ -16,7 +16,7 @@ const getVarOptions = message => {
   const reg = /(?:\{([^}]+)\})/g;
   let match;
   while ((match = reg.exec(message))) {
-    options[match[1]] = match[0];
+    options[match[1].trim()] = match[0];
   }
   return options;
 };
@@ -92,8 +92,10 @@ const interpolateStringToFragment = (str, options = {}) => {
   return createFragment(result);
 };
 
-export const $_ = (options, str) => {
-  if (arguments.length !== 2 || typeof str !== 'string') {
+export const $_ = (...args) => {
+  const options = args[0];
+  const str = args[1];
+  if (args.length !== 2 || typeof str !== 'string') {
     return '<$_> must have exactly one child, which must be a string';
   }
 
