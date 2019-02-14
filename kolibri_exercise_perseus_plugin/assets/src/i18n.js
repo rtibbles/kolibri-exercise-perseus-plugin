@@ -16,7 +16,7 @@ const getVarOptions = message => {
   const reg = /(?:\{([^}]+)\})/g;
   let match;
   while ((match = reg.exec(message))) {
-    options[match[1]] = match[0];
+    options[match[1].trim()] = match[0];
   }
   return options;
 };
@@ -96,7 +96,6 @@ export const $_ = (...args) => {
   const options = args[0];
   const str = args[1];
   if (args.length !== 2 || typeof str !== 'string') {
-    throw new Error();
     return '<$_> must have exactly one child, which must be a string';
   }
 

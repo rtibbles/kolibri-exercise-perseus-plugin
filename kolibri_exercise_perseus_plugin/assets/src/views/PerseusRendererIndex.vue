@@ -644,6 +644,25 @@
       border-collapse: collapse;
       border-spacing: 0;
     }
+
+    .simple-button {
+      border-radius: 3px;
+      border: 1px solid #e6e6e6;
+      text-shadow: none;
+      background-color: #e7e7e7;
+      background-image: linear-gradient(to bottom,#eee,#dcdcdc);
+      background-repeat: repeat-x;
+      color: #444!important;
+      padding: 5px 10px;
+      cursor: pointer!important;
+      font-family: inherit;
+      line-height: 20px;
+      margin: 3px;
+      position: relative;
+      text-decoration: none!important;
+      text-shadow: none;
+      transition: box-shadow ease-in-out .15s;
+    }
   }
 
   .keypad-container {
