@@ -52,6 +52,9 @@ export default (widget, type, rubric) => {
   }
   try {
     widgetSolvers[type](widget, rubric);
+    const blurWidget = widget.blurInputPath;
+    // Call blurWidget with an empty path
+    blurWidget && blurWidget('');
   } catch (e) {
     logging.debug('An error occurred while solving a problem', e);
   }
