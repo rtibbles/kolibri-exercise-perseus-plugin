@@ -662,4 +662,9 @@
     direction: ltr;
   }
 
+  // try to prevent nested scroll bars
+  .perseus-widget-container > div {
+    overflow: visible !important;
+  }
+
 </style>
