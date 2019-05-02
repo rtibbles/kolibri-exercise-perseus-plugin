@@ -14,7 +14,7 @@
           id="problem-area"
           :dir="dir"
         >
-          <div id="workarea" :style="isMobile ? { marginLeft: '0px' } : {}"></div>
+          <div id="workarea" style="margin-left: 0px"></div>
         </div>
 
         <div
@@ -47,7 +47,7 @@
 
 
         <div v-if="hinted" id="hintlabel" :dir="dir">{{ $tr("hintLabel") }}</div>
-        <div id="hintsarea" :dir="dir" :style="isMobile ? { marginLeft: '0px' } : {}"></div>
+        <div id="hintsarea" :dir="dir" style="margin-left: 0px"></div>
 
         <div style="clear: both;"></div>
 
