@@ -1,7 +1,7 @@
 <template v-if="itemId">
 
   <div class="perseus-root bibliotron-exercise">
-    <div :class="{'framework-perseus':true, 'perseus-mobile': isMobile}">
+    <div class="framework-perseus" :class="{'perseus-mobile': isMobile}">
       <div id="perseus" ref="perseus" :style="background">
         <div class="loader-container">
           <KLinearLoader
@@ -468,12 +468,6 @@
   @import '../../../node_modules/perseus/lib/katex/katex.css';
   @import '../../../node_modules/perseus/build/perseus.css';
   @import '../../../node_modules/perseus/lib/mathquill/mathquill.css';
-
-  #perseus {
-    border-radius: 8px;
-    padding: 16px;
-    overflow-x: auto;
-  }
 
   #solutionarea {
     border: none;
