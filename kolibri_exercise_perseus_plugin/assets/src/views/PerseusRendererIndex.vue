@@ -1,7 +1,7 @@
 <template v-if="itemId">
 
   <div class="perseus-root bibliotron-exercise">
-    <div :class="{'framework-perseus':true, 'perseus-mobile': isMobile}">
+    <div class="framework-perseus" :class="{'perseus-mobile': isMobile}">
       <div id="perseus" ref="perseus" :style="background">
         <div class="loader-container">
           <KLinearLoader
@@ -14,7 +14,7 @@
           id="problem-area"
           :dir="dir"
         >
-          <div id="workarea" :style="isMobile ? { marginLeft: '0px' } : {}"></div>
+          <div id="workarea" style="margin-left: 0px"></div>
         </div>
 
         <div
@@ -47,7 +47,7 @@
 
 
         <div v-if="hinted" id="hintlabel" :dir="dir">{{ $tr("hintLabel") }}</div>
-        <div id="hintsarea" :dir="dir" :style="isMobile ? { marginLeft: '0px' } : {}"></div>
+        <div id="hintsarea" :dir="dir" style="margin-left: 0px"></div>
 
         <div style="clear: both;"></div>
 
@@ -469,12 +469,6 @@
   @import '../../../node_modules/perseus/build/perseus.css';
   @import '../../../node_modules/perseus/lib/mathquill/mathquill.css';
 
-  #perseus {
-    border-radius: 8px;
-    padding: 16px;
-    overflow-x: auto;
-  }
-
   #solutionarea {
     border: none;
   }
@@ -666,6 +660,11 @@
 
   .keypad-container {
     direction: ltr;
+  }
+
+  // try to prevent nested scroll bars
+  .perseus-widget-container > div {
+    overflow: visible !important;
   }
 
 </style>
