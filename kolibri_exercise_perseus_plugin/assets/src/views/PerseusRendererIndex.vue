@@ -145,7 +145,7 @@
     computed: {
       background() {
         return {
-          backgroundColor: this.$coreBgLight,
+          backgroundColor: this.$themeColors.white,
         };
       },
       isMobile() {
