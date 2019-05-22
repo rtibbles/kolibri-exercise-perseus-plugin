@@ -97,7 +97,6 @@
   import client from 'kolibri.client';
   import responsiveWindow from 'kolibri.coreVue.mixins.responsiveWindow';
   import contentRendererMixin from 'kolibri.coreVue.mixins.contentRendererMixin';
-  import themeMixin from 'kolibri.coreVue.mixins.themeMixin';
   import * as perseus from 'perseus/src/perseus';
   import { getContentLangDir } from 'kolibri.utils.i18n';
   import kolibri from 'kolibri';
@@ -129,7 +128,7 @@
       KLinearLoader,
       CoreInfoIcon,
     },
-    mixins: [responsiveWindow, contentRendererMixin, themeMixin],
+    mixins: [responsiveWindow, contentRendererMixin],
     data: () => ({
       // Is the perseus item renderer loading?
       loading: true,
