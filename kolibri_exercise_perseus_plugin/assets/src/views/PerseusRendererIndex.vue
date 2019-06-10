@@ -2,7 +2,7 @@
 
   <div class="perseus-root bibliotron-exercise">
     <div class="framework-perseus" :class="{'perseus-mobile': isMobile}">
-      <div id="perseus" ref="perseus" style="color: white;">
+      <div id="perseus" ref="perseus" style="background-color: white;">
         <div class="loader-container">
           <KLinearLoader
             v-show="loading"
