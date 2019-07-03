@@ -139,7 +139,7 @@
   "PerseusInternalMessages.reflection": "प्रतिबिंब",
   "PerseusInternalMessages.rotation": "रोटेशन",
   "PerseusInternalMessages.translation": "अनुवाद",
-  "PerseusRendererIndex.hint": "बचे हुए हिंट ({hintsLeft, number} का प्रयोग करें)",
+  "PerseusRendererIndex.hint": "संकेत का प्रयोग करें ({hintsLeft, number} बचे हैं)",
   "PerseusRendererIndex.hintExplanation": "यदि आपने संकेत का उपयोग किया, तो यह सवाल आपकी प्रगति में नहीं जोड़ा जाएगा",
   "PerseusRendererIndex.hintLabel": "संकेत",
   "PerseusRendererIndex.loading": "लोड हो रहा है",

@@ -1,9 +1,12 @@
 {
   "scripts": {
-    "postinstall": "git submodule update --init --recursive && cd node_modules/perseus && yarn install && cd ../../node_modules/esprima && yarn",
+    "postinstall": "git submodule update --init --recursive && cd node_modules/perseus && yarn install",
     "extract-messages": "node ./extractPerseusMessages.js",
     "get-ka-translations": "node ./generateKATranslations.js",
-    "download-translations": "node ./downloadTranslations.js"
+    "download-translations": "node ./downloadTranslations.js",
+    "build": "kolibri-tools build prod --plugins kolibri_exercise_perseus_plugin --pluginPaths ./",
+    "clean": "kolibri-tools build clean --plugins kolibri_exercise_perseus_plugin --pluginPaths ./",
+    "dev": "kolibri-tools build dev --plugins kolibri_exercise_perseus_plugin --pluginPaths ./"
   },
   "name": "kolibri-exercise-perseus-render-plugin",
   "description": "Exercise/Perseus Render Plugin for Kolibri",
@@ -35,7 +38,10 @@
   },
   "devDependencies": {
     "adm-zip": "^0.4.7",
-    "esprima": "https://github.com/jquery/esprima.git",
+    "espree": "^4.1.0",
+    "exports-loader": "^0.7.0",
+    "imports-loader": "^0.8.0",
+    "kolibri-tools": "0.12.0-beta.6",
     "mkdirp": "^0.5.1",
     "pofile": "^1.0.8",
     "progress": "^2.0.0",
@@ -44,5 +50,9 @@
     "temp": "^0.8.3",
     "walk": "^2.3.9",
     "webpack": "4.6.0"
+  },
+  "engines": {
+    "node": "10.x",
+    "npm": ">= 3"
   }
 }
