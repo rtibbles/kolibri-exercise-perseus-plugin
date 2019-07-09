@@ -12,7 +12,7 @@
         </div>
         <div
           id="problem-area"
-          :dir="dir"
+          :dir="contentDirection"
         >
           <div id="workarea" style="margin-left: 0px"></div>
         </div>
@@ -46,18 +46,18 @@
         </div>
 
 
-        <div v-if="hinted" id="hintlabel" :dir="dir">{{ $tr("hintLabel") }}</div>
-        <div id="hintsarea" :dir="dir" style="margin-left: 0px"></div>
+        <div v-if="hinted" id="hintlabel" :dir="contentDirection">{{ $tr("hintLabel") }}</div>
+        <div id="hintsarea" :dir="contentDirection" style="margin-left: 0px"></div>
 
         <div style="clear: both;"></div>
 
       </div>
 
       <transition name="expand">
-        <div v-show="message" id="message" :dir="dir">{{ message }}</div>
+        <div v-show="message" id="message" :dir="contentDirection">{{ message }}</div>
       </transition>
 
-      <div id="answer-area-wrap" :dir="dir" :style="background">
+      <div id="answer-area-wrap" :dir="contentDirection" :style="background">
         <div id="answer-area">
           <div class="info-box">
             <div id="solutionarea"></div>
@@ -83,7 +83,7 @@
 
       <!-- Need a DOM mount point for reactDOM to attach to,
         but Perseus renders weirdly so doesn't use this -->
-      <div id="perseus-container" ref="perseusContainer" :dir="dir"></div>
+      <div id="perseus-container" ref="perseusContainer" :dir="contentDirection"></div>
     </div>
   </div>
 
@@ -186,9 +186,6 @@
       anyHints() {
         return this.allowHints && (this.itemRenderer ? this.itemRenderer.getNumHints() : 0);
       },
-      dir() {
-        return getContentLangDir(this.lang);
-      },
     },
     watch: {
       itemId: 'loadItemData',
@@ -219,7 +216,7 @@
         perseus.init({ skipMathJax: true, loadExtraWidgets: true })
       );
       // Try to load the appropriate directional CSS for the particular content
-      const cssPromise = this.$options.contentModule.loadDirectionalCSS(this.dir);
+      const cssPromise = this.$options.contentModule.loadDirectionalCSS(this.contentDirection);
       Promise.all([initPromise, cssPromise]).then(() => {
         this.loadItemData();
         this.$emit('startTracking');
