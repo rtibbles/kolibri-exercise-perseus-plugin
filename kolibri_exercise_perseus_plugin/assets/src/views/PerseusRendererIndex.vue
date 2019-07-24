@@ -57,7 +57,7 @@
         <div v-show="message" id="message" :dir="dir">{{ message }}</div>
       </transition>
 
-      <div id="answer-area-wrap" :dir="dir" :style="background">
+      <div id="answer-area-wrap" :dir="dir" style="background-color: white;">
         <div id="answer-area">
           <div class="info-box">
             <div id="solutionarea"></div>
