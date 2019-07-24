@@ -410,7 +410,13 @@
           client(`${this.defaultFile.storage_url}${this.itemId}.json`)
             .then(itemResponse => {
               if (this.validateItemData(itemResponse.entity)) {
-                this.item = itemResponse.entity;
+                // Replace any placeholder values for image URLs with
+                // the base URL for the perseus file we are reading from
+                const value = JSON.stringify(itemResponse.entity).replace(
+                  /\$\{☣ LOCALPATH\}\//,
+                  `${window.location.protocol}//${window.location.host}${this.defaultFile.storage_url}`
+                );
+                this.item = JSON.parse(value);
                 if (this.$el) {
                   // Don't try to render if our component is not mounted yet.
                   this.renderItem();
