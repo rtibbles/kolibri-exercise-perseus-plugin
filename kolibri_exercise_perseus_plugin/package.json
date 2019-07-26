@@ -6,7 +6,7 @@
     "download-translations": "node ./downloadTranslations.js",
     "build": "kolibri-tools build prod --plugins kolibri_exercise_perseus_plugin --pluginPaths ./",
     "clean": "kolibri-tools build clean --plugins kolibri_exercise_perseus_plugin --pluginPaths ./",
-    "dev": "kolibri-tools build dev --plugins kolibri_exercise_perseus_plugin --pluginPaths ./"
+    "dev": "kolibri-tools build dev --plugins kolibri_exercise_perseus_plugin --pluginPaths ./ --port 4000"
   },
   "name": "kolibri-exercise-perseus-render-plugin",
   "description": "Exercise/Perseus Render Plugin for Kolibri",
