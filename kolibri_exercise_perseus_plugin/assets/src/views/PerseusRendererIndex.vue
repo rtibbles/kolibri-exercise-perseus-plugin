@@ -407,10 +407,17 @@
           client(`${this.defaultFile.storage_url}${this.itemId}.json`)
             .then(itemResponse => {
               if (this.validateItemData(itemResponse.entity)) {
+                // Replace any placeholder values for image URLs with the `web+graphie:` prefix
+                // before any others, as they are parsed slightly differently to standard image
+                // urls (Perseus adds the protocol in place of `web+graphie:`).
+                const value = JSON.stringify(itemResponse.entity).replace(
+                  /web\+graphie:\$\{☣ LOCALPATH\}\//g,
+                  `web+graphie://${window.location.host}${this.defaultFile.storage_url}`
+                )
                 // Replace any placeholder values for image URLs with
                 // the base URL for the perseus file we are reading from
-                const value = JSON.stringify(itemResponse.entity).replace(
-                  /\$\{☣ LOCALPATH\}\//,
+                .replace(
+                  /\$\{☣ LOCALPATH\}\//g,
                   `${window.location.protocol}//${window.location.host}${this.defaultFile.storage_url}`
                 );
                 this.item = JSON.parse(value);
