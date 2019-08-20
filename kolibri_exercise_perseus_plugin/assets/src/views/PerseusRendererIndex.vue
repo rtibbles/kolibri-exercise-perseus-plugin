@@ -468,10 +468,10 @@
 
 <style lang="scss" scoped>
 
-  @import '../../../node_modules/perseus/stylesheets/local-only/khan-exercise.css';
-  @import '../../../node_modules/perseus/lib/katex/katex.css';
-  @import '../../../node_modules/perseus/build/perseus.css';
-  @import '../../../node_modules/perseus/lib/mathquill/mathquill.css';
+  @import '~perseus/stylesheets/local-only/khan-exercise.css';
+  @import '~perseus/lib/katex/katex.css';
+  @import '~perseus/build/perseus.css';
+  @import '~perseus/lib/mathquill/mathquill.css';
 
   #solutionarea {
     border: none;
