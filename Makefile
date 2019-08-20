@@ -38,7 +38,7 @@ dev:
 
 assets:
 	# move mathjax to static folder for our hacky loading
-	rm -r kolibri_exercise_perseus_plugin/static
+	rm -f -r kolibri_exercise_perseus_plugin/static
 	mkdir kolibri_exercise_perseus_plugin/static
 	cp -r node_modules/perseus/lib/mathjax kolibri_exercise_perseus_plugin/static/
 	mkdir kolibri_exercise_perseus_plugin/static/images
