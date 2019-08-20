@@ -5,8 +5,9 @@
 var path = require('path');
 var webpack = require('webpack');
 
-var delimiter = process.platform === 'win32' ? ';' : ':';
-process.env.NODE_PATH = process.env.NODE_PATH + delimiter + path.resolve(path.join(__dirname, 'node_modules', 'perseus', 'node_modules'));
+const perseus_node_modules = path.resolve(path.join(__dirname, '..', 'node_modules', 'perseus', 'node_modules'));
+
+process.env.NODE_PATH = process.env.NODE_PATH + path.delimiter + perseus_node_modules;
 require('module').Module._initPaths();
 
 module.exports = {
@@ -14,10 +15,10 @@ module.exports = {
   webpack_config: {
     entry: 'assets/src/module.js',
     resolve: {
-      modules: [path.resolve(__dirname, 'node_modules/perseus/node_modules')]
+      modules: [perseus_node_modules]
     },
     resolveLoader: {
-      modules: [path.resolve(__dirname, 'node_modules/perseus/node_modules')]
+      modules: [perseus_node_modules]
     },
     module: {
       rules: [
@@ -81,7 +82,7 @@ module.exports = {
           // and any files inside perseus src and math-input as they use
           // object spread syntax and need to be passed through babel
           test: /(perseus\/(src|math\-input)\/[\w\/\-\_]*\.jsx?$)|(\.jsx$)/,
-          loader: path.join(__dirname, "./node_modules/perseus/node/jsx-loader.js"),
+          loader: path.join(__dirname, '..', "./node_modules/perseus/node/jsx-loader.js"),
         },
         {
           test: /perseus\/lib\/kas\.js$/,
