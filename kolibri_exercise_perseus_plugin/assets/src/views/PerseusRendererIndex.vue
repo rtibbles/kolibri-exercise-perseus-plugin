@@ -95,13 +95,11 @@
   import react from 'react';
   import reactDOM from 'react-dom';
   import client from 'kolibri.client';
-  import responsiveWindow from 'kolibri.coreVue.mixins.responsiveWindow';
+  import responsiveWindowMixin from 'kolibri.coreVue.mixins.responsiveWindowMixin';
   import contentRendererMixin from 'kolibri.coreVue.mixins.contentRendererMixin';
   import * as perseus from 'perseus/src/perseus';
   import { getContentLangDir } from 'kolibri.utils.i18n';
   import kolibri from 'kolibri';
-  import KButton from 'kolibri.coreVue.components.KButton';
-  import KLinearLoader from 'kolibri.coreVue.components.KLinearLoader';
   import CoreInfoIcon from 'kolibri.coreVue.components.CoreInfoIcon';
   import icu from '../KAGlobals/icu';
   import widgetSolver from '../widgetSolver';
@@ -124,11 +122,9 @@
   export default {
     name: 'PerseusRendererIndex',
     components: {
-      KButton,
-      KLinearLoader,
       CoreInfoIcon,
     },
-    mixins: [responsiveWindow, contentRendererMixin],
+    mixins: [responsiveWindowMixin, contentRendererMixin],
     data: () => ({
       // Is the perseus item renderer loading?
       loading: true,
