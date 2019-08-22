@@ -4,6 +4,7 @@
     "extract-messages": "node ./kolibri_exercise_perseus_plugin/extractPerseusMessages.js",
     "get-ka-translations": "node ./kolibri_exercise_perseus_plugin/generateKATranslations.js",
     "download-translations": "node ./kolibri_exercise_perseus_plugin/downloadTranslations.js",
+    "makemessages": "kolibri-tools build i18n --plugins kolibri_exercise_perseus_plugin",
     "build": "kolibri-tools build prod --plugins kolibri_exercise_perseus_plugin",
     "clean": "kolibri-tools build clean --plugins kolibri_exercise_perseus_plugin",
     "dev": "kolibri-tools build dev --plugins kolibri_exercise_perseus_plugin --port 4000"

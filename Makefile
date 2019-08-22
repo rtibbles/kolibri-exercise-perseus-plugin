@@ -40,12 +40,12 @@ assets:
 	# move mathjax to static folder for our hacky loading
 	rm -f -r kolibri_exercise_perseus_plugin/static
 	mkdir kolibri_exercise_perseus_plugin/static
-	cp -r node_modules/perseus/lib/mathjax kolibri_exercise_perseus_plugin/static/
+	cp -r submodules/perseus/lib/mathjax kolibri_exercise_perseus_plugin/static/
 	mkdir kolibri_exercise_perseus_plugin/static/images
-	cp node_modules/perseus/images/spinner.gif kolibri_exercise_perseus_plugin/static/images
-	cp -r node_modules/perseus/lib/mathquill/fonts kolibri_exercise_perseus_plugin/static/
+	cp submodules/perseus/images/spinner.gif kolibri_exercise_perseus_plugin/static/images
+	cp -r submodules/perseus/lib/mathquill/fonts kolibri_exercise_perseus_plugin/static/
 
-	yarn run clean && yarn run build
+	yarn run clean && yarn run build && yarn run makemessages
 
 check-build:
 	[ -e kolibri_exercise_perseus_plugin/static/images/spinner.gif ] || ( echo "Please run: make assets" && exit 1 )
