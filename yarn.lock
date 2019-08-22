@@ -3990,10 +3990,10 @@ eslint-plugin-jest@^21.26.1:
   resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-21.27.2.tgz#2a795b7c3b5e707df48a953d651042bd01d7b0a8"
   integrity sha512-0E4OIgBJVlAmf1KfYFtZ3gYxgUzC5Eb3Jzmrc9ikI1OY+/cM8Kh72Ti7KfpeHNeD3HJNf9SmEfmvQLIz44Hrhw==
 
-eslint-plugin-kolibri@0.13.0-dev.7:
-  version "0.13.0-dev.7"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-kolibri/-/eslint-plugin-kolibri-0.13.0-dev.7.tgz#810903bdf564aefba5eb742962bccf92b0269571"
-  integrity sha512-v+wJdHvTqDOPTvTezfN/xmLprpxWyn5kVcm+ePSZFQgF7RFy7iOFUl4v7Otdrwg1bCo0EGP2DXW4SnffP3YDtQ==
+eslint-plugin-kolibri@0.13.0-dev.8:
+  version "0.13.0-dev.8"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-kolibri/-/eslint-plugin-kolibri-0.13.0-dev.8.tgz#a773f5540563709ed8e481a22a74c9c529509e97"
+  integrity sha512-VLXvuWvWzHfguFvrnOVXfm39y/QBrsgn2/3hxozlv++WkuQtOIqyj1pY1GIPotAqyheHTK7006WAWG+4bGJ/Yg==
   dependencies:
     requireindex "^1.1.0"
 
@@ -7008,10 +7008,10 @@ knuth-shuffle-seeded@^1.0.6:
   dependencies:
     seed-random "~2.2.0"
 
-kolibri-components@0.13.0-dev.7:
-  version "0.13.0-dev.7"
-  resolved "https://registry.yarnpkg.com/kolibri-components/-/kolibri-components-0.13.0-dev.7.tgz#51be1c28b7ea44043bed0f885be34a741defea04"
-  integrity sha512-iWE/d2hyUoHGjKhT2iza1RbkmvEGJcu8NrBZMyT/Jjp/zDILJBPSBpA03BMAbxw7Mnh6aj84HhXUOF8xwGvuTQ==
+kolibri-components@0.13.0-dev.8:
+  version "0.13.0-dev.8"
+  resolved "https://registry.yarnpkg.com/kolibri-components/-/kolibri-components-0.13.0-dev.8.tgz#4e330da2707888d58f4dd01a1dea7ac79e811245"
+  integrity sha512-DspBjI1XAQszorc1b0kkc51T7cmoEzvfHSwR6CkPHCbD28rRpwzpe5geVBbSP7TI4yTuGB2szS5VuE4NIr70Wg==
   dependencies:
     aphrodite "https://github.com/learningequality/aphrodite/"
     css-element-queries "^1.2.0"
@@ -7019,10 +7019,10 @@ kolibri-components@0.13.0-dev.7:
     popper.js "^1.14.6"
     purecss "^0.6.2"
 
-kolibri-tools@^0.13.0-dev.7:
-  version "0.13.0-dev.7"
-  resolved "https://registry.yarnpkg.com/kolibri-tools/-/kolibri-tools-0.13.0-dev.7.tgz#51ef036a0a2f09652aed70dd01e004791096159f"
-  integrity sha512-K9jhKchhOgj3WvEI4S6HzBQWUxi/zXGRswu0JkVDbnj6klB4ecBq30JUfB3YUS1Z9sQfYnM4tr93xF7IHl9aqA==
+kolibri-tools@^0.13.0-dev.8:
+  version "0.13.0-dev.8"
+  resolved "https://registry.yarnpkg.com/kolibri-tools/-/kolibri-tools-0.13.0-dev.8.tgz#5851bad906b5e98a8cd752099d672fb16f332ca8"
+  integrity sha512-nhuLR2N8kH5lHw9+n6sPk8qUHjs3BAiOndIZFXnRFKW3iObq8iFf20IHqpK4SgD6klXxkLloWxiNiJfhLwuqEw==
   dependencies:
     "@vue/test-utils" "1.0.0-beta.25"
     ast-traverse "^0.1.1"
@@ -7043,7 +7043,7 @@ kolibri-tools@^0.13.0-dev.7:
     eslint-config-prettier "^2.9.0"
     eslint-plugin-import "^2.14.0"
     eslint-plugin-jest "^21.26.1"
-    eslint-plugin-kolibri "0.13.0-dev.7"
+    eslint-plugin-kolibri "0.13.0-dev.8"
     eslint-plugin-vue "^5.2.2"
     espree "^5.0.1"
     esquery "^1.0.1"
@@ -7095,12 +7095,12 @@ kolibri-tools@^0.13.0-dev.7:
     webpack-merge "^4.1.0"
     webpack-rtl-plugin "^2.0.0"
   optionalDependencies:
-    kolibri "0.13.0-dev.7"
+    kolibri "0.13.0-dev.8"
 
-kolibri@0.13.0-dev.7:
-  version "0.13.0-dev.7"
-  resolved "https://registry.yarnpkg.com/kolibri/-/kolibri-0.13.0-dev.7.tgz#cd1a823cf76f832ec4080d3f23c76ac516edd927"
-  integrity sha512-OiRR2GmYIRTr3PFkG7Y3dIfiTB7c3yYX5y2y8BsRqWxH1/bRm7vnD2kGz2t49ILum+MfCLqtIvh4MHIBYrzTVg==
+kolibri@0.13.0-dev.8:
+  version "0.13.0-dev.8"
+  resolved "https://registry.yarnpkg.com/kolibri/-/kolibri-0.13.0-dev.8.tgz#772742cf4786382a4d924c6ef1c987ad88bbf060"
+  integrity sha512-9d/f5Q3FmEf2SZJ4xjO9TWPFGtm3FB6ZhAazzdUwmj23yknUGK8/hn2myfiqN20nvEdgsacY8hbNcxANlgc+dw==
   dependencies:
     "@shopify/draggable" "^1.0.0-beta.8"
     clipboard "^2.0.1"
@@ -7112,7 +7112,7 @@ kolibri@0.13.0-dev.7:
     js-cookie "^2.1.2"
     keen-ui "https://github.com/learningequality/Keen-UI/"
     knuth-shuffle-seeded "^1.0.6"
-    kolibri-components "0.13.0-dev.7"
+    kolibri-components "0.13.0-dev.8"
     lockr "0.8.4"
     lodash "^4.17.4"
     loglevel "^1.4.1"

@@ -1,4 +1,3 @@
-[submodule "perseus"]
-	path = node_modules/perseus
+[submodule "submodules/perseus"]
+	path = submodules/perseus
 	url = https://github.com/Khan/perseus.git
-  branch = 9f4c2b05cea3cf9251d19da87fb28d0bb9fd38eb

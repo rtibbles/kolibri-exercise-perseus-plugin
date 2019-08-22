@@ -1,6 +1,6 @@
-<template v-if="itemId">
+<template>
 
-  <div class="perseus-root bibliotron-exercise">
+  <div v-if="itemId || itemData" class="perseus-root bibliotron-exercise">
     <div class="framework-perseus" :class="{'perseus-mobile': isMobile}">
       <div id="perseus" ref="perseus" style="background-color: white;">
         <div class="loader-container">
@@ -96,10 +96,9 @@
   import reactDOM from 'react-dom';
   import client from 'kolibri.client';
   import responsiveWindowMixin from 'kolibri.coreVue.mixins.responsiveWindowMixin';
-  import contentRendererMixin from 'kolibri.coreVue.mixins.contentRendererMixin';
   import * as perseus from 'perseus/src/perseus';
   import { getContentLangDir } from 'kolibri.utils.i18n';
-  import kolibri from 'kolibri';
+  import scriptLoader from 'kolibri.utils.scriptLoader';
   import CoreInfoIcon from 'kolibri.coreVue.components.CoreInfoIcon';
   import icu from '../KAGlobals/icu';
   import widgetSolver from '../widgetSolver';
@@ -115,7 +114,7 @@
   // the config is fragile, Khan may change it and we need to update the following hardcoded path.
   const mathJaxUrl = `/static/mathjax/2.1/MathJax.js?config=${mathJaxConfigFileName}`;
 
-  const mathJaxPromise = kolibri.scriptLoader(mathJaxUrl);
+  const mathJaxPromise = scriptLoader(mathJaxUrl);
 
   const sorterWidgetRegex = /sorter [0-9]+/;
 
@@ -124,7 +123,7 @@
     components: {
       CoreInfoIcon,
     },
-    mixins: [responsiveWindowMixin, contentRendererMixin],
+    mixins: [responsiveWindowMixin],
     data: () => ({
       // Is the perseus item renderer loading?
       loading: true,
@@ -185,6 +184,7 @@
     },
     watch: {
       itemId: 'loadItemData',
+      itemData: 'setItemData',
       loading: 'setAnswer',
       answerState: 'resetState',
       showCorrectAnswer: 'resetState',
@@ -214,7 +214,11 @@
       // Try to load the appropriate directional CSS for the particular content
       const cssPromise = this.$options.contentModule.loadDirectionalCSS(this.contentDirection);
       Promise.all([initPromise, cssPromise]).then(() => {
-        this.loadItemData();
+        if (this.defaultFile) {
+          this.loadItemData();
+        } else if (this.itemData) {
+          this.setItemData(this.itemData);
+        }
         this.$emit('startTracking');
       });
     },
@@ -398,40 +402,43 @@
       },
       loadItemData() {
         // Only try to do this if itemId is defined.
-        if (this.itemId) {
+        if (this.itemId && this.defaultFile && this.defaultFile.storage_url) {
           this.loading = true;
           client(`${this.defaultFile.storage_url}${this.itemId}.json`)
             .then(itemResponse => {
-              if (this.validateItemData(itemResponse.entity)) {
-                // Replace any placeholder values for image URLs with the `web+graphie:` prefix
-                // before any others, as they are parsed slightly differently to standard image
-                // urls (Perseus adds the protocol in place of `web+graphie:`).
-                const value = JSON.stringify(itemResponse.entity).replace(
-                  /web\+graphie:\$\{☣ LOCALPATH\}\//g,
-                  `web+graphie://${window.location.host}${this.defaultFile.storage_url}`
-                )
-                // Replace any placeholder values for image URLs with
-                // the base URL for the perseus file we are reading from
-                .replace(
-                  /\$\{☣ LOCALPATH\}\//g,
-                  `${window.location.protocol}//${window.location.host}${this.defaultFile.storage_url}`
-                );
-                this.item = JSON.parse(value);
-                if (this.$el) {
-                  // Don't try to render if our component is not mounted yet.
-                  this.renderItem();
-                } else {
-                  this.$once('mounted', this.renderItem);
-                }
-              } else {
-                logging.warn('Loaded item was malformed', itemResponse.entity);
-              }
+              // Replace any placeholder values for image URLs with the `web+graphie:` prefix
+              // before any others, as they are parsed slightly differently to standard image
+              // urls (Perseus adds the protocol in place of `web+graphie:`).
+              const itemData = JSON.parse(JSON.stringify(itemResponse.entity).replace(
+                /web\+graphie:\$\{☣ LOCALPATH\}\//g,
+                `web+graphie://${window.location.host}${this.defaultFile.storage_url}`
+              )
+              // Replace any placeholder values for image URLs with
+              // the base URL for the perseus file we are reading from
+              .replace(
+                /\$\{☣ LOCALPATH\}\//g,
+                `${window.location.protocol}//${window.location.host}${this.defaultFile.storage_url}`
+              ));
+              this.setItemData(itemData);
             })
             .catch(reason => {
               logging.debug('There was an error loading the assessment item data: ', reason);
               this.clearItemRenderer();
               this.$emit('itemError', reason);
             });
+        }
+      },
+      setItemData(itemData) {
+        if (this.validateItemData(itemData)) {
+          this.item = itemData;
+          if (this.$el) {
+            // Don't try to render if our component is not mounted yet.
+            this.renderItem();
+          } else {
+            this.$once('mounted', this.renderItem);
+          }
+        } else {
+          logging.warn('Loaded item was malformed', itemData);
         }
       },
       setCorrectAnswer() {
