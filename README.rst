@@ -24,7 +24,7 @@ Installation
 
 2. Activate the plugin::
 
-    kolibri plugin kolibri_exercise_perseus_plugin enable
+    kolibri plugin enable kolibri_exercise_perseus_plugin
 
 3. Restart Kolibri.
 
@@ -42,7 +42,7 @@ Getting started with development
     make clean
     pip install -e .
     pip install -e <KOLIBRI-PERSEUS-PLUGIN-LOCAL-PATH>
-    kolibri plugin kolibri_exercise_perseus_plugin enable
+    kolibri plugin enable kolibri_exercise_perseus_plugin
 
 4. Within the perseus plugin repo directory, run the following command, again using your kolibri dev virtualenv::
 
