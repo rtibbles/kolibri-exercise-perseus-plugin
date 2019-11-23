@@ -13,7 +13,7 @@ process.env.NODE_PATH = process.env.NODE_PATH + path.delimiter + submodules + pa
 require('module').Module._initPaths();
 
 module.exports = {
-  bundle_id: 'exercise_perseus_render_module',
+  bundle_id: 'main',
   webpack_config: {
     entry: 'assets/src/module.js',
     resolve: {
