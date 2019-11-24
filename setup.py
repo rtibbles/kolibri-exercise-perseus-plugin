@@ -60,6 +60,9 @@ setup(
             "kolibri_exercise_perseus_plugin"
         ),  # https://github.com/pypa/setuptools/pull/597
     ],
+    entry_points={
+        "kolibri.plugins": "kolibri_exercise_perseus_plugin = kolibri_exercise_perseus_plugin",
+    },
     package_dir={"kolibri_exercise_perseus_plugin": "kolibri_exercise_perseus_plugin"},
     include_package_data=True,
     license="MIT",
