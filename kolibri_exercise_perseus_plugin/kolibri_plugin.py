@@ -13,5 +13,5 @@ class ExercisePerseusRenderPlugin(KolibriPluginBase):
 
 @register_hook
 class ExercisePerseusRenderAsset(content_hooks.ContentRendererHook):
-    bundle_id = "exercise_perseus_render_module"
+    bundle_id = "main"
     presets = (format_presets.EXERCISE,)
