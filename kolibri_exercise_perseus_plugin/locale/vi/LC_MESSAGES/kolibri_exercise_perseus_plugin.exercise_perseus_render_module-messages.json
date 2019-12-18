@@ -1,6 +1,6 @@
 {
   "PerseusInternalMessages. The symbol { sentenceSymbol } indicates that the following sentence is referenced in a question.": "Biểu tượng { sentenceSymbol } cho biết rằng câu sau được đề cập trong một câu hỏi.",
-  "PerseusInternalMessages.'None of the above' may not be selected when other answers are selected.": "Không thể chọn \"Không câu trả lời nào ở trên\" khi đã chọn những câu trả lời khác.",
+  "PerseusInternalMessages.'None of the above' may not be selected when other answers are selected.": "Không thể chọn \"Không điều nào ở trên\" khi đã chọn những câu trả lời khác.",
   "PerseusInternalMessages.(Choice { letter })": "(Đáp án { letter })",
   "PerseusInternalMessages.(Choice { letter }, Checked)": "(Đáp án { letter }, đã đánh dấu)",
   "PerseusInternalMessages.(Choice { letter }, Checked, Correct)": "(Đáp án { letter }, đã đánh dấu, đúng)",

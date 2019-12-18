@@ -1,6 +1,6 @@
 {
   "PerseusInternalMessages. The symbol { sentenceSymbol } indicates that the following sentence is referenced in a question.": " Ishara { sentenceSymbol } inaonyesha kwamba sentensi ifuatayo imerejelewa katika swali.",
-  "PerseusInternalMessages.'None of the above' may not be selected when other answers are selected.": "'Hakuna jibu hapo juu' haliwezi kuchaguliwa wakati majibu mengine yamechaguliwa.",
+  "PerseusInternalMessages.'None of the above' may not be selected when other answers are selected.": "'Hakuna lolote' haliwezi kuchaguliwa wakati majibu mengine yamechaguliwa.",
   "PerseusInternalMessages.(Choice { letter })": "(Chaguo { letter })",
   "PerseusInternalMessages.(Choice { letter }, Checked)": "(Chaguo { letter }, Imekaguliwa)",
   "PerseusInternalMessages.(Choice { letter }, Checked, Correct)": "(Chaguo { letter }, Imekaguliwa, Sahihi)",

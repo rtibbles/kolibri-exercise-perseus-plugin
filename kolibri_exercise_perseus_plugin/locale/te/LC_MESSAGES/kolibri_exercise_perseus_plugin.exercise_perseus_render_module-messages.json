@@ -1,6 +1,6 @@
 {
   "PerseusInternalMessages. The symbol { sentenceSymbol } indicates that the following sentence is referenced in a question.": "{ sentenceSymbol } చిహ్నం ఈ క్రింది వాక్యం ఒక ప్రశ్నలో సూచించబడిందని సూచిస్తుంది.",
-  "PerseusInternalMessages.'None of the above' may not be selected when other answers are selected.": "ఇతర సమాధానాలు ఎంచుకున్నప్పుడు 'పైవేవీ కావు' ఎంచుకోవడానికి వీలు లేదు.",
+  "PerseusInternalMessages.'None of the above' may not be selected when other answers are selected.": "ఇతర సమాధానాలు ఎంచుకున్నప్పుడు 'పైవేవీ కావు' ఎంచుకోబడకపోవచ్చు.",
   "PerseusInternalMessages.(Choice { letter })": "(ఛాయస్ { letter })",
   "PerseusInternalMessages.(Choice { letter }, Checked)": "(ఛాయిస్ { letter }, తనిఖీ చేయబడింది)",
   "PerseusInternalMessages.(Choice { letter }, Checked, Correct)": "(ఎంపిక { letter }, తనిఖీ చేయబడింది, సరైనది)",
