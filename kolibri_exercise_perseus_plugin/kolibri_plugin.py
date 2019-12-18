@@ -1,13 +1,17 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
+from le_utils.constants import format_presets
+
 from kolibri.core.content import hooks as content_hooks
-from kolibri.plugins.base import KolibriPluginBase
+from kolibri.plugins import KolibriPluginBase
+from kolibri.plugins.hooks import register_hook
 
 
 class ExercisePerseusRenderPlugin(KolibriPluginBase):
     pass
 
 
+@register_hook
 class ExercisePerseusRenderAsset(content_hooks.ContentRendererHook):
-    bundle_id = "exercise_perseus_render_module"
-    content_types_file = "content_types.json"
+    bundle_id = "main"
+    presets = (format_presets.EXERCISE,)
